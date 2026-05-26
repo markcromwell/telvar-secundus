@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import configparser
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -186,3 +187,45 @@ def test_npc_portraits_exist_48x48() -> None:
         assert path.stat().st_size < 5 * 1024 * 1024
         w, h = _png_pixel_size(path)
         assert (w, h) == (48, 48), f"{path} expected 48x48, got {w}x{h}"
+
+
+NPC_SCENES: dict[str, str] = {
+    "sabatha": "Sabatha.tscn",
+    "orrson": "Orrson.tscn",
+    "market_trader": "MarketTrader.tscn",
+    "city_guard": "CityGuard.tscn",
+    "beggar_child": "BeggarChild.tscn",
+}
+
+NPC_SCRIPTS: dict[str, str] = {
+    "sabatha": "npc_sabatha.gd",
+    "orrson": "npc_orrson.gd",
+    "market_trader": "npc_market_trader.gd",
+    "city_guard": "npc_city_guard.gd",
+    "beggar_child": "npc_beggar_child.gd",
+}
+
+
+def test_npc_scenes_exist_with_sprite_and_area() -> None:
+    for npc, fname in NPC_SCENES.items():
+        path = REPO_ROOT / "scenes" / fname
+        assert path.is_file(), f"Missing NPC scene for {npc}: {path}"
+        text = path.read_text(encoding="utf-8")
+        assert 'type="AnimatedSprite2D"' in text, f"{path} missing AnimatedSprite2D"
+        assert 'type="Area2D"' in text, f"{path} missing Area2D"
+        assert 'type="CircleShape2D"' in text, f"{path} missing CircleShape2D subresource"
+
+
+def test_npc_scripts_dialogue_and_gates() -> None:
+    for npc, fname in NPC_SCRIPTS.items():
+        path = REPO_ROOT / "scripts" / fname
+        assert path.is_file(), f"Missing NPC script for {npc}: {path}"
+        text = path.read_text(encoding="utf-8")
+        assert "extends CharacterBody2D" in text, f"{path} must extend CharacterBody2D"
+        assert "@export var dialogue_id: String" in text, f"{path} missing dialogue_id export"
+        assert f'dialogue_id: String = "{npc}"' in text, f"{path} dialogue_id default must be {npc!r}"
+        assert "DialogueManager.show_dialogue(dialogue_id, payload)" in text, f"{path} must call show_dialogue"
+        assert "_show_prompt" in text and "body_entered.connect(_show_prompt)" in text, f"{path} must wire prompt"
+        assert re.search(r"=\s*func\s*\(", text) is None, f"{path}: anonymous func assignments not allowed"
+        for lineno, line in enumerate(text.splitlines(), 1):
+            assert line.strip() != "=", f"{path}:{lineno}: dangling '='"
