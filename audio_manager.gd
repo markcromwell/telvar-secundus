@@ -4,6 +4,10 @@ extends Node
 @onready var sfx_player: AudioStreamPlayer = $SFXPlayer
 
 
+func _ready() -> void:
+	AudioSettingsPersistence.load_and_apply()
+
+
 func play_music(stream: AudioStream) -> void:
 	music_player.stream = stream
 	music_player.play()

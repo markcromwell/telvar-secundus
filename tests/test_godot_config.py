@@ -18,6 +18,7 @@ EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 DEFAULT_BUS_LAYOUT = REPO_ROOT / "default_bus_layout.tres"
 AUDIO_MANAGER_SCENE = REPO_ROOT / "audio_manager.tscn"
 AUDIO_MANAGER_SCRIPT = REPO_ROOT / "audio_manager.gd"
+AUDIO_SETTINGS_PERSISTENCE_SCRIPT = REPO_ROOT / "audio_settings_persistence.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -141,6 +142,23 @@ def test_audio_manager_script_defines_required_methods() -> None:
     assert "func play_music(" in src
     assert "func play_sfx(" in src
     assert "func set_volume(" in src
+
+
+def test_audio_settings_persistence_script_exists() -> None:
+    assert AUDIO_SETTINGS_PERSISTENCE_SCRIPT.is_file()
+
+
+def test_audio_settings_persistence_defines_load_and_apply() -> None:
+    src = AUDIO_SETTINGS_PERSISTENCE_SCRIPT.read_text(encoding="utf-8")
+    assert "func load_settings_from_disk(" in src
+    assert "func load_and_apply(" in src
+    assert "user://settings.json" in src
+
+
+def test_audio_manager_loads_saved_settings_on_ready() -> None:
+    src = AUDIO_MANAGER_SCRIPT.read_text(encoding="utf-8")
+    assert "func _ready(" in src
+    assert "AudioSettingsPersistence.load_and_apply()" in src
 
 
 def test_audio_manager_scene_has_music_and_sfx_players() -> None:
