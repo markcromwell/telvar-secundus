@@ -17,6 +17,15 @@ REQUIRED_FILES: list[str] = [
     "scenes/enemies/shade.tscn",
 ]
 
+# Godot 4 text scene invariants shared by all enemy PackedScenes (Enemy extends Node2D).
+_ENEMY_SCENE_BASE_MARKERS: list[str] = [
+    "[gd_scene",
+    "format=3",
+    '[ext_resource type="Script" path="res://scripts/enemy/enemy.gd"',
+    'type="Node2D"',
+    "script = ExtResource(",
+]
+
 # Markers that prove the bootstrap enemy spec is present (names + mechanics).
 FILE_MARKERS: dict[str, list[str]] = {
     "scripts/enemy/enemy_definitions.gd": [
@@ -28,6 +37,15 @@ FILE_MARKERS: dict[str, list[str]] = {
         "ENEMY_ROOKERY_THUG",
         "ENEMY_CORRUPTED_APPRENTICE",
         "ENEMY_SHADE",
+        "SPELL_FIRE_DART",
+        '"max_hp": 28',
+        '"atk": 6',
+        '"max_hp": 16',
+        '"atk": 3',
+        '"spells": [SPELL_FIRE_DART]',
+        '"max_hp": 20',
+        '"atk": 5',
+        '"physical_immune": true',
     ],
     "scripts/enemy/enemy.gd": [
         "class_name Enemy",
@@ -41,16 +59,16 @@ FILE_MARKERS: dict[str, list[str]] = {
         "ACTION_CAST",
         "ACTION_ATTACK",
     ],
-    "scenes/enemies/rookery_thug.tscn": [
-        "res://scripts/enemy/enemy.gd",
+    "scenes/enemies/rookery_thug.tscn": _ENEMY_SCENE_BASE_MARKERS
+    + [
         'definition_id = "rookery_thug"',
     ],
-    "scenes/enemies/corrupted_apprentice.tscn": [
-        "res://scripts/enemy/enemy.gd",
+    "scenes/enemies/corrupted_apprentice.tscn": _ENEMY_SCENE_BASE_MARKERS
+    + [
         'definition_id = "corrupted_apprentice"',
     ],
-    "scenes/enemies/shade.tscn": [
-        "res://scripts/enemy/enemy.gd",
+    "scenes/enemies/shade.tscn": _ENEMY_SCENE_BASE_MARKERS
+    + [
         'definition_id = "shade"',
     ],
 }
@@ -76,7 +94,7 @@ def main() -> int:
         for e in errors:
             print("FAIL:", e)
         return 1
-    print("Validation OK: enemy scripts and markers present.")
+    print("Validation OK: enemy scripts, stats markers, and scene structure checks passed.")
     return 0
 
 
