@@ -15,6 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+COMBAT_MANAGER_GD = REPO_ROOT / "scripts" / "CombatManager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +104,21 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_combat_manager_script_exists() -> None:
+    assert COMBAT_MANAGER_GD.is_file()
+
+
+def test_combat_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    raw = cp.get("autoload", "CombatManager")
+    assert _unquote_godot_value(raw) == "*res://scripts/CombatManager.gd"
+
+
+def test_combat_manager_defines_turn_states_and_d6_initiative() -> None:
+    text = COMBAT_MANAGER_GD.read_text(encoding="utf-8")
+    assert "PLAYER_TURN" in text
+    assert "ENEMY_TURN" in text
+    assert "randi_range(1, 6)" in text

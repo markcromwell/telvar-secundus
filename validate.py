@@ -9,6 +9,17 @@ import sys, os
 # Bootstrap mode: check only what is strictly required at this stage
 errors = []
 
+ROOT = os.path.dirname(os.path.abspath(__file__))
+combat_gd = os.path.join(ROOT, "scripts", "CombatManager.gd")
+if not os.path.isfile(combat_gd):
+    errors.append("Missing scripts/CombatManager.gd")
+else:
+    with open(combat_gd, encoding="utf-8") as f:
+        cg = f.read()
+    for needle in ("PLAYER_TURN", "ENEMY_TURN", "randi_range(1, 6)"):
+        if needle not in cg:
+            errors.append(f"CombatManager.gd missing required fragment: {needle!r}")
+
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)
 
