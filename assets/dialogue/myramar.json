@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "text": "Hello Telvar, it is time for your lessons.",
+    "speaker": "Myramar",
+    "next": "node_2"
+  },
+  {
+    "id": "node_2",
+    "text": "Here is your first assignment. [quest_give]",
+    "speaker": "Myramar",
+    "next": "end"
+  }
+]
