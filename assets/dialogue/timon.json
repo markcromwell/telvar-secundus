@@ -1,0 +1,108 @@
+[
+  {
+    "id": "start",
+    "text": "Timon adjusts a brass bookmark between his fingers without looking up. \"The sealed wings keep their own light, apprentice—speak softly, or the stacks answer louder than I do.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "You look troubled. Did something go missing?",
+        "next": "spectacles_problem"
+      },
+      {
+        "text": "I found your spectacles—they were wedged behind a folio shelf in the stacks. [quest_complete:timons_spectacles:find_spectacles]",
+        "next": "codex_reveal_1"
+      },
+      {
+        "text": "I'll leave you to your cataloging.",
+        "next": "farewell"
+      }
+    ]
+  },
+  {
+    "id": "spectacles_problem",
+    "text": "\"Missing?\" He exhales through his teeth. \"My spectacles—ground lenses, Veneficturis seal on the bridge. I set them on a lectern while I shifted chained folios. When I turned back, the stacks had swallowed them as if the wings rearranged themselves on purpose.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "I'll search the stacks and bring them back. [quest_give:timons_spectacles]",
+        "next": "quest_accepted"
+      },
+      {
+        "text": "I can't help right now.",
+        "next": "quest_declined"
+      }
+    ]
+  },
+  {
+    "id": "quest_accepted",
+    "text": "\"Then tread carefully. The annex doors read idle hands as invitations. If the lenses are intact, bring them before I am forced to file a formal loss—archivists ask questions I do not want to answer aloud.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "Understood.",
+        "next": "farewell"
+      }
+    ]
+  },
+  {
+    "id": "quest_declined",
+    "text": "\"Prudent—or timid. Either way, the shelves will keep their secrets until someone braver than both of us goes looking.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "Farewell.",
+        "next": "farewell"
+      }
+    ]
+  },
+  {
+    "id": "codex_reveal_1",
+    "text": "Timon slips the spectacles on; the library's lamps sharpen in his lenses. \"Good. A clear eye matters—because what you stumbled near was not random shelving. Veneficturis did not lose the Banishment Codex; we shattered it on purpose.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "You broke the Codex apart?",
+        "next": "codex_reveal_2"
+      }
+    ]
+  },
+  {
+    "id": "codex_reveal_2",
+    "text": "\"Its sigils were never meant to stand on one lectern. The pages—folios, really—were cached across sealed wings so no single reader could reconstruct the rite. Each annex became a warden: a door, a chain, a silence. Gathering the scattered leaves is not vanity; it rebuilds the lattice that keeps certain names outside Secundus's weave.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "What happens if someone assembles it?",
+        "next": "codex_reveal_3"
+      }
+    ]
+  },
+  {
+    "id": "codex_reveal_3",
+    "text": "\"Then they retrace banishment itself—how a life is filed under ash and law, how a name is unhooked from the city until even rumor forgets the shape of it. The Codex is a manual of exile; to read it cover to cover is to practice cruelty with clean hands. If you go hunting pages, do it with your eyes open—and remember which doors should stay closed.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "I'll remember. Record what you told me in my notes. [lore_unlock:banishment_codex]",
+        "next": "codex_aftermath"
+      }
+    ]
+  },
+  {
+    "id": "codex_aftermath",
+    "text": "\"See that you do. Paper remembers longer than apprentices.\" He returns to his folio marks, voice softer. \"If you find another leaf where it should not be—bring it to me, not to a proctor. Some truths are safer misfiled.\"",
+    "speaker": "Timon",
+    "choices": [
+      {
+        "text": "Thank you, Timon.",
+        "next": "farewell"
+      }
+    ]
+  },
+  {
+    "id": "farewell",
+    "text": "\"Quiet steps, Telvar. The stacks are listening.\"",
+    "speaker": "Timon",
+    "choices": []
+  }
+]
