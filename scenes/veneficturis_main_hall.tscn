@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/veneficturis_main_hall.gd" id="1_script"]
+[ext_resource type="TileSet" path="res://tilesets/dark_stone_lpc.tres" id="2_tileset"]
+
+[node name="VeneficturisMainHall" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="HallTileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_tileset")
+
+[node name="Floor" type="TileMapLayer" parent="HallTileMap"]
+
+[node name="CeilingDecor" type="TileMapLayer" parent="HallTileMap"]

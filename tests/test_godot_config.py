@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import struct
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,10 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+MAIN_HALL_SCENE = REPO_ROOT / "scenes" / "veneficturis_main_hall.tscn"
+MAIN_HALL_SCRIPT = REPO_ROOT / "scripts" / "veneficturis_main_hall.gd"
+DARK_STONE_ATLAS = REPO_ROOT / "assets" / "tiles" / "dark_stone_lpc.png"
+MAIN_HALL_TILESET = REPO_ROOT / "tilesets" / "dark_stone_lpc.tres"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +108,43 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_main_scene_is_veneficturis_main_hall() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
+    assert main_scene == "res://scenes/veneficturis_main_hall.tscn"
+
+
+def test_main_hall_scene_bundle_exists() -> None:
+    assert MAIN_HALL_SCENE.is_file()
+    assert MAIN_HALL_SCRIPT.is_file()
+    assert DARK_STONE_ATLAS.is_file()
+    assert MAIN_HALL_TILESET.is_file()
+
+
+def test_main_hall_script_declares_20x15_map() -> None:
+    text = MAIN_HALL_SCRIPT.read_text(encoding="utf-8")
+    assert "const MAP_SIZE := Vector2i(20, 15)" in text
+
+
+def test_main_hall_scene_wires_tilemap_layers() -> None:
+    text = MAIN_HALL_SCENE.read_text(encoding="utf-8")
+    assert 'type="TileMap"' in text
+    assert 'type="TileMapLayer"' in text
+    assert 'parent="HallTileMap"' in text
+    assert 'name="Floor"' in text
+    assert 'name="CeilingDecor"' in text
+
+
+def test_dark_stone_atlas_is_64x16_rgba_png() -> None:
+    data = DARK_STONE_ATLAS.read_bytes()
+    assert data.startswith(b"\x89PNG\r\n\x1a\n")
+    assert data[12:16] == b"IHDR"
+    width, height = struct.unpack(">II", data[16:24])
+    assert width == 64
+    assert height == 16
+    depth = data[24]
+    color_type = data[25]
+    assert depth == 8
+    assert color_type == 6  # RGBA
