@@ -15,6 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+CREDITS_MD = REPO_ROOT / "CREDITS.md"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +104,17 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_credits_md_exists_with_required_sections() -> None:
+    assert CREDITS_MD.is_file()
+    text = CREDITS_MD.read_text(encoding="utf-8")
+    assert "# Credits" in text
+    for heading in ("## Art", "## Code", "## Story", "## Audio"):
+        assert heading in text
+
+
+def test_export_preset_includes_credits_md_for_web_build() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    inc = _unquote_godot_value(cp.get("preset.0", "include_filter"))
+    assert "CREDITS.md" in inc
