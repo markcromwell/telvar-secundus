@@ -8,6 +8,10 @@
 
 config_version=5
 
+[autoload]
+
+SpellBook="*res://scripts/spell_book.gd"
+
 [application]
 
 config/name="Telvar Secundus"

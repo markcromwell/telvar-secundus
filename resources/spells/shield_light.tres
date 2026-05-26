@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/spell.gd" id="1_spell"]
+
+[resource]
+script = ExtResource("1_spell")
+spell_id = "shield_light"
+name = "Shield Light"
+mana_cost = 3
+damage = ""
+effect = "+3 defense for 1 turn"
