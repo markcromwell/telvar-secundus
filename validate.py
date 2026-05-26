@@ -23,6 +23,12 @@ def _fail(errors: list[str], msg: str) -> None:
     errors.append(msg)
 
 
+def check(errors: list[str], condition: bool, message: str) -> None:
+    """Record a validation failure when condition is false (Dialogue System section)."""
+    if not condition:
+        errors.append(message)
+
+
 def _check_entry_keys(errors: list[str], entry: object, *, label: str) -> None:
     if not isinstance(entry, dict):
         _fail(errors, f"{label}: entry must be a JSON object, got {type(entry).__name__}")
@@ -121,6 +127,75 @@ def validate_dialogue_assets() -> list[str]:
     return errors
 
 
+def validate_dialogue_system(project_godot: Path) -> list[str]:
+    """Dialogue System structural checks (Godot project present): dirs, files, API strings, scene wiring."""
+    errors: list[str] = []
+    dialogue_dir = REPO_ROOT / "assets" / "dialogue"
+    check(
+        errors,
+        dialogue_dir.is_dir(),
+        f"Missing dialogue directory: {dialogue_dir.relative_to(REPO_ROOT).as_posix()}",
+    )
+
+    dbox_scene = REPO_ROOT / "scenes" / "DialogueBox.tscn"
+    check(
+        errors,
+        dbox_scene.is_file(),
+        f"Missing scene: {dbox_scene.relative_to(REPO_ROOT).as_posix()}",
+    )
+
+    dbox_script = REPO_ROOT / "scripts" / "DialogueBox.gd"
+    check(
+        errors,
+        dbox_script.is_file(),
+        f"Missing script: {dbox_script.relative_to(REPO_ROOT).as_posix()}",
+    )
+
+    dm_script = REPO_ROOT / "scripts" / "DialogueManager.gd"
+    check(
+        errors,
+        dm_script.is_file(),
+        f"Missing script: {dm_script.relative_to(REPO_ROOT).as_posix()}",
+    )
+
+    dm_src = dm_script.read_text(encoding="utf-8") if dm_script.is_file() else ""
+    check(
+        errors,
+        "func show_dialogue(" in dm_src,
+        "scripts/DialogueManager.gd: missing required snippet 'func show_dialogue('",
+    )
+    check(
+        errors,
+        "func set_flag(" in dm_src,
+        "scripts/DialogueManager.gd: missing required snippet 'func set_flag('",
+    )
+    check(
+        errors,
+        "func get_flag(" in dm_src,
+        "scripts/DialogueManager.gd: missing required snippet 'func get_flag('",
+    )
+
+    try:
+        pg_text = project_godot.read_text(encoding="utf-8")
+    except OSError as exc:
+        check(errors, False, f"project.godot: cannot read file ({exc})")
+        pg_text = ""
+    check(
+        errors,
+        "DialogueManager=" in pg_text,
+        "project.godot: missing DialogueManager autoload entry (expected 'DialogueManager=')",
+    )
+
+    tscn_text = dbox_scene.read_text(encoding="utf-8") if dbox_scene.is_file() else ""
+    check(
+        errors,
+        'name="NameLabel"' in tscn_text,
+        "scenes/DialogueBox.tscn: missing NameLabel node (expected name=\"NameLabel\")",
+    )
+
+    return errors
+
+
 def _validate_gdscript_surface(label: str, src: str) -> list[str]:
     """Very light GDScript hygiene checks (text-only; not a full parser)."""
     errors: list[str] = []
@@ -173,6 +248,9 @@ def validate_dialogue_box() -> list[str]:
 def run_all_validations() -> list[str]:
     errors: list[str] = []
     errors.extend(validate_dialogue_assets())
+    project_godot = REPO_ROOT / "project.godot"
+    if project_godot.is_file():
+        errors.extend(validate_dialogue_system(project_godot))
     errors.extend(validate_dialogue_box())
     return errors
 
@@ -183,7 +261,7 @@ def main() -> int:
         for e in errors:
             print("FAIL:", e)
         return 1
-    print("OK: validation passed (dialogue JSON + DialogueBox structure)")
+    print("OK: validation passed (dialogue JSON + Dialogue System + DialogueBox structure)")
     return 0
 
 
