@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="TileSet" path="res://assets/tilesets/lpc_dark_stone_tileset.tres" id="1_tileset"]
+[ext_resource type="Script" path="res://apprentice_room_floor.gd" id="2_floor"]
+
+[node name="ApprenticeRoom" type="Node2D"]
+
+[node name="Floor" type="TileMapLayer" parent="."]
+tile_set = ExtResource("1_tileset")
+script = ExtResource("2_floor")

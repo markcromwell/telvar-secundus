@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import struct
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,10 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+APPRENTICE_ROOM_SCENE = REPO_ROOT / "apprentice_room.tscn"
+APPRENTICE_ROOM_SCRIPT = REPO_ROOT / "apprentice_room_floor.gd"
+LPC_DARK_STONE_PNG = REPO_ROOT / "assets" / "tilesets" / "lpc_dark_stone.png"
+LPC_DARK_STONE_TILESET = REPO_ROOT / "assets" / "tilesets" / "lpc_dark_stone_tileset.tres"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +108,37 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_apprentice_room_scene_exists() -> None:
+    assert APPRENTICE_ROOM_SCENE.is_file()
+
+
+def test_apprentice_room_scene_tilemap_layer_and_tileset() -> None:
+    text = APPRENTICE_ROOM_SCENE.read_text(encoding="utf-8")
+    assert 'type="TileMapLayer"' in text
+    assert "lpc_dark_stone_tileset.tres" in text
+    assert "apprentice_room_floor.gd" in text
+
+
+def test_apprentice_room_floor_dimensions_8_by_6() -> None:
+    script = APPRENTICE_ROOM_SCRIPT.read_text(encoding="utf-8")
+    assert "ROOM_WIDTH_TILES := 8" in script
+    assert "ROOM_HEIGHT_TILES := 6" in script
+
+
+def test_lpc_dark_stone_png_is_16_square() -> None:
+    data = LPC_DARK_STONE_PNG.read_bytes()
+    assert data[:8] == b"\x89PNG\r\n\x1a\n"
+    ihdr_len = struct.unpack(">I", data[8:12])[0]
+    assert ihdr_len == 13
+    assert data[12:16] == b"IHDR"
+    w, h = struct.unpack(">II", data[16:24])
+    assert w == 16
+    assert h == 16
+
+
+def test_lpc_dark_stone_tileset_points_at_png() -> None:
+    tres = LPC_DARK_STONE_TILESET.read_text(encoding="utf-8")
+    assert "lpc_dark_stone.png" in tres
+    assert "Vector2i(16, 16)" in tres
