@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_player"]
+[ext_resource type="AudioStream" path="res://assets/audio/footstep_stone.wav" id="2_stone"]
+[ext_resource type="AudioStream" path="res://assets/audio/footstep_wood.wav" id="3_wood"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(14, 14)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_player")
+footstep_stone = ExtResource("2_stone")
+footstep_wood = ExtResource("3_wood")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
