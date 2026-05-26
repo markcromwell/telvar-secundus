@@ -7,6 +7,7 @@ Full validation is implemented in spec #1246.
 from __future__ import annotations
 
 import configparser
+import json
 import re
 import sys
 from pathlib import Path
@@ -16,6 +17,22 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 DIALOGUE_MANAGER_GD = REPO_ROOT / "scripts" / "DialogueManager.gd"
 DIALOGUE_BOX_GD = REPO_ROOT / "scripts" / "DialogueBox.gd"
 DIALOGUE_BOX_TSCN = REPO_ROOT / "scenes" / "DialogueBox.tscn"
+
+DIALOGUE_NPC_FILES = (
+    "sabatha",
+    "orrson",
+    "market_trader",
+    "city_guard",
+    "beggar_child",
+)
+
+NPC_SCENES: dict[str, str] = {
+    "sabatha": "Sabatha.tscn",
+    "orrson": "Orrson.tscn",
+    "market_trader": "MarketTrader.tscn",
+    "city_guard": "CityGuard.tscn",
+    "beggar_child": "BeggarChild.tscn",
+}
 
 errors: list[str] = []
 
@@ -183,15 +200,67 @@ def _check_autoload() -> None:
         )
 
 
+def _check_dialogue_json_files() -> None:
+    """NPC dialogue JSON: exists, valid JSON array; Sabatha length + flag marker."""
+    for npc in DIALOGUE_NPC_FILES:
+        rel = f"assets/dialogue/{npc}.json"
+        path = REPO_ROOT / rel
+        if not path.is_file():
+            errors.append(f"Missing {rel}")
+            continue
+
+        raw = path.read_text(encoding="utf-8")
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            errors.append(f"{rel}: invalid JSON ({exc})")
+            continue
+
+        if not isinstance(data, list):
+            errors.append(f"{rel}: expected top-level JSON array")
+            continue
+
+        if npc == "sabatha":
+            if len(data) < 4:
+                errors.append(
+                    f"{rel}: expected at least 4 array elements (start + 3 branches), "
+                    f"got {len(data)}"
+                )
+            if '"flag"' not in raw:
+                errors.append(f'{rel}: expected raw file text to contain the JSON key snippet \'"flag"\'')
+
+
+def _check_npc_portraits() -> None:
+    for npc in DIALOGUE_NPC_FILES:
+        rel = f"assets/portraits/{npc}.png"
+        path = REPO_ROOT / rel
+        if not path.is_file():
+            errors.append(f"Missing {rel}")
+
+
+def _check_npc_scenes() -> None:
+    for npc, fname in NPC_SCENES.items():
+        rel = f"scenes/{fname}"
+        path = REPO_ROOT / rel
+        if not path.is_file():
+            errors.append(f"Missing {rel} (NPC {npc})")
+
+
 _check_dialogue_box_tscn()
 _check_dialogue_box_gd()
 _check_dialogue_manager_gd()
 _check_autoload()
+_check_dialogue_json_files()
+_check_npc_portraits()
+_check_npc_scenes()
 
 if errors:
     for e in errors:
         print("FAIL:", e)
     sys.exit(1)
 
-print("Validation passed (DialogueBox scene/script + DialogueManager + autoload checks)")
+print(
+    "Validation passed (DialogueBox + DialogueManager + autoload + "
+    "dialogue JSON + portraits + NPC scenes)"
+)
 sys.exit(0)
