@@ -37,3 +37,15 @@ def test_player_disables_manual_input_not_global_freeze() -> None:
 def test_inventory_exposes_wings_key_consume() -> None:
     text = INVENTORY.read_text(encoding="utf-8")
     assert "try_consume_sealed_wings_key" in text
+
+
+def test_fade_uses_camera_when_configured() -> None:
+    text = WINGS.read_text(encoding="utf-8")
+    assert "sequence_camera" in text
+    assert "make_current" in text
+
+
+def test_key_not_consumed_if_fade_missing() -> None:
+    """try_begin_enter_from_choice must validate nodes before consuming the key."""
+    text = WINGS.read_text(encoding="utf-8")
+    assert text.index("try_consume_sealed_wings_key") > text.index("if _fade == null")

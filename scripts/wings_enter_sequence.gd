@@ -1,5 +1,5 @@
 extends Node
-## Phase 2714 — Enter Sealed Wings: consume key, door anim, walk 5 tiles forward, fade to black, then final cutscene.
+## Phase 2715 — Enter Sealed Wings: consume key, door anim, walk 5 tiles forward, fade to black, then final cutscene.
 ## Skip input (e.g. ui_cancel) is ignored until the full sequence completes.
 
 signal sequence_finished
@@ -9,7 +9,10 @@ const WALK_TILE_COUNT: int = 5
 
 @export var player: NodePath
 @export var door_animation_player: NodePath
+## Full-screen (or view) ColorRect used for the blackout tween; typically on a CanvasLayer with the gameplay Camera2D.
 @export var fade_rect: NodePath
+## Optional Camera2D (e.g. player rig). Before fading, this camera is made current so blackout matches the active view.
+@export var sequence_camera: NodePath
 @export var walk_direction: Vector2 = Vector2.DOWN
 @export var door_animation_name: StringName = &""
 @export var fade_seconds: float = 1.25
@@ -21,6 +24,7 @@ var _running: bool = false
 var _player: TelvarPlayer
 var _door: AnimationPlayer
 var _fade: ColorRect
+var _sequence_camera: Camera2D
 
 var _walk_start: Vector2
 var _walk_target_along: float
@@ -34,9 +38,15 @@ func _ready() -> void:
 func try_begin_enter_from_choice() -> bool:
 	if _running:
 		return false
+	_resolve_nodes()
+	if _player == null:
+		push_error("wings_enter_sequence: invalid player NodePath")
+		return false
+	if _fade == null:
+		push_error("wings_enter_sequence: invalid fade_rect ColorRect NodePath")
+		return false
 	if not Inventory.try_consume_sealed_wings_key():
 		return false
-	_resolve_nodes()
 	_running = true
 	_playback_complete = false
 	_player.manual_input_enabled = false
@@ -46,9 +56,10 @@ func try_begin_enter_from_choice() -> bool:
 
 
 func _resolve_nodes() -> void:
-	_player = get_node(player) as TelvarPlayer
-	_door = get_node(door_animation_player) as AnimationPlayer
-	_fade = get_node(fade_rect) as ColorRect
+	_player = get_node_or_null(player) as TelvarPlayer
+	_door = get_node_or_null(door_animation_player) as AnimationPlayer
+	_fade = get_node_or_null(fade_rect) as ColorRect
+	_sequence_camera = get_node_or_null(sequence_camera) as Camera2D
 
 
 func _run_sequence() -> void:
@@ -94,6 +105,8 @@ func _play_door_then_walk() -> void:
 
 
 func _fade_to_black() -> void:
+	if _sequence_camera != null:
+		_sequence_camera.make_current()
 	_fade.visible = true
 	_fade.color = Color(0.0, 0.0, 0.0, 0.0)
 	var tw := create_tween()
@@ -106,5 +119,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if _playback_complete:
 		return
-	if event.is_action_pressed(&"ui_cancel"):
+	if event.is_action_pressed(&"ui_cancel") or event.is_action_pressed(&"ui_accept"):
 		get_viewport().set_input_as_handled()

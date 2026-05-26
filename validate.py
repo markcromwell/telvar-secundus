@@ -33,7 +33,7 @@ FILE_MARKERS: dict[str, list[str]] = {
         "try_consume_sealed_wings_key",
         "manual_input_enabled",
         "Inventory",
-        "2714",
+        "2715",
     ],
 }
 
@@ -64,7 +64,7 @@ def main() -> int:
             print("FAIL:", e)
         return 1
 
-    print("validate.py: structural checks passed (phase 2714 wings enter)")
+    print("validate.py: structural checks passed (phase 2715 wings enter)")
     return 0
 
 
