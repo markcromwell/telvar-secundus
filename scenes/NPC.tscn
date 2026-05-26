@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://npc_prefab_phase_2544"]
+
+[ext_resource type="Script" path="res://scripts/NPC.gd" id="1_npc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(16, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(56, 56)
+
+[node name="NPC" type="StaticBody2D"]
+script = ExtResource("1_npc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+scale = Vector2(2, 2)
+
+[node name="InteractionZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4294967295
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionZone"]
+shape = SubResource("RectangleShape2D_zone")
+
+[node name="InteractPrompt" type="Label" parent="."]
+visible = false
+offset_left = -48.0
+offset_top = -56.0
+offset_right = 48.0
+offset_bottom = -40.0
+text = "Press E"
+horizontal_alignment = 1
+vertical_alignment = 1
