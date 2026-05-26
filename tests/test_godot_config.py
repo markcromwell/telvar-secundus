@@ -15,6 +15,9 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+DEFAULT_BUS_LAYOUT = REPO_ROOT / "default_bus_layout.tres"
+SFX_MANAGER_SCENE = REPO_ROOT / "SFXManager.tscn"
+SFX_MANAGER_SCRIPT = REPO_ROOT / "SFXManager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +106,35 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_default_bus_layout_exists() -> None:
+    assert DEFAULT_BUS_LAYOUT.is_file()
+
+
+def test_default_bus_layout_has_sfx_bus_routed_to_master() -> None:
+    text = DEFAULT_BUS_LAYOUT.read_text(encoding="utf-8")
+    assert 'bus/1/name = &"SFX"' in text
+    assert 'bus/1/send = &"Master"' in text
+
+
+def test_project_registers_default_bus_layout() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    layout = _unquote_godot_value(cp.get("audio", "buses/default_bus_layout"))
+    assert layout == "res://default_bus_layout.tres"
+
+
+def test_project_registers_sfx_manager_autoload() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    autoload = _unquote_godot_value(cp.get("autoload", "SFXManager"))
+    assert autoload == "*res://SFXManager.tscn"
+
+
+def test_sfx_manager_scene_and_script_exist() -> None:
+    assert SFX_MANAGER_SCENE.is_file()
+    assert SFX_MANAGER_SCRIPT.is_file()
+
+
+def test_sfx_manager_scene_references_script() -> None:
+    text = SFX_MANAGER_SCENE.read_text(encoding="utf-8")
+    assert 'path="res://SFXManager.gd"' in text

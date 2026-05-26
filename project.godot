@@ -13,6 +13,14 @@ config_version=5
 config/name="Telvar Secundus"
 config/features=PackedStringArray("4.3", "Mobile")
 
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
+
+[autoload]
+
+SFXManager="*res://SFXManager.tscn"
+
 [display]
 
 window/size/viewport_width=1280
