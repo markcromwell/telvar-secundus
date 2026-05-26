@@ -12,6 +12,9 @@ REQUIRED_FILES: list[str] = [
     "scripts/enemy/enemy.gd",
     "scripts/enemy/enemy_ai.gd",
     "scripts/enemy/enemy_definitions.gd",
+    "scenes/enemies/rookery_thug.tscn",
+    "scenes/enemies/corrupted_apprentice.tscn",
+    "scenes/enemies/shade.tscn",
 ]
 
 # Markers that prove the bootstrap enemy spec is present (names + mechanics).
@@ -37,6 +40,18 @@ FILE_MARKERS: dict[str, list[str]] = {
         "choose_action",
         "ACTION_CAST",
         "ACTION_ATTACK",
+    ],
+    "scenes/enemies/rookery_thug.tscn": [
+        "res://scripts/enemy/enemy.gd",
+        'definition_id = "rookery_thug"',
+    ],
+    "scenes/enemies/corrupted_apprentice.tscn": [
+        "res://scripts/enemy/enemy.gd",
+        'definition_id = "corrupted_apprentice"',
+    ],
+    "scenes/enemies/shade.tscn": [
+        "res://scripts/enemy/enemy.gd",
+        'definition_id = "shade"',
     ],
 }
 
