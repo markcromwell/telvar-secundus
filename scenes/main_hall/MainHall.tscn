@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://mainhallsealed01"]
+
+[ext_resource type="PackedScene" path="res://scenes/doors/SealedWingDoor.tscn" id="1_door"]
+
+[node name="MainHall" type="Node2D"]
+
+[node name="SealedWingDoor" parent="." instance=ExtResource("1_door")]
+position = Vector2(640, 360)

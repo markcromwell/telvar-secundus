@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://sealedwingdoor01"]
+
+[ext_resource type="Script" path="res://scenes/doors/SealedWingDoor.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/ui/lock_icon.png" id="2_lock"]
+[ext_resource type="AudioStream" path="res://assets/sfx/door_locked.wav" id="3_sfx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_block"]
+size = Vector2(32, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_touch"]
+size = Vector2(40, 72)
+
+[node name="SealedWingDoor" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_block")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_touch")
+
+[node name="LockSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("2_lock")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_sfx")
+
+[node name="Overlay" type="CanvasLayer" parent="."]
+layer = 50
+
+[node name="MessagePanel" type="PanelContainer" parent="Overlay"]
+visible = false
+offset_left = 440.0
+offset_top = 280.0
+offset_right = 840.0
+offset_bottom = 400.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Overlay/MessagePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MessageLabel" type="Label" parent="Overlay/MessagePanel/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = ""
+autowrap_mode = 2
+horizontal_alignment = 1
+
+[node name="HideTimer" type="Timer" parent="Overlay"]
+wait_time = 4.0
+one_shot = true

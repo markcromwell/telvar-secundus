@@ -103,3 +103,39 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+# --- Sealed Wing door (phase 2637) -------------------------------------------------
+
+SEALED_WING_TSCN = REPO_ROOT / "scenes" / "doors" / "SealedWingDoor.tscn"
+SEALED_WING_GD = REPO_ROOT / "scenes" / "doors" / "SealedWingDoor.gd"
+MAIN_HALL_TSCN = REPO_ROOT / "scenes" / "main_hall" / "MainHall.tscn"
+
+
+def test_sealed_wing_door_scene_and_script_exist() -> None:
+    assert SEALED_WING_TSCN.is_file()
+    assert SEALED_WING_GD.is_file()
+
+
+def test_sealed_wing_door_scene_has_collision_and_interaction_nodes() -> None:
+    text = SEALED_WING_TSCN.read_text(encoding="utf-8")
+    assert 'type="StaticBody2D"' in text
+    assert 'type="Area2D"' in text
+    assert "res://scenes/doors/SealedWingDoor.gd" in text
+
+
+def test_sealed_wing_door_script_messages_and_act_gating() -> None:
+    gd = SEALED_WING_GD.read_text(encoding="utf-8")
+    assert "Authorised personnel only" in gd
+    assert "MSG_ABYSS_WHISPER" in gd
+    assert "act >= 1" in gd and "act <= 3" in gd
+
+
+def test_main_hall_instances_sealed_wing_door() -> None:
+    assert MAIN_HALL_TSCN.is_file()
+    assert "SealedWingDoor.tscn" in MAIN_HALL_TSCN.read_text(encoding="utf-8")
+
+
+def test_locked_door_assets_exist() -> None:
+    assert (REPO_ROOT / "assets" / "ui" / "lock_icon.png").is_file()
+    assert (REPO_ROOT / "assets" / "sfx" / "door_locked.wav").is_file()
