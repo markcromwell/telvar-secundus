@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "text": "Veneficturis teaches symbols; here we teach presence. Aten fills the space between stone ribs.",
+    "speaker": "Priest",
+    "next": "secundus_duty"
+  },
+  {
+    "id": "secundus_duty",
+    "text": "Twelve districts, one flame. Tend your heart as the cathedral tends its lamps—steady, patient, unwavering.",
+    "speaker": "Priest",
+    "next": ""
+  }
+]
