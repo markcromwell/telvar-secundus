@@ -1,0 +1,13 @@
+[
+  {
+    "id": "start",
+    "speaker": "Myramar",
+    "text": "Orsson, the Third Trial is behind you. You stand at the threshold—ready, whether you feel it or not. This Sealed Wing Key will open what comes next; guard it with your life.",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "speaker": "Myramar",
+    "text": "Veneficturis watches every step from here. Do not disappoint me."
+  }
+]
