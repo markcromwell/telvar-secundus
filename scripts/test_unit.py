@@ -5,3 +5,4 @@ Godot project filesystem checks live in tests.test_godot_config.
 
 from tests.test_godot_config import *  # noqa: F401,F403
 from tests.test_spec_2701_night_scene import *  # noqa: F401,F403
+from tests.test_spec_2702_sealed_wings_quest import *  # noqa: F401,F403
