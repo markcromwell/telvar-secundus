@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import re
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 SAVE_DIALOG_TSCN = REPO_ROOT / "ui" / "save_dialog.tscn"
+SCENE_MANAGER_GD = REPO_ROOT / "autoload" / "scene_manager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -42,6 +44,13 @@ def _load_ini(path: Path) -> configparser.ConfigParser:
     cp = configparser.ConfigParser(interpolation=None)
     cp.read_string(text)
     return cp
+
+
+def _gdscript_function_body(text: str, name: str) -> str:
+    match = re.search(rf"^func {re.escape(name)}\b.*?(?=^func |\Z)", text, re.M | re.S)
+    if not match:
+        pytest.fail(f"Missing GDScript function: {name}")
+    return match.group(0)
 
 
 def test_project_godot_exists() -> None:
@@ -113,6 +122,40 @@ def test_save_dialog_scene_has_three_slot_buttons_and_hidden_notification() -> N
         assert f'[node name="{slot}" type="Button"' in text
     assert '[node name="NotificationLabel" type="Label"' in text
     assert "visible = false" in text
+
+
+def test_scene_manager_serializes_save_state_as_json() -> None:
+    text = SCENE_MANAGER_GD.read_text(encoding="utf-8")
+    body = _gdscript_function_body(text, "save_to_user_slot")
+    assert "var text := JSON.stringify(get_save_state())" in body
+    assert "file.store_string(text)" in body
+    assert "str(get_save_state())" not in body
+
+
+def test_scene_manager_writes_expected_user_slot_paths() -> None:
+    text = SCENE_MANAGER_GD.read_text(encoding="utf-8")
+    body = _gdscript_function_body(text, "save_to_user_slot")
+    template_match = re.search(r'"(user://save_slot_%d\.json)"\s*%\s*slot_index', body)
+    assert template_match is not None
+    template = template_match.group(1)
+    assert [template.replace("%d", str(slot)) for slot in range(1, 4)] == [
+        "user://save_slot_1.json",
+        "user://save_slot_2.json",
+        "user://save_slot_3.json",
+    ]
+    assert "FileAccess.open(path, FileAccess.WRITE)" in body
+    assert re.search(r"if slot_index < 1 or slot_index > 3:", body)
+
+
+def test_scene_manager_save_state_contains_json_compatible_core_fields() -> None:
+    text = SCENE_MANAGER_GD.read_text(encoding="utf-8")
+    body = _gdscript_function_body(text, "get_save_state")
+    for key in ('"version"', '"saved_at"', '"scene_path"'):
+        assert key in body
+    assert "Time.get_datetime_string_from_system()" in body
+    assert "String(cs.scene_file_path)" in body
+    assert '"player"' in body
+    assert 'p.call("capture_save_state")' in body
 
 
 def test_main_scene_setting_points_at_existing_file() -> None:
