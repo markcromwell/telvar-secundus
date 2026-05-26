@@ -15,6 +15,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+ENTRANCE_TOOLTIP_SCENE = REPO_ROOT / "scenes/ui/EntranceTooltip.tscn"
+ENTRANCE_TOOLTIP_SCRIPT = REPO_ROOT / "scripts/ui/entrance_tooltip.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +105,44 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_entrance_tooltip_scene_exists() -> None:
+    assert ENTRANCE_TOOLTIP_SCENE.is_file()
+
+
+def test_entrance_tooltip_script_exists() -> None:
+    assert ENTRANCE_TOOLTIP_SCRIPT.is_file()
+
+
+def test_entrance_tooltip_label_text() -> None:
+    body = ENTRANCE_TOOLTIP_SCENE.read_text(encoding="utf-8")
+    assert 'text = "Press E to enter"' in body
+
+
+def test_entrance_tooltip_scene_node_tree() -> None:
+    """CanvasLayer root with PanelContainer child and Label grandchild (Phase 2482)."""
+    body = ENTRANCE_TOOLTIP_SCENE.read_text(encoding="utf-8")
+    assert 'type="CanvasLayer"' in body
+    assert '[node name="PanelContainer" type="PanelContainer" parent="."]' in body
+    assert '[node name="Label" type="Label" parent="PanelContainer"]' in body
+
+
+def test_entrance_tooltip_script_html5_safe() -> None:
+    src = ENTRANCE_TOOLTIP_SCRIPT.read_text(encoding="utf-8")
+    assert "OS.get_name" not in src
+    assert "OS.get_model_name" not in src
+
+
+def test_entrance_tooltip_show_hide_toggle_panel() -> None:
+    src = ENTRANCE_TOOLTIP_SCRIPT.read_text(encoding="utf-8")
+    assert "$PanelContainer" in src
+    assert "func show()" in src
+    assert "func hide()" in src
+    assert "_panel.visible = true" in src
+    assert "_panel.visible = false" in src
+
+
+def test_entrance_tooltip_scene_ext_resource_script() -> None:
+    body = ENTRANCE_TOOLTIP_SCENE.read_text(encoding="utf-8")
+    assert 'path="res://scripts/ui/entrance_tooltip.gd"' in body
