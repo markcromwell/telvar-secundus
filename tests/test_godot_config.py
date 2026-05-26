@@ -17,6 +17,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 SABATHA_PORTRAIT = REPO_ROOT / "assets/portraits/sabatha.png"
+NPC_SCRIPT = REPO_ROOT / "scripts/npcs/NPC.gd"
+SABATHA_SCENE = REPO_ROOT / "scenes/npcs/Sabatha.tscn"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -120,3 +122,21 @@ def test_project_autoloads_quest_and_dialogue_managers() -> None:
     text = PROJECT_GODOT.read_text(encoding="utf-8")
     assert text.count("QuestManager") >= 1
     assert text.count("DialogueManager") >= 1
+
+
+def test_npc_script_contract() -> None:
+    assert NPC_SCRIPT.is_file()
+    src = NPC_SCRIPT.read_text(encoding="utf-8")
+    assert "extends StaticBody2D" in src
+    assert "@export var dialogue_id" in src
+    assert 'Input.is_action_just_pressed("ui_accept")' in src
+    assert "DialogueManager.show_dialogue" in src
+
+
+def test_sabatha_scene_contract() -> None:
+    assert SABATHA_SCENE.is_file()
+    text = SABATHA_SCENE.read_text(encoding="utf-8")
+    for token in ("StaticBody2D", "AnimatedSprite2D", "Area2D", "CollisionShape2D"):
+        assert token in text
+    assert 'dialogue_id = "sabatha"' in text
+    assert "scripts/npcs/NPC.gd" in text
