@@ -1,0 +1,7 @@
+{
+  "id": "sealed_wings",
+  "title": "The Sealed Wings",
+  "objective_lines": {
+    "after_telvar_room_rest_night": "I know what Myramar wants. He wants me to go in there."
+  }
+}

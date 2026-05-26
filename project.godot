@@ -11,7 +11,13 @@ config_version=5
 [application]
 
 config/name="Telvar Secundus"
+run/main_scene="res://scenes/telvar_room.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
+
+[autoload]
+
+GameFlags="*res://autoload/game_flags.gd"
+QuestLog="*res://autoload/quest_log.gd"
 
 [display]
 

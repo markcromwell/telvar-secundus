@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/telvar_room.gd" id="1_room"]
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/night_scenes/sealed_wings_post_rest_event.gd" id="3_night"]
+[ext_resource type="AudioStream" path="res://assets/audio/growl.wav" id="4_growl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2d_bed"]
+size = Vector2(56, 40)
+
+[node name="TelvarRoom" type="Node2D"]
+script = ExtResource("1_room")
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Floor" type="Polygon2D" parent="YSort"]
+z_index = -1
+color = Color(0.18, 0.12, 0.1, 1)
+polygon = PackedVector2Array(0, 0, 640, 0, 640, 360, 0, 360)
+
+[node name="Player" parent="YSort" instance=ExtResource("2_player")]
+position = Vector2(118, 218)
+
+[node name="SealedWingGrowl" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(600, 96)
+stream = ExtResource("4_growl")
+max_distance = 2500.0
+
+[node name="MyramarSpawn" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(420, 220)
+
+[node name="BedRestArea" type="Area2D" parent="."]
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BedRestArea"]
+position = Vector2(120, 220)
+shape = SubResource("RectangleShape2d_bed")
+
+[node name="NightEventRunner" type="Node" parent="."]
+script = ExtResource("3_night")
+
+[node name="Hint" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+text = "Move: arrows or WASD (ui_*). Stand on the bed tile, press Enter (ui_accept) to rest."
