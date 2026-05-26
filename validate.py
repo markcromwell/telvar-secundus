@@ -74,6 +74,12 @@ def _check_cutscene_script(errors: list[str]) -> None:
         errors.append("Cutscene script must read play time via GameSession.get_elapsed_seconds().")
     if "Test of Fire" not in gd:
         errors.append("Cutscene script must surface a Test of Fire link or label for the player.")
+    if 'OS.has_feature("web")' not in gd:
+        errors.append('Cutscene script must detect Web export via OS.has_feature("web") for external links.')
+    if '"JavaScriptBridge"' not in gd or "JSON.stringify" not in gd:
+        errors.append(
+            "Cutscene script must open external URLs on Web using JavaScriptBridge + JSON.stringify (safe shell_open substitute)."
+        )
 
 
 def _check_export_presets(errors: list[str]) -> None:

@@ -127,7 +127,22 @@ func _on_test_of_fire_link(meta: Variant) -> void:
 	var url := str(meta)
 	if url.is_empty():
 		url = TEST_OF_FIRE_URL
-	OS.shell_open(url)
+	_open_external_url(url)
+
+
+## Desktop/Linux export uses OS.shell_open; HTML5 needs the browser bridge (shell_open is unreliable in WASM).
+func _open_external_url(url: String) -> void:
+	if url.is_empty():
+		return
+	if OS.has_feature("web"):
+		var js := Engine.get_singleton("JavaScriptBridge")
+		if js:
+			var code := "window.open(%s, '_blank')" % JSON.stringify(url)
+			js.eval(code, true)
+			return
+	var err := OS.shell_open(url)
+	if err != OK:
+		push_warning("Cutscene: could not open URL %s (error %s)" % [url, err])
 
 
 func _load_credits_body() -> String:
