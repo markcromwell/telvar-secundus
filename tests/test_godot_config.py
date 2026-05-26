@@ -15,6 +15,10 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+CLASSROOM_SCENE = REPO_ROOT / "scenes" / "Classroom.tscn"
+LPC_TILESET = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.tres"
+LPC_TEXTURE = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.png"
+CLASSROOM_TILEMAP_SCRIPT = REPO_ROOT / "scenes" / "classroom_tilemap.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +107,26 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_lpc_terrain_texture_exists() -> None:
+    assert LPC_TEXTURE.is_file()
+
+
+def test_lpc_terrain_tileset_resource_exists() -> None:
+    assert LPC_TILESET.is_file()
+
+
+def test_classroom_scene_exists() -> None:
+    assert CLASSROOM_SCENE.is_file()
+
+
+def test_classroom_scene_uses_lpc_tileset() -> None:
+    text = CLASSROOM_SCENE.read_text(encoding="utf-8")
+    assert "res://assets/tilesets/lpc_terrain.tres" in text
+
+
+def test_classroom_tilemap_script_contains_vector2i_cells() -> None:
+    text = CLASSROOM_TILEMAP_SCRIPT.read_text(encoding="utf-8")
+    assert "Vector2i(" in text
+    assert "set_cell(" in text
