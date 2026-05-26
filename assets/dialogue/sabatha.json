@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "speaker": "Sabatha",
+    "text": "Telvar? You're awake. Come here when you're ready—we need to talk before you leave for the academy.",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "speaker": "Sabatha",
+    "text": "Veneficturis will change you. Remember who you are in Secundus.",
+    "next": ""
+  }
+]
