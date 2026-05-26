@@ -13,8 +13,11 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-PROJECT_GODOT = REPO_ROOT / "project.godot"
-EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+GODOT_ROOT = REPO_ROOT / "godot"
+PROJECT_GODOT = GODOT_ROOT / "project.godot"
+EXPORT_PRESETS = GODOT_ROOT / "export_presets.cfg"
+LPC_TERRAIN_PNG = GODOT_ROOT / "assets" / "tilesets" / "lpc_terrain.png"
+LPC_TERRAIN_IMPORT = LPC_TERRAIN_PNG.with_suffix(".png.import")
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -51,12 +54,13 @@ def test_export_presets_exists() -> None:
     assert EXPORT_PRESETS.is_file()
 
 
-def test_viewport_dimensions_1280x720() -> None:
+def test_viewport_dimensions_full_overworld_160x90_at_32px() -> None:
+    """160×90 tiles at 32 px per tile (16 px art × 2× display scale) → 5120×2880."""
     cp = _load_ini(PROJECT_GODOT)
     w = cp.get("display", "window/size/viewport_width")
     h = cp.get("display", "window/size/viewport_height")
-    assert w == "1280"
-    assert h == "720"
+    assert w == "5120"
+    assert h == "2880"
 
 
 def test_renderer_mobile() -> None:
@@ -73,10 +77,11 @@ def test_pixel_snap_vertices_and_transforms_true_strings() -> None:
     assert t == "true"
 
 
-def test_content_scale_factor_2x() -> None:
+def test_content_scale_factor_matches_viewport() -> None:
+    """1:1 viewport pixels to game pixels for the full 5120×2880 overworld canvas."""
     cp = _load_ini(PROJECT_GODOT)
     factor = cp.get("display", "window/size/content_scale_factor")
-    assert factor == "2"
+    assert factor == "1"
 
 
 def test_nearest_neighbor_canvas_texture_filter() -> None:
@@ -103,3 +108,19 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_export_preset_html5_output_path() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    export_path = _unquote_godot_value(cp.get("preset.0", "export_path"))
+    assert export_path == "build/index.html"
+
+
+def test_lpc_terrain_png_exists() -> None:
+    assert LPC_TERRAIN_PNG.is_file()
+
+
+def test_lpc_terrain_import_lossless() -> None:
+    assert LPC_TERRAIN_IMPORT.is_file()
+    text = LPC_TERRAIN_IMPORT.read_text(encoding="utf-8")
+    assert "compress/mode=0" in text

@@ -15,9 +15,9 @@ config/features=PackedStringArray("4.3", "Mobile")
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
-window/size/content_scale_factor=2
+window/size/viewport_width=5120
+window/size/viewport_height=2880
+window/size/content_scale_factor=1
 window/stretch/mode="canvas_items"
 
 [rendering]
