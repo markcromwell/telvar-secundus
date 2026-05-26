@@ -7,10 +7,59 @@ import struct
 import sys
 from pathlib import Path
 
+EXPECTED_TILESET_PATH = "res://assets/tilesets/lpc_terrain.tres"
+LPC_IMPORT_REL = Path("assets") / "tilesets" / "lpc_terrain.png.import"
+
 
 def fail(msg: str) -> None:
     print(f"validate: FAIL: {msg}", file=sys.stderr)
     sys.exit(1)
+
+
+def _parse_ext_resource_ids(scene_text: str) -> dict[str, str]:
+    """Map ExtResource id -> res:// path from [ext_resource ...] lines."""
+    out: dict[str, str] = {}
+    for m in re.finditer(r"\[ext_resource([^\]]*)\]", scene_text):
+        block = m.group(1)
+        pm = re.search(r'path="([^"]+)"', block)
+        im = re.search(r'\bid="([^"]+)"', block)
+        if pm and im:
+            out[im.group(1)] = pm.group(1)
+    return out
+
+
+def _tilemap_node_body(scene_text: str) -> str | None:
+    m = re.search(
+        r'^\[node name="TileMap" type="TileMap"[^\]]*\]\s*\n(.*?)(?=^\[node |\Z)',
+        scene_text,
+        re.MULTILINE | re.DOTALL,
+    )
+    return m.group(1) if m else None
+
+
+def _playerspawn_position(scene_text: str) -> tuple[float, float] | None:
+    m = re.search(
+        r'^\[node name="PlayerSpawn" type="Node2D"[^\]]*\]\s*\n'
+        r'(.*?)(?=^\[node |\Z)',
+        scene_text,
+        re.MULTILINE | re.DOTALL,
+    )
+    if not m:
+        return None
+    body = m.group(1)
+    pm = re.search(r"^\s*position\s*=\s*Vector2\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)\s*$", body, re.MULTILINE)
+    if not pm:
+        return None
+    return float(pm.group(1)), float(pm.group(2))
+
+
+def _import_disables_texture_filter(import_text: str) -> bool:
+    """True if Godot import settings disable filtering (pixel art)."""
+    if re.search(r"^\s*flags/filter\s*=\s*false\s*$", import_text, re.MULTILINE):
+        return True
+    if re.search(r"^\s*filter\s*=\s*false\s*$", import_text, re.MULTILINE):
+        return True
+    return False
 
 
 def _png_pixel_size(path: Path) -> tuple[int, int]:
@@ -31,6 +80,13 @@ def main() -> None:
         fail(f"missing {png.relative_to(root)}")
     if not tres.is_file():
         fail(f"missing {tres.relative_to(root)}")
+
+    lpc_import = root / LPC_IMPORT_REL
+    if not lpc_import.is_file():
+        fail(f"missing {lpc_import.relative_to(root)}")
+    import_text = lpc_import.read_text(encoding="utf-8")
+    if not _import_disables_texture_filter(import_text):
+        fail("filter not disabled")
 
     pw, ph = _png_pixel_size(png)
 
@@ -90,16 +146,28 @@ def main() -> None:
     if not scene.is_file():
         fail(f"missing {scene.relative_to(root)}")
     scene_text = scene.read_text(encoding="utf-8")
-    if "[node name=\"TileMap\" type=\"TileMap\"" not in scene_text:
-        fail("MainScene.tscn must contain a TileMap node")
-    if "tile_set = ExtResource(" not in scene_text:
-        fail("MainScene.tscn TileMap must set tile_set = ExtResource(...)")
-    if 'path="res://assets/tilesets/lpc_terrain.tres"' not in scene_text:
-        fail("MainScene.tscn must reference res://assets/tilesets/lpc_terrain.tres")
+
+    tilemap_body = _tilemap_node_body(scene_text)
+    if tilemap_body is None:
+        fail("TileMap node missing")
+
+    ext_by_id = _parse_ext_resource_ids(scene_text)
+    ts_m = re.search(r'tile_set\s*=\s*ExtResource\("([^"]+)"\)', tilemap_body)
+    if not ts_m:
+        fail("TileMap node must set tile_set = ExtResource(...)")
+    tileset_ref = ts_m.group(1)
+    resolved = ext_by_id.get(tileset_ref)
+    if resolved != EXPECTED_TILESET_PATH:
+        fail(
+            f"TileMap tile_set ExtResource({tileset_ref!r}) must resolve to "
+            f"{EXPECTED_TILESET_PATH!r}, got {resolved!r}"
+        )
+
     if "[node name=\"PlayerSpawn\" type=\"Node2D\"" not in scene_text:
         fail("MainScene.tscn must contain a Node2D named PlayerSpawn")
-    if not re.search(r"^\s*position\s*=\s*Vector2\(\s*160\s*,\s*160\s*\)\s*$", scene_text, re.MULTILINE):
-        fail("PlayerSpawn must use position = Vector2(160, 160)")
+    spawn_pos = _playerspawn_position(scene_text)
+    if spawn_pos != (160.0, 160.0):
+        fail("PlayerSpawn position mismatch")
 
     total_cells = 0
     source_ids: set[int] = set()
