@@ -13,6 +13,10 @@ config_version=5
 config/name="Telvar Secundus"
 config/features=PackedStringArray("4.3", "Mobile")
 
+[debug]
+
+gdscript/warnings/exclude_addons=true
+
 [display]
 
 window/size/viewport_width=1280
@@ -30,3 +34,12 @@ textures/canvas_textures/default_texture_filter=0
 anti_aliasing/quality/msaa_2d=0
 anti_aliasing/quality/msaa_3d=0
 anti_aliasing/quality/screen_space_aa=0
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+
+[gdunit4]
+
+settings/common/update_notification_enabled=false
+report/godot/script_error=false
