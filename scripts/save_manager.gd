@@ -129,6 +129,8 @@ func _apply_pending_restore() -> void:
 	var data := _pending_restore
 	_pending_restore = {}
 	_apply_restore_data(data)
+	# Menus often pause the SceneTree; clear so the loaded level can process/move immediately.
+	get_tree().paused = false
 
 
 func _validate_save_for_restore(data: Dictionary) -> bool:
