@@ -80,6 +80,8 @@ func _play_credits_scroll() -> void:
 	_credits_label.position = Vector2(40, _viewport_size().y)
 	_credits_label.add_theme_font_size_override("font_size", 20)
 	_credits_host.add_child(_credits_label)
+	# Two frames: Label line-wrap/layout is stable after first layout pass (Web / mobile).
+	await get_tree().process_frame
 	await get_tree().process_frame
 	var lines := max(_credits_label.get_line_count(), 1)
 	var content_h := _credits_label.get_line_height() * float(lines) + 40.0

@@ -43,6 +43,8 @@ def _check_credits(errors: list[str]) -> None:
         errors.append("CREDITS.md must mention New Paladin Order (NPO attribution).")
     if "Mark Cromwell" not in text:
         errors.append("CREDITS.md must credit Mark Cromwell for the story series.")
+    if "Godot Engine" not in text or "MIT" not in text:
+        errors.append("CREDITS.md must credit Godot Engine with MIT license (engine licenses).")
 
 
 def _check_project_godot(errors: list[str]) -> None:
