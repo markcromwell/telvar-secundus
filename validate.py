@@ -28,6 +28,11 @@ FILE_MARKERS: dict[str, list[str]] = {
     "scripts/inventory.gd": [
         "try_consume_sealed_wings_key",
         "sealed_wings_key",
+        "unlock_ng_plus_for_active_slot",
+        "is_ng_plus_unlocked",
+        "get_active_slot",
+        "user://slot_",
+        "2717",
     ],
     "scripts/wings_enter_sequence.gd": [
         "WALK_TILE_COUNT",
@@ -40,11 +45,13 @@ FILE_MARKERS: dict[str, list[str]] = {
     ],
     "scripts/final_cutscene_epilogue.gd": [
         "2716",
+        "2717",
         "PANEL_HOLD_SECONDS",
         "AnimationPlayer",
         "final_cut/epilogue",
         "_epilogue_complete",
         "CanvasLayer",
+        "unlock_ng_plus_for_active_slot",
     ],
     "cutscenes/final_epilogue.tscn": [
         "AnimationPlayer",
@@ -52,6 +59,9 @@ FILE_MARKERS: dict[str, list[str]] = {
         "LabelPanel1",
         "FadeOverlay",
         "The End — To be continued in The Paladin's Vow",
+        "EndScreen",
+        "MainMenuButton",
+        "pressed",
     ],
 }
 
@@ -87,7 +97,10 @@ def main() -> int:
             print("FAIL:", e)
         return 1
 
-    print("validate.py: structural checks passed (phases 2715 wings enter + 2716 final epilogue)")
+    print(
+        "validate.py: structural checks passed "
+        "(phases 2715 wings enter + 2716 final epilogue + 2717 end screen / NG+ slot)"
+    )
     return 0
 
 

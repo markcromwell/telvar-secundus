@@ -1,5 +1,6 @@
 extends Control
 ## Phase 2716 — Final epilogue: dawn over Secundus, timed text panels via AnimationPlayer.
+## Phase 2717 — On completion, persist NG+ unlock to the active save slot, then show end UI.
 ## Skip actions are swallowed until the full epilogue animation has finished.
 
 const PANEL_HOLD_SECONDS: float = 4.0
@@ -77,6 +78,7 @@ func _label_visible_path(label: Label) -> NodePath:
 
 
 func _on_epilogue_animation_finished(_anim_name: StringName) -> void:
+	Inventory.unlock_ng_plus_for_active_slot()
 	_epilogue_complete = true
 	_end_screen.visible = true
 	_main_menu_button.call_deferred(&"grab_focus")
