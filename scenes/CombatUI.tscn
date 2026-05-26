@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8combatui2665"]
+
+[ext_resource type="Script" path="res://scripts/CombatUI.gd" id="1_combat_ui"]
+
+[node name="CombatUI" type="CanvasLayer"]
+layer = 80
+script = ExtResource("1_combat_ui")
+
+[node name="ControlRoot" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="MainColumn" type="VBoxContainer" parent="ControlRoot"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 520.0
+offset_bottom = 320.0
+theme_override_constants/separation = 8
+
+[node name="InitiativeLabel" type="Label" parent="ControlRoot/MainColumn"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Initiative:"
+autowrap_mode = 3
+
+[node name="TurnIndicator" type="Label" parent="ControlRoot/MainColumn"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "Round — turn"
+
+[node name="PlayerHpBar" type="ProgressBar" parent="ControlRoot/MainColumn"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="EnemyHpBar" type="ProgressBar" parent="ControlRoot/MainColumn"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="ActionMenu" type="VBoxContainer" parent="ControlRoot/MainColumn"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="AttackButton" type="Button" parent="ControlRoot/MainColumn/ActionMenu"]
+layout_mode = 2
+text = "Attack"
+
+[node name="CastSpellButton" type="Button" parent="ControlRoot/MainColumn/ActionMenu"]
+layout_mode = 2
+text = "Cast Spell"
+
+[node name="FleeButton" type="Button" parent="ControlRoot/MainColumn/ActionMenu"]
+layout_mode = 2
+text = "Flee"

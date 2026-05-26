@@ -20,6 +20,27 @@ else:
         if needle not in cg:
             errors.append(f"CombatManager.gd missing required fragment: {needle!r}")
 
+combat_ui_tscn = os.path.join(ROOT, "scenes", "CombatUI.tscn")
+if not os.path.isfile(combat_ui_tscn):
+    errors.append("Missing scenes/CombatUI.tscn")
+else:
+    with open(combat_ui_tscn, encoding="utf-8") as f:
+        cu = f.read()
+    for needle in (
+        'type="CanvasLayer"',
+        "InitiativeLabel",
+        "TurnIndicator",
+        "PlayerHpBar",
+        "EnemyHpBar",
+        "VBoxContainer",
+        "AttackButton",
+        "CastSpellButton",
+        "FleeButton",
+        "CombatUI.gd",
+    ):
+        if needle not in cu:
+            errors.append(f"CombatUI.tscn missing required fragment: {needle!r}")
+
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)
 

@@ -16,6 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 COMBAT_MANAGER_GD = REPO_ROOT / "scripts" / "CombatManager.gd"
+COMBAT_UI_TSCN = REPO_ROOT / "scenes" / "CombatUI.tscn"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -122,3 +123,21 @@ def test_combat_manager_defines_turn_states_and_d6_initiative() -> None:
     assert "PLAYER_TURN" in text
     assert "ENEMY_TURN" in text
     assert "randi_range(1, 6)" in text
+
+
+def test_combat_ui_scene_exists_with_required_nodes() -> None:
+    assert COMBAT_UI_TSCN.is_file()
+    text = COMBAT_UI_TSCN.read_text(encoding="utf-8")
+    for needle in (
+        'type="CanvasLayer"',
+        "InitiativeLabel",
+        "TurnIndicator",
+        "PlayerHpBar",
+        "EnemyHpBar",
+        "VBoxContainer",
+        "AttackButton",
+        "CastSpellButton",
+        "FleeButton",
+        "CombatUI.gd",
+    ):
+        assert needle in text, f"CombatUI.tscn missing {needle!r}"
