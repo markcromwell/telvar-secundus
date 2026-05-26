@@ -1,0 +1,14 @@
+{
+  "id": "merchants_delivery",
+  "title": "Merchant's Delivery",
+  "objectives": [
+    {
+      "id": "find_package",
+      "desc": "Search the warehouse lanes near the docks for the missing crate before the caravan departs Secundus."
+    },
+    {
+      "id": "deliver_to_stall",
+      "desc": "Bring the sealed parcel to the buyer's stall in the lower market without opening it."
+    }
+  ]
+}

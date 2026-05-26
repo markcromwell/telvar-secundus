@@ -1,0 +1,17 @@
+[
+  {
+    "id": "wizard_ranks",
+    "title": "Wizard Ranks",
+    "text": "Red (Rutilus) is the entry rank for apprentices at Veneficturis. Above it rise Amber (Citrinus), Green (Viridis), Blue (Caeruleus), and Violet (Violaceus). Each rank marks deeper study and greater trust within Secundus's magical orders."
+  },
+  {
+    "id": "secundus_twelve_districts",
+    "title": "The Twelve Districts",
+    "text": "Secundus is a vast city carved into twelve districts, each with its own guilds, wards, and rivalries. A merchant's son may cross several in a single day and still never see the academy's spires."
+  },
+  {
+    "id": "veneficturis",
+    "title": "Veneficturis",
+    "text": "Veneficturis is the wizard academy where Telvar Orsson trains. Its halls mix lecture, ritual practice, and quiet politics—especially for those who watch students from the shadows."
+  }
+]
