@@ -2,6 +2,8 @@ extends Node
 ## Tracks known spells and mana (combat regen hooks can call regen_mana).
 
 const BANISHMENT_PATH := "res://resources/spells/banishment.tres"
+## HP restored when the player is defeated and respawns at the last save point.
+const DEFEAT_RESPAWN_HP := 15
 
 ## Lore catalog for the spell panel (not learned until added to known_spells elsewhere).
 const LEARNABLE_CATALOG: Array[Dictionary] = [
@@ -14,6 +16,13 @@ var known_spells: Dictionary = {}  # spell_id -> Spell
 var mana_current: int = 10
 var mana_max: int = 10
 var copper: int = 0
+## Current hit points (combat systems may read/write; defeat respawn sets this to DEFEAT_RESPAWN_HP).
+var player_hp: int = DEFEAT_RESPAWN_HP
+## Last manual/autosave checkpoint for defeat respawn (world space + scene path).
+var last_save_world_position: Vector2 = Vector2.ZERO
+var last_save_scene_path: String = ""
+## After a defeat reload, Main fades the black overlay back out once.
+var _post_defeat_fade_from_black: bool = false
 
 
 func _ready() -> void:
@@ -64,3 +73,19 @@ func regen_mana_combat_tick() -> void:
 func grant_copper(amount: int) -> void:
 	if amount > 0:
 		copper += amount
+
+
+func record_last_save_point(world_position: Vector2, scene_path: String) -> void:
+	last_save_world_position = world_position
+	last_save_scene_path = scene_path
+
+
+func apply_defeat_respawn_state() -> void:
+	player_hp = DEFEAT_RESPAWN_HP
+	_post_defeat_fade_from_black = true
+
+
+func consume_post_defeat_fade_from_black() -> bool:
+	var was := _post_defeat_fade_from_black
+	_post_defeat_fade_from_black = false
+	return was

@@ -39,6 +39,15 @@ def _check_files() -> None:
             _fail(f"Missing required file: {rel}")
 
 
+def _check_main_defeat_overlay() -> None:
+    path = REPO / "scenes/main.tscn"
+    if not path.is_file():
+        return
+    text = path.read_text(encoding="utf-8")
+    if "DefeatCanvas" not in text or "DefeatFadeRect" not in text:
+        _fail("main.tscn: expected DefeatCanvas / DefeatFadeRect for defeat fade")
+
+
 def _check_cast_spell_panel_scene() -> None:
     path = REPO / "scenes/ui/cast_spell_panel.tscn"
     if not path.is_file():
@@ -78,6 +87,7 @@ def main() -> int:
     _check_files()
     _check_project_autoload()
     _check_banishment_tres()
+    _check_main_defeat_overlay()
     _check_cast_spell_panel_scene()
     if ERRORS:
         for e in ERRORS:
