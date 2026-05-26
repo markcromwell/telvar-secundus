@@ -103,3 +103,15 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_export_preset_windows_desktop() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.has_section("preset.1")
+    platform = _unquote_godot_value(cp.get("preset.1", "platform"))
+    assert platform == "Windows Desktop"
+
+
+def test_export_preset_windows_runnable() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.get("preset.1", "runnable") == "true"
