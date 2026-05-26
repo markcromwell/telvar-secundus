@@ -35,3 +35,4 @@ anti_aliasing/quality/screen_space_aa=0
 
 QuestManager="*res://scripts/quest_manager.gd"
 LoreManager="*res://scripts/lore_manager.gd"
+SaveManager="*res://scripts/save_manager.gd"
