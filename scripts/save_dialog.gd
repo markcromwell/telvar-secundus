@@ -41,6 +41,9 @@ func _flash_saved_notification() -> void:
 	_notification.text = "Game saved."
 	_notification.visible = true
 	await get_tree().create_timer(1.0, true).timeout
+	# Dialog may have been closed while waiting; layer is queue_freed on close.
+	if not is_instance_valid(self) or not is_instance_valid(_notification):
+		return
 	_notification.visible = false
 
 
