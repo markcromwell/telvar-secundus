@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2vj3xpqr7m4k"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_player"]
+
+[node name="MainScene" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+format = 2
+tile_set = null
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(640, 360)
+script = ExtResource("1_player")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
