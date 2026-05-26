@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +26,26 @@ def test_load_screen_uses_display_name_and_list_helpers() -> None:
     assert "get_slot_display_name" in text
     assert "list_user_save_paths" in text
     assert "load_save_from_path" in text
+
+
+def test_load_screen_labels_each_path_with_save_manager_display_name() -> None:
+    text = LOAD_SCREEN.read_text(encoding="utf-8")
+    match = re.search(r"func _refresh_list\([^)]*\) -> void:(.*?)(?=\nfunc |\Z)", text, re.S)
+    assert match, "missing _refresh_list"
+    body = match.group(1)
+    assert "for path in SaveManager.list_user_save_paths():" in body
+    assert "_save_list.add_item(SaveManager.get_slot_display_name(path))" in body
+    assert "_save_list.set_item_metadata(idx, path)" in body
+
+
+def test_save_manager_labels_autosave_slot_exactly_autosave() -> None:
+    text = SAVE_MANAGER.read_text(encoding="utf-8")
+    assert 'const AUTOSAVE_SLOT_LABEL := "Autosave"' in text
+    match = re.search(r"func get_slot_display_name\([^)]*\) -> String:(.*?)(?=\nfunc |\Z)", text, re.S)
+    assert match, "missing get_slot_display_name"
+    body = match.group(1)
+    assert "return AUTOSAVE_SLOT_LABEL" in body
+    assert 'base == "save_autosave.json"' in body
 
 
 def test_save_manager_lists_save_json_files() -> None:

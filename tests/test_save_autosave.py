@@ -58,6 +58,42 @@ def test_scene_transition_autosaves_before_change() -> None:
         assert autosave_idx < load_idx, f"autosave must run before {load_call}"
 
 
+def test_scene_transition_returns_scene_change_result() -> None:
+    """Transition helpers must still complete by returning Godot's scene-change result."""
+    body = SCENE_TRANSITION.read_text(encoding="utf-8")
+    for func_name, load_call in (
+        ("change_scene_to_file", "get_tree().change_scene_to_file(path)"),
+        ("change_scene_to_packed", "get_tree().change_scene_to_packed(scene)"),
+    ):
+        match = re.search(rf"func {func_name}\([^)]*\) -> Error:(.*?)(?=\nfunc |\Z)", body, re.S)
+        assert match, f"missing {func_name}"
+        chunk = match.group(1)
+        assert f"return {load_call}" in chunk
+
+
+def test_autosave_serializes_payload_to_autosave_file() -> None:
+    """Autosave must serialize game state to user://save_autosave.json without player input."""
+    text = SAVE_MANAGER.read_text(encoding="utf-8")
+    match = re.search(r"func autosave_silent\([^)]*\) -> bool:(.*?)(?=\nfunc |\Z)", text, re.S)
+    assert match, "missing autosave_silent"
+    body = match.group(1)
+    assert "JSON.stringify(build_save_payload())" in body
+    assert "FileAccess.open(AUTOSAVE_PATH, FileAccess.WRITE)" in body
+    assert "store_string(json_text)" in body
+    assert "return true" in body
+
+
+def test_autosave_payload_records_current_scene_path() -> None:
+    text = SAVE_MANAGER.read_text(encoding="utf-8")
+    match = re.search(r"func build_save_payload\([^)]*\) -> Dictionary:(.*?)(?=\nfunc |\Z)", text, re.S)
+    assert match, "missing build_save_payload"
+    body = match.group(1)
+    assert '"kind": "telvar_save"' in body
+    assert '"current_scene": scene_path' in body
+    assert "get_tree().current_scene" in body
+    assert "scene_file_path" in body
+
+
 def test_project_autoloads_registered() -> None:
     text = PROJECT_GODOT.read_text(encoding="utf-8")
     assert re.search(r'^\s*SaveManager\s*=\s*"\*res://game/save_manager\.gd"', text, re.MULTILINE)
