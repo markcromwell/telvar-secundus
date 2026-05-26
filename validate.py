@@ -47,6 +47,21 @@ def main() -> None:
     if not re.search(r'\[node\s+name="CollisionShape2D"\s+type="CollisionShape2D"', tscn):
         fail("Player.tscn must contain CollisionShape2D child")
 
+    if not re.search(
+        r'\[node\s+name="Camera2D"\s+type="Camera2D"\s+parent="\."\s*\]',
+        tscn,
+    ):
+        fail("Player.tscn must contain Camera2D as a direct child of the root node")
+
+    if "position_smoothing_enabled = true" not in tscn:
+        fail("Player.tscn Camera2D must set position_smoothing_enabled = true")
+
+    if "position_smoothing_speed = 0.1" not in tscn:
+        fail("Player.tscn Camera2D must set position_smoothing_speed = 0.1")
+
+    if "current = true" not in tscn:
+        fail("Player.tscn Camera2D must set current = true")
+
     if "shape = SubResource(" not in tscn:
         fail("CollisionShape2D must assign a SubResource shape")
 
