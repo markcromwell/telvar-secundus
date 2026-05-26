@@ -21,6 +21,8 @@ WIZARD_BAND_RED = REPO_ROOT / "resources/items/wizard_band_red.tres"
 PLAYER_SCENE = REPO_ROOT / "scenes/player/Player.tscn"
 PLAYER_SCRIPT = REPO_ROOT / "scripts/player/Player.gd"
 WRIST_BAND_TEX = REPO_ROOT / "assets/sprites/wizard_band_red_wrist.png"
+OBTAIN_CARD_SCENE = REPO_ROOT / "scenes/ui/obtain_card.tscn"
+OBTAIN_CARD_SCRIPT = REPO_ROOT / "scripts/ui/obtain_card.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -147,3 +149,17 @@ def test_player_script_exposes_wrist_band_visibility() -> None:
     text = PLAYER_SCRIPT.read_text(encoding="utf-8")
     assert "func set_wrist_band_visible" in text
     assert "extends CharacterBody2D" in text
+
+
+def test_obtain_card_scene_and_script_exist() -> None:
+    assert OBTAIN_CARD_SCENE.is_file()
+    assert OBTAIN_CARD_SCRIPT.is_file()
+    scene = OBTAIN_CARD_SCENE.read_text(encoding="utf-8")
+    assert "type=\"CanvasLayer\"" in scene
+    assert "scripts/ui/obtain_card.gd" in scene
+    assert "TitleLabel" in scene and "DescriptionLabel" in scene
+    gd = OBTAIN_CARD_SCRIPT.read_text(encoding="utf-8")
+    assert "extends CanvasLayer" in gd
+    assert "func show_for_item" in gd
+    assert "auto_hide_seconds" in gd
+    assert "func _close" in gd
