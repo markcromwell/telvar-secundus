@@ -34,3 +34,4 @@ anti_aliasing/quality/screen_space_aa=0
 [autoload]
 
 QuestManager="*res://scripts/quest_manager.gd"
+LoreManager="*res://scripts/lore_manager.gd"
