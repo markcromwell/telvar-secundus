@@ -12,6 +12,12 @@ config_version=5
 
 config/name="Telvar Secundus"
 config/features=PackedStringArray("4.3", "Mobile")
+run/main_scene="res://scenes/main.tscn"
+
+[autoload]
+
+SaveManager="*res://game/save_manager.gd"
+SceneTransition="*res://game/scene_transition.gd"
 
 [display]
 
