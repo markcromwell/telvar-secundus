@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Structural validation for Telvar Secundus dialogue JSON assets.
+Structural validation for Telvar Secundus dialogue assets and DialogueBox UI.
 
 Uses UTF-8 text parsing only — no Godot binary or database.
 Exit 0 on success; non-zero with FAIL lines on error.
@@ -9,6 +9,7 @@ Exit 0 on success; non-zero with FAIL lines on error.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -120,13 +121,69 @@ def validate_dialogue_assets() -> list[str]:
     return errors
 
 
+def _validate_gdscript_surface(label: str, src: str) -> list[str]:
+    """Very light GDScript hygiene checks (text-only; not a full parser)."""
+    errors: list[str] = []
+    for i, line in enumerate(src.splitlines(), start=1):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith("="):
+            errors.append(f"{label}: line {i} looks like a dangling assignment")
+    return errors
+
+
+def validate_dialogue_box() -> list[str]:
+    """Check DialogueBox scene/script presence and required symbols."""
+    errors: list[str] = []
+    scene = REPO_ROOT / "scenes" / "DialogueBox.tscn"
+    script = REPO_ROOT / "scripts" / "DialogueBox.gd"
+
+    if not scene.is_file():
+        errors.append(f"Missing scene: {scene.relative_to(REPO_ROOT).as_posix()}")
+    else:
+        raw = scene.read_text(encoding="utf-8")
+        if "format=3" not in raw:
+            errors.append("scenes/DialogueBox.tscn must declare format=3")
+        for name in ("PortraitRect", "NameLabel", "TextLabel", "ChoicesContainer"):
+            if f'name="{name}"' not in raw:
+                errors.append(f"scenes/DialogueBox.tscn: missing node {name!r}")
+
+    if not script.is_file():
+        errors.append(f"Missing script: {script.relative_to(REPO_ROOT).as_posix()}")
+    else:
+        src = script.read_text(encoding="utf-8")
+        needles = (
+            "func show_dialogue(",
+            "func hide_dialogue(",
+            "signal choice_selected",
+            "func _unhandled_input(",
+        )
+        for needle in needles:
+            if needle not in src:
+                errors.append(f"scripts/DialogueBox.gd: missing required snippet {needle!r}")
+        if not re.search(r"CHARS_PER_SEC(?:\s*:\s*\w+)?\s*=\s*30\.0", src):
+            errors.append("scripts/DialogueBox.gd: expected CHARS_PER_SEC assignment to 30.0")
+        rel = script.relative_to(REPO_ROOT).as_posix()
+        errors.extend(_validate_gdscript_surface(rel, src))
+
+    return errors
+
+
+def run_all_validations() -> list[str]:
+    errors: list[str] = []
+    errors.extend(validate_dialogue_assets())
+    errors.extend(validate_dialogue_box())
+    return errors
+
+
 def main() -> int:
-    errors = validate_dialogue_assets()
+    errors = run_all_validations()
     if errors:
         for e in errors:
             print("FAIL:", e)
         return 1
-    print("OK: dialogue JSON validation passed")
+    print("OK: validation passed (dialogue JSON + DialogueBox structure)")
     return 0
 
 
