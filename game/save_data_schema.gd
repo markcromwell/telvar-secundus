@@ -1,5 +1,8 @@
 ## SaveDataSchema — canonical save-game JSON shape for Telvar: Chronicles of Secundus.
 ##
+## CI parity: tests/test_save_data_schema.py mirrors default_save_dict / merge_with_defaults /
+## JSON round-trip; update both when changing serialization behavior.
+##
 ## All fields are plain JSON-serializable values (Dictionary / Array / String / int / float / bool)
 ## so they can cross HTML5 (user://) and desktop builds without binary resources.
 ##
