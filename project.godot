@@ -18,6 +18,10 @@ config/features=PackedStringArray("4.3", "Mobile")
 
 SaveManager="*res://scripts/save_manager.gd"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+
 [display]
 
 window/size/viewport_width=1280

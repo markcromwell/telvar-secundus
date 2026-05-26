@@ -52,3 +52,17 @@ def test_save_manager_gd_exists_and_declares_constants() -> None:
     assert "read_slot_metadata" in text
     assert "read_save_dict" in text
     assert "restore_from_slot" in text
+
+
+def test_gdunit_save_manager_suite_and_stubs_exist() -> None:
+    """CI smoke: GdUnit suite is present (Godot runs it via gdUnit4 plugin)."""
+    suite = REPO_ROOT / "tests" / "gdunit" / "test_save_manager.gd"
+    assert suite.is_file()
+    body = suite.read_text(encoding="utf-8")
+    assert "extends GdUnitTestSuite" in body
+    for name in (
+        "save_test_inventory.gd",
+        "save_test_quest_state.gd",
+        "save_test_flags.gd",
+    ):
+        assert (suite.parent / name).is_file()
