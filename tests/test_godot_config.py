@@ -8,6 +8,10 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import importlib.util
+import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -103,3 +107,71 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def _load_validate_module():
+    path = REPO_ROOT / "validate.py"
+    spec = importlib.util.spec_from_file_location("telvar_validate", path)
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_validate_py_exits_zero_on_repo() -> None:
+    proc = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "validate.py")],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, (proc.stdout, proc.stderr)
+
+
+def test_validate_orsson_emporium_structure() -> None:
+    mod = _load_validate_module()
+    errors = mod.validate(REPO_ROOT)
+    assert errors == [], errors
+
+
+def test_validate_fails_when_scene_missing(tmp_path: Path) -> None:
+    mod = _load_validate_module()
+    (tmp_path / "assets" / "dialogue").mkdir(parents=True)
+    (tmp_path / "assets" / "dialogue" / "sabatha.json").write_text(
+        json.dumps([{"id": "a"}, {"id": "b"}]), encoding="utf-8"
+    )
+    (tmp_path / "assets" / "dialogue" / "orsson.json").write_text(
+        json.dumps([{"id": "a"}, {"id": "b"}]), encoding="utf-8"
+    )
+    errors = mod.validate(tmp_path)
+    assert errors, "expected validation errors when interior scene is absent"
+    assert any("orsson_emporium.tscn" in e and "absent" in e for e in errors)
+
+
+def test_validate_fails_when_dialogue_has_fewer_than_two_nodes(tmp_path: Path) -> None:
+    mod = _load_validate_module()
+    scene = REPO_ROOT / "scenes" / "interiors" / "orsson_emporium.tscn"
+    assert scene.is_file()
+    (tmp_path / "scenes" / "interiors").mkdir(parents=True)
+    (tmp_path / "scenes" / "interiors" / "orsson_emporium.tscn").write_text(scene.read_text(encoding="utf-8"), encoding="utf-8")
+    (tmp_path / "assets" / "dialogue").mkdir(parents=True)
+    (tmp_path / "assets" / "dialogue" / "sabatha.json").write_text(json.dumps([{"id": "only"}]), encoding="utf-8")
+    (tmp_path / "assets" / "dialogue" / "orsson.json").write_text(
+        json.dumps([{"id": "a"}, {"id": "b"}]), encoding="utf-8"
+    )
+    errors = mod.validate(tmp_path)
+    assert any("sabatha.json" in e and "at least two dialogue" in e for e in errors)
+
+
+def test_validate_fails_when_exit_door_marker_absent(tmp_path: Path) -> None:
+    mod = _load_validate_module()
+    scene_text = (REPO_ROOT / "scenes" / "interiors" / "orsson_emporium.tscn").read_text(encoding="utf-8")
+    broken = scene_text.replace("ExitDoor", "FrontExit")
+    (tmp_path / "scenes" / "interiors").mkdir(parents=True)
+    (tmp_path / "scenes" / "interiors" / "orsson_emporium.tscn").write_text(broken, encoding="utf-8")
+    (tmp_path / "assets" / "dialogue").mkdir(parents=True)
+    for name in ("sabatha.json", "orsson.json"):
+        src = REPO_ROOT / "assets" / "dialogue" / name
+        (tmp_path / "assets" / "dialogue" / name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+    errors = mod.validate(tmp_path)
+    assert any("ExitDoor" in e for e in errors)

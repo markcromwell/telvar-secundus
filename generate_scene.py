@@ -39,12 +39,19 @@ for t in tiles:
 # format array as string
 array_str = ", ".join(map(str, data))
 
-scene_template = f"""[gd_scene load_steps=6 format=3 uid="uid://b123456789abc"]
+scene_template = f"""[gd_scene load_steps=9 format=3 uid="uid://b123456789abc"]
 
 [ext_resource type="TileSet" path="res://lpc_terrain.tres" id="1_tiles"]
 [ext_resource type="Script" path="res://scenes/interiors/orsson_emporium.gd" id="2_interior"]
 [ext_resource type="PackedScene" uid="uid://c1sabathaemporium" path="res://scenes/npcs/sabatha.tscn" id="3_sabatha"]
 [ext_resource type="PackedScene" uid="uid://c2orssonemporium" path="res://scenes/npcs/orsson.tscn" id="4_orsson"]
+[ext_resource type="Script" path="res://scenes/interiors/orsson_inspectable.gd" id="5_inspect"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shelf"]
+size = Vector2(40, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_counter"]
+size = Vector2(44, 28)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(48, 24)
@@ -68,6 +75,26 @@ position = Vector2(40, 104)
 
 [node name="Orsson" parent="." instance=ExtResource("4_orsson")]
 position = Vector2(72, 40)
+
+[node name="ShelfItem" type="Area2D" parent="."]
+position = Vector2(72, 24)
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("5_inspect")
+inspect_text = "Jarred reagents and road rations — the labels are honest, even when the city is not."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShelfItem"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="CounterPotions" type="Area2D" parent="."]
+position = Vector2(56, 88)
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("5_inspect")
+inspect_text = "Stoppered vials behind the counter; the chalk dust on the rim means someone opened one recently."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CounterPotions"]
+shape = SubResource("RectangleShape2D_counter")
 
 [node name="ExitDoor" type="Area2D" parent="."]
 position = Vector2(72, 184)

@@ -1,9 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://b123456789abc"]
+[gd_scene load_steps=9 format=3 uid="uid://b123456789abc"]
 
 [ext_resource type="TileSet" path="res://lpc_terrain.tres" id="1_tiles"]
 [ext_resource type="Script" path="res://scenes/interiors/orsson_emporium.gd" id="2_interior"]
 [ext_resource type="PackedScene" uid="uid://c1sabathaemporium" path="res://scenes/npcs/sabatha.tscn" id="3_sabatha"]
 [ext_resource type="PackedScene" uid="uid://c2orssonemporium" path="res://scenes/npcs/orsson.tscn" id="4_orsson"]
+[ext_resource type="Script" path="res://scenes/interiors/orsson_inspectable.gd" id="5_inspect"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shelf"]
+size = Vector2(40, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_counter"]
+size = Vector2(44, 28)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
 size = Vector2(48, 24)
@@ -14,7 +21,7 @@ script = ExtResource("2_interior")
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("1_tiles")
 format = 2
-layer_0/tile_data = PackedInt32Array(0, 0, 1, 1, 0, 3, 2, 0, 3, 3, 0, 3, 4, 0, 3, 5, 0, 3, 6, 0, 3, 7, 0, 1, 65536, 0, 1, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 1, 131072, 0, 1, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 1, 196608, 0, 1, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0, 196615, 0, 1, 262144, 0, 1, 262145, 0, 0, 262146, 0, 0, 262147, 0, 0, 262148, 0, 0, 262149, 0, 0, 262150, 0, 0, 262151, 0, 1, 327680, 0, 1, 327681, 0, 4, 327682, 0, 4, 327683, 0, 4, 327684, 0, 0, 327685, 0, 4, 327686, 0, 4, 327687, 0, 1, 393216, 0, 1, 393217, 0, 0, 393218, 0, 2, 393219, 0, 2, 393220, 0, 2, 393221, 0, 0, 393222, 0, 0, 393223, 0, 1, 458752, 0, 1, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 458757, 0, 0, 458758, 0, 0, 458759, 0, 1, 524288, 0, 1, 524289, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 524294, 0, 0, 524295, 0, 1, 589824, 0, 1, 589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 589829, 0, 0, 589830, 0, 0, 589831, 0, 1, 655360, 0, 1, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 1, 720896, 0, 1, 720897, 0, 1, 720898, 0, 1, 720899, 0, 1, 720900, 0, 1, 720901, 0, 1, 720902, 0, 1, 720903, 0, 1)
+layer_0/tile_data = PackedInt32Array(0, 0, 1, 1, 0, 3, 2, 0, 3, 3, 0, 3, 4, 0, 3, 5, 0, 3, 6, 0, 3, 7, 0, 1, 65536, 0, 1, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 1, 131072, 0, 1, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 1, 196608, 0, 1, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0, 196615, 0, 1, 262144, 0, 1, 262145, 0, 4, 262146, 0, 4, 262147, 0, 4, 262148, 0, 0, 262149, 0, 4, 262150, 0, 4, 262151, 0, 1, 327680, 0, 1, 327681, 0, 0, 327682, 0, 2, 327683, 0, 2, 327684, 0, 2, 327685, 0, 0, 327686, 0, 0, 327687, 0, 1, 393216, 0, 1, 393217, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 393223, 0, 1, 458752, 0, 1, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 458757, 0, 0, 458758, 0, 0, 458759, 0, 1, 524288, 0, 1, 524289, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 524294, 0, 0, 524295, 0, 1, 589824, 0, 1, 589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 589829, 0, 0, 589830, 0, 0, 589831, 0, 1, 655360, 0, 1, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 1, 720896, 0, 1, 720897, 0, 1, 720898, 0, 1, 720899, 0, 1, 720900, 0, 1, 720901, 0, 1, 720902, 0, 1, 720903, 0, 1)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.831373, 0.647059, 0.454902, 1)
@@ -27,6 +34,26 @@ position = Vector2(40, 104)
 
 [node name="Orsson" parent="." instance=ExtResource("4_orsson")]
 position = Vector2(72, 40)
+
+[node name="ShelfItem" type="Area2D" parent="."]
+position = Vector2(72, 24)
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("5_inspect")
+inspect_text = "Jarred reagents and road rations — the labels are honest, even when the city is not."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShelfItem"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="CounterPotions" type="Area2D" parent="."]
+position = Vector2(56, 88)
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("5_inspect")
+inspect_text = "Stoppered vials behind the counter; the chalk dust on the rim means someone opened one recently."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CounterPotions"]
+shape = SubResource("RectangleShape2D_counter")
 
 [node name="ExitDoor" type="Area2D" parent="."]
 position = Vector2(72, 184)
