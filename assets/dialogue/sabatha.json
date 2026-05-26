@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "text": "Welcome to Orsson Emporium. Mind the shelves—some of those bottles are fussier than a Veneficturis proctor.",
+    "speaker": "Sabatha",
+    "next": "item_inquiry"
+  },
+  {
+    "id": "item_inquiry",
+    "text": "If you're after supplies for the road, say the word. We keep the good chalk and the cheap ink in different drawers on purpose.",
+    "speaker": "Sabatha",
+    "next": null
+  }
+]
