@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/MyramarDistant.gd" id="1_script"]
+
+[sub_resource type="Gradient" id="Gradient_white1x1"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(Color(1, 1, 1, 1), Color(1, 1, 1, 1))
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_white1x1"]
+gradient = SubResource("Gradient_white1x1")
+width = 1
+height = 1
+
+[node name="MyramarDistant" type="Node2D"]
+position = Vector2(80, 72)
+modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_white1x1")
