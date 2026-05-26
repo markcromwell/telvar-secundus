@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Telvar Secundus"
+run/main_scene="res://scenes/bedroom/Bedroom.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 
 [display]
@@ -30,3 +31,7 @@ textures/canvas_textures/default_texture_filter=0
 anti_aliasing/quality/msaa_2d=0
 anti_aliasing/quality/msaa_3d=0
 anti_aliasing/quality/screen_space_aa=0
+
+[autoload]
+
+DialogueManager="*res://scripts/dialogue/DialogueManager.gd"
