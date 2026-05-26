@@ -15,3 +15,7 @@ window/stretch/mode="canvas_items"
 
 [rendering]
 textures/canvas_textures/default_texture_filter=0
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
