@@ -53,10 +53,10 @@ func _on_mana_changed(current: int, maximum: int) -> void:
 		_update_spell_buttons()
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_S:
-			_toggle_spell_panel()
-		elif event.keycode == KEY_ESCAPE and spell_panel.visible:
+	if event.is_action_pressed(&"toggle_spell_panel", false):
+		_toggle_spell_panel()
+	elif event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_ESCAPE and spell_panel.visible:
 			spell_panel.visible = false
 
 func _toggle_spell_panel() -> void:
@@ -112,7 +112,6 @@ func _on_spell_slot_pressed(slot_index: int) -> void:
 	var spell: Spell = btn.get_meta("spell") as Spell
 	if spell == null:
 		return
-	if current_mana >= spell.mana_cost:
-		if mana_component and mana_component.use_mana(spell.mana_cost):
-			spell_cast.emit(spell)
-			spell_panel.visible = false
+	if mana_component and mana_component.use_mana(spell.mana_cost):
+		spell_cast.emit(spell)
+		spell_panel.visible = false

@@ -25,6 +25,24 @@ def _wrap_godot_root_section(text: str) -> str:
     return text
 
 
+def _strip_input_section_for_ini(text: str) -> str:
+    """Drop [input] — Godot stores InputEvent objects in brace blocks ConfigParser cannot parse."""
+    lines = text.splitlines(keepends=True)
+    out: list[str] = []
+    in_input_block = False
+    for line in lines:
+        s = line.strip()
+        if s.startswith("[") and s.endswith("]") and len(s) >= 2:
+            in_input_block = s == "[input]"
+            if not in_input_block:
+                out.append(line)
+            continue
+        if in_input_block:
+            continue
+        out.append(line)
+    return "".join(out)
+
+
 def _unquote_godot_value(raw: str) -> str:
     s = raw.strip()
     if len(s) >= 2 and s[0] == s[-1] and s[0] in "\"'":
@@ -38,6 +56,7 @@ def _load_ini(path: Path) -> configparser.ConfigParser:
     text = path.read_text(encoding="utf-8")
     if path.name == "project.godot":
         text = _wrap_godot_root_section(text)
+        text = _strip_input_section_for_ini(text)
     cp = configparser.ConfigParser(interpolation=None)
     cp.read_string(text)
     return cp
@@ -103,3 +122,12 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_toggle_spell_panel_input_action_key_s() -> None:
+    """Phase 2652: S key opens spell panel via InputMap (physical_keycode 83 = S)."""
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert "[input]" in text
+    assert "toggle_spell_panel" in text
+    # Godot 4 serializes InputEventKey with quoted keys inside Object(...)
+    assert '"physical_keycode":83' in text
