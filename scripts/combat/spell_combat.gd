@@ -7,6 +7,14 @@ const BANISHMENT_PUSH_TILES := 3
 const BANISHMENT_STUN_TURNS := 1
 const BANISHMENT_SHADE_DAMAGE := 15
 
+## Loot rolled when a Thug is defeated (combat victory).
+const THUG_VICTORY_COPPER_MIN := 1
+const THUG_VICTORY_COPPER_MAX := 3
+
+
+static func roll_thug_victory_copper() -> int:
+	return randi_range(THUG_VICTORY_COPPER_MIN, THUG_VICTORY_COPPER_MAX)
+
 
 static func resolve_banishment(target_kind: String) -> Dictionary:
 	"""Return structured combat outcome for Banishment.

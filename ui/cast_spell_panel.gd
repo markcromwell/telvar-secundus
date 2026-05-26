@@ -22,7 +22,11 @@ func _on_visibility_changed() -> void:
 
 
 func _refresh_lists() -> void:
-	_mana_label.text = "Mana: %d / %d" % [SpellBook.mana_current, SpellBook.mana_max]
+	_mana_label.text = "Mana: %d / %d  |  Copper: %d" % [
+		SpellBook.mana_current,
+		SpellBook.mana_max,
+		SpellBook.copper,
+	]
 	_known_list.clear()
 	for line in _known_spell_lines():
 		_known_list.add_item(line)

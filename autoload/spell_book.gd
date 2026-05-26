@@ -13,6 +13,7 @@ const LEARNABLE_CATALOG: Array[Dictionary] = [
 var known_spells: Dictionary = {}  # spell_id -> Spell
 var mana_current: int = 10
 var mana_max: int = 10
+var copper: int = 0
 
 
 func _ready() -> void:
@@ -58,3 +59,8 @@ func spend_mana(cost: int) -> bool:
 
 func regen_mana_combat_tick() -> void:
 	mana_current = mini(mana_current + 1, mana_max)
+
+
+func grant_copper(amount: int) -> void:
+	if amount > 0:
+		copper += amount

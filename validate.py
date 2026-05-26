@@ -19,6 +19,9 @@ REQUIRED_FILES = [
     "scripts/combat/spell_combat.gd",
     "ui/cast_spell_panel.gd",
     "scenes/ui/cast_spell_panel.tscn",
+    "scenes/main.tscn",
+    "scenes/main.gd",
+    "assets/audio/victory_sting.wav",
     "project.godot",
 ]
 
