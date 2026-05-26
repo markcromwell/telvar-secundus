@@ -1,0 +1,76 @@
+[gd_scene load_steps=2 format=3 uid="uid://v3n3f1ctur15ltr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_parchment"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.91, 0.84, 0.68, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.42, 0.28, 0.18, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 4
+shadow_offset = Vector2(2, 2)
+
+[node name="VeneficturisLetter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -200.0
+offset_right = 280.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_parchment")
+
+[node name="LetterBody" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -168.0
+offset_right = 248.0
+offset_bottom = 144.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+fit_content = false
+scroll_active = false
+text = "[center][b]Veneficturis Academy[/b][/center]\n\nHonoured applicant,\n\nWe have received word of your recent service to the Emporium ward. Your sponsor notes a steady hand and a quick mind. Present yourself at the Hall of Assessment on the morrow.\n\n— Office of Admissions"
+
+[node name="DismissButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -72.0
+offset_right = 80.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Close"
