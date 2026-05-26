@@ -14,6 +14,10 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if SceneManager.is_save_dialog_open():
 		return
+	if event.is_action_pressed("save_game"):
+		get_viewport().set_input_as_handled()
+		SceneManager.open_save_dialog()
+		return
 	if event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		if _panel.visible:
