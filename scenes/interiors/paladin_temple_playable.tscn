@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=4]
+
+[ext_resource type="PackedScene" path="res://scenes/interiors/paladin_temple.tscn" id="1_interior"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/sir_valins.tscn" id="2_valins"]
+[ext_resource type="GDScript" path="res://scripts/interior/paladin_temple_playable_root.gd" id="3_root"]
+[ext_resource type="GDScript" path="res://scripts/interior/order_bookshelf_area.gd" id="4_bookshelf"]
+[ext_resource type="GDScript" path="res://scripts/interior/exit_door_area.gd" id="5_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shelf"]
+size = Vector2(40, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lore"]
+size = Vector2(56, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(96, 28)
+
+[node name="PaladinTemplePlayable" type="Node2D"]
+script = ExtResource("3_root")
+
+[node name="Interior" parent="." instance=ExtResource("1_interior")]
+
+[node name="SirValins" parent="." instance=ExtResource("2_valins")]
+position = Vector2(152, 104)
+
+[node name="BookshelfBody" type="StaticBody2D" parent="."]
+position = Vector2(48, 240)
+
+[node name="ShelfCollision" type="CollisionShape2D" parent="BookshelfBody"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="LoreArea" type="Area2D" parent="BookshelfBody"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("4_bookshelf")
+
+[node name="LoreCollision" type="CollisionShape2D" parent="BookshelfBody/LoreArea"]
+shape = SubResource("RectangleShape2D_lore")
+
+[node name="ExitDoor" type="Area2D" parent="."]
+position = Vector2(152, 456)
+collision_mask = 1
+script = ExtResource("5_exit")
+
+[node name="ExitCollision" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="UICanvas" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="FadeRect" type="ColorRect" parent="UICanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)

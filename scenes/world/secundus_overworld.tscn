@@ -1,0 +1,6 @@
+[gd_scene load_steps=1 format=4]
+
+[node name="SecundusOverworld" type="Node2D"]
+
+[node name="paladin_temple_exit" type="Marker2D" parent="."]
+position = Vector2(640, 360)
