@@ -1,0 +1,56 @@
+[
+  {
+    "id": "start",
+    "speaker": "Myramar",
+    "text": "Telvar Orsson, every rank begins with discipline. Name the first band worn by a wizard accepted into Veneficturis.",
+    "next": "assessment"
+  },
+  {
+    "id": "assessment",
+    "speaker": "Myramar",
+    "text": "Choose carefully. The band is not ornament. It is a vow remembered by color.",
+    "choices": [
+      {
+        "text": "Red, called Rutilus, the entry rank.",
+        "next": "success"
+      },
+      {
+        "text": "Gold, the mark of a master of the Test of Fire.",
+        "next": "retry"
+      },
+      {
+        "text": "Blue, the highest rank of the Veneficturis.",
+        "next": "retry"
+      }
+    ]
+  },
+  {
+    "id": "retry",
+    "speaker": "Myramar",
+    "text": "Ambition is useful only after memory. The first band is Red: Rutilus. Say it again when you are ready.",
+    "next": "assessment"
+  },
+  {
+    "id": "success",
+    "speaker": "Myramar",
+    "text": "Correct. Red is the beginning, and beginnings bind more tightly than triumphs. Wear the band and remember who opened the gate.",
+    "set_flag": {
+      "myramar_assessment_complete": true
+    },
+    "unlock_lore": [
+      "wizard_ranks"
+    ],
+    "add_inventory": [
+      "rutilus_band"
+    ],
+    "sprite_update": "telvar_rutilus_band",
+    "show_ceremony_card": true,
+    "next": "ceremony"
+  },
+  {
+    "id": "ceremony",
+    "speaker": "Myramar",
+    "text": "The Veneficturis records you as Red-rank. The city will teach you what that honor costs.",
+    "end": true
+  }
+]
