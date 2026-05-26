@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://DistrictZone.gd" id="1_h7j8k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m9n0p"]
+size = Vector2(32, 32)
+
+[node name="DistrictZone" type="Area2D"]
+monitorable = false
+script = ExtResource("1_h7j8k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_m9n0p")
