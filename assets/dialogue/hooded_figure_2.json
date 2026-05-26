@@ -1,0 +1,20 @@
+[
+  {
+    "id": "start",
+    "text": "The academy halls smell of chalk and old ambition. I prefer smoke and spilled wine—truth hides better in taverns.",
+    "speaker": "Stranger",
+    "next": "rookery"
+  },
+  {
+    "id": "rookery",
+    "text": "The Rookery was named for birds that roost where stone meets sky. Secundus is the same: feathers, claws, and cold wind.",
+    "speaker": "Stranger",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "text": "If you seek Veneficturis, go with eyes open. If you seek survival, go with coins.",
+    "speaker": "Stranger",
+    "next": ""
+  }
+]

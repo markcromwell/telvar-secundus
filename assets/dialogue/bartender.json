@@ -1,0 +1,26 @@
+[
+  {
+    "id": "start",
+    "text": "Evening, wanderer. The Rookery keeps a fire and a cup for anyone who pays in coin or quiet.",
+    "speaker": "Bartender",
+    "next": "secundus"
+  },
+  {
+    "id": "secundus",
+    "text": "Twelve districts, one city—Secundus swallows secrets faster than I pour ale. Veneficturis hears half of them before dawn.",
+    "speaker": "Bartender",
+    "next": "warn"
+  },
+  {
+    "id": "warn",
+    "text": "Those hooded patrons do not trade in gossip. If you are wise, you sip, you listen, and you do not ask their names.",
+    "speaker": "Bartender",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "text": "Now—wine, small beer, or just the warmth of the hearth?",
+    "speaker": "Bartender",
+    "next": ""
+  }
+]
