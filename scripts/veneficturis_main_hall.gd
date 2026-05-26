@@ -16,19 +16,28 @@ const ATLAS_DESK := Vector2i(3, 0)
 
 @onready var _floor: TileMapLayer = $HallTileMap/Floor
 @onready var _ceiling: TileMapLayer = $HallTileMap/CeilingDecor
+@onready var _reception_npc: Area2D = $ReceptionNPC
+@onready var _dialogue_label: Label = $UILayer/DialogueLabel
+
+## Telvar arrives with Myramar's letter unless toggled for testing.
+@export var player_has_admission_letter := true
 
 var has_shown_letter := false
 var _door_blockers: Array[StaticBody2D] = []
 
 
 func _ready() -> void:
+	dialogue_shown.connect(_on_dialogue_shown)
+	transition_requested.connect(_on_transition_requested)
+	_reception_npc.body_entered.connect(_on_receptionist_body_entered)
 	_floor.clear()
 	_ceiling.clear()
 	_paint_perimeter_and_floor()
 	_paint_arched_ceiling_band()
 	_place_reception_desk()
+	_place_desk_collision()
 	_setup_doors()
-	_setup_receptionist()
+	_dialogue_label.text = "WASD move · E show letter at desk · Doors after admission"
 
 
 func _is_door_cell(p: Vector2i) -> bool:
@@ -69,6 +78,20 @@ func _place_reception_desk() -> void:
 	for x in range(8, 12):
 		_floor.set_cell(Vector2i(x, 13), SOURCE_ID, ATLAS_DESK)
 
+
+func _place_desk_collision() -> void:
+	# Solid desk so the player cannot walk through the reception counter.
+	var desk := StaticBody2D.new()
+	desk.name = "ReceptionDeskCollision"
+	var coll := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(4 * 16, 16)
+	coll.shape = shape
+	desk.position = Vector2(10 * 16, 13 * 16 + 8)
+	desk.add_child(coll)
+	add_child(desk)
+
+
 func _setup_doors() -> void:
 	_create_door(Vector2i(10, 0), "Library")
 	_create_door(Vector2i(10, MAP_SIZE.y - 1), "Tower")
@@ -107,22 +130,30 @@ func _on_door_body_entered(_body: Node2D, room_name: String) -> void:
 		dialogue_shown.emit("Receptionist: Halt! Show your admission letter first.")
 
 
-func _setup_receptionist() -> void:
-	var npc := Area2D.new()
-	npc.name = "ReceptionNPC"
-	var coll := CollisionShape2D.new()
-	var shape := RectangleShape2D.new()
-	shape.size = Vector2(64, 32)
-	coll.shape = shape
-	# Place at reception desk (x: 8 to 11, y: 13). Center is 10*16
-	npc.position = Vector2(10 * 16, 13 * 16)
-	npc.body_entered.connect(_on_receptionist_body_entered)
-	add_child(npc)
-
-
 func _on_receptionist_body_entered(_body: Node2D) -> void:
 	if not has_shown_letter:
-		dialogue_shown.emit("Receptionist: Halt! Show your admission letter first.")
+		dialogue_shown.emit("Receptionist: Halt! Show your admission letter first. (Press E here with your letter.)")
+	else:
+		dialogue_shown.emit("Receptionist: Proceed when you are ready.")
+
+
+func try_present_admission_letter(player: Node2D) -> void:
+	if has_shown_letter:
+		return
+	if not _reception_npc.get_overlapping_bodies().has(player):
+		return
+	if not player_has_admission_letter:
+		dialogue_shown.emit("Receptionist: You have no admission letter. I cannot let you through.")
+		return
+	show_letter()
+
+
+func _on_dialogue_shown(text: String) -> void:
+	_dialogue_label.text = text
+
+
+func _on_transition_requested(room_name: String) -> void:
+	_dialogue_label.text = "Entering %s… (destination scene not implemented in this build)" % room_name
 
 
 func show_letter() -> void:

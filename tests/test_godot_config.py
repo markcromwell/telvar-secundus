@@ -20,6 +20,7 @@ MAIN_HALL_SCENE = REPO_ROOT / "scenes" / "veneficturis_main_hall.tscn"
 MAIN_HALL_SCRIPT = REPO_ROOT / "scripts" / "veneficturis_main_hall.gd"
 DARK_STONE_ATLAS = REPO_ROOT / "assets" / "tiles" / "dark_stone_lpc.png"
 MAIN_HALL_TILESET = REPO_ROOT / "tilesets" / "dark_stone_lpc.tres"
+PLAYER_VENEFICTURIS_SCRIPT = REPO_ROOT / "scripts" / "player_veneficturis.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -119,6 +120,7 @@ def test_main_scene_is_veneficturis_main_hall() -> None:
 def test_main_hall_scene_bundle_exists() -> None:
     assert MAIN_HALL_SCENE.is_file()
     assert MAIN_HALL_SCRIPT.is_file()
+    assert PLAYER_VENEFICTURIS_SCRIPT.is_file()
     assert DARK_STONE_ATLAS.is_file()
     assert MAIN_HALL_TILESET.is_file()
 
@@ -135,6 +137,23 @@ def test_main_hall_scene_wires_tilemap_layers() -> None:
     assert 'parent="HallTileMap"' in text
     assert 'name="Floor"' in text
     assert 'name="CeilingDecor"' in text
+
+
+def test_main_hall_scene_has_player_reception_and_dialogue_ui() -> None:
+    text = MAIN_HALL_SCENE.read_text(encoding="utf-8")
+    assert 'name="Player"' in text
+    assert 'type="CharacterBody2D"' in text
+    assert 'name="ReceptionNPC"' in text
+    assert 'type="Area2D"' in text
+    assert 'name="DialogueLabel"' in text
+    assert "player_veneficturis.gd" in text
+
+
+def test_main_hall_script_wires_letter_presentation() -> None:
+    text = MAIN_HALL_SCRIPT.read_text(encoding="utf-8")
+    assert "try_present_admission_letter" in text
+    assert "$ReceptionNPC" in text
+    assert "player_has_admission_letter" in text
 
 
 def test_dark_stone_atlas_is_64x16_rgba_png() -> None:
