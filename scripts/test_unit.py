@@ -9,6 +9,9 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TILESET_PATH = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.tres"
+PROJECT_GODOT = REPO_ROOT / "project.godot"
+RENDER_SCENE = REPO_ROOT / "tests" / "scenes" / "test_tileset_render.tscn"
+RENDER_SCRIPT = REPO_ROOT / "tests" / "scenes" / "test_tileset_render.gd"
 
 
 def _parse_vec2i(line: str) -> tuple[int, int] | None:
@@ -64,6 +67,25 @@ def test_lpc_terrain_tileset_contract() -> None:
 
     assert re.search(r"^\s*custom_data_layer_0/name\s*=", text, re.MULTILINE)
     assert re.search(r"^\s*custom_data_layer_0/type\s*=\s*4\s*$", text, re.MULTILINE)
+
+
+def test_project_godot_viewport_contract() -> None:
+    assert PROJECT_GODOT.is_file(), f"missing {PROJECT_GODOT}"
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert re.search(r"viewport_width\s*=\s*1280", text), "project.godot: missing viewport_width=1280"
+    assert re.search(r"viewport_height\s*=\s*720", text), "project.godot: missing viewport_height=720"
+
+
+def test_tileset_render_scene_contract() -> None:
+    assert RENDER_SCENE.is_file(), f"missing {RENDER_SCENE}"
+    assert RENDER_SCRIPT.is_file(), f"missing {RENDER_SCRIPT}"
+    scene_text = RENDER_SCENE.read_text(encoding="utf-8")
+    assert 'type="TileMap"' in scene_text
+    assert 'res://assets/tilesets/lpc_terrain.tres' in scene_text
+    assert "tile_set = ExtResource" in scene_text
+    script_text = RENDER_SCRIPT.read_text(encoding="utf-8")
+    assert "assert(" in script_text
+    assert "tile_set" in script_text and "tile_size" in script_text
 
 
 if __name__ == "__main__":
