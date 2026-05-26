@@ -126,6 +126,19 @@ def test_dialogue_manager_script_public_api() -> None:
     assert "func get_flag(" in body
 
 
+def test_npc_base_script_contract() -> None:
+    """Phase 2512: NPC.gd interaction + DialogueManager hook (see spec)."""
+    script = REPO_ROOT / "scripts" / "NPC.gd"
+    assert script.is_file()
+    body = script.read_text(encoding="utf-8")
+    lines = body.lstrip("\ufeff").splitlines()
+    assert lines[0] == "extends CharacterBody2D"
+    assert "@export var dialogue_id" in body
+    assert "func _process" in body
+    assert "ui_interact" in body
+    assert "DialogueManager.show_dialogue(dialogue_id)" in body
+
+
 def test_dialogue_manager_missing_dir_warns_via_log() -> None:
     script = REPO_ROOT / "scripts" / "DialogueManager.gd"
     body = script.read_text(encoding="utf-8")
