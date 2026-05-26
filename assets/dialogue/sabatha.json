@@ -1,0 +1,13 @@
+[
+  {
+    "id": "start",
+    "text": "Telvar? You're finally awake.",
+    "speaker": "Sabatha",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "text": "Come downstairs when you're ready.",
+    "speaker": "Sabatha"
+  }
+]

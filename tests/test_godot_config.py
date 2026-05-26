@@ -8,6 +8,8 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -109,3 +111,16 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_validate_py_exits_zero() -> None:
+    script = REPO_ROOT / "validate.py"
+    assert script.is_file()
+    proc = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + "\n" + proc.stderr
