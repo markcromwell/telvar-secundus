@@ -14,6 +14,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 DIALOGUE_MANAGER_GD = REPO_ROOT / "scripts" / "DialogueManager.gd"
+DIALOGUE_BOX_GD = REPO_ROOT / "scripts" / "DialogueBox.gd"
+DIALOGUE_BOX_TSCN = REPO_ROOT / "scenes" / "DialogueBox.tscn"
 
 errors: list[str] = []
 
@@ -42,8 +44,39 @@ def _load_ini(path: Path) -> configparser.ConfigParser:
     return cp
 
 
+def _function_body_lines(lines: list[str], func_line_prefix: str) -> list[str] | None:
+    """Return body lines for a top-level GDScript function (until the next top-level `func `)."""
+    for idx, line in enumerate(lines):
+        if line.startswith(func_line_prefix):
+            body: list[str] = []
+            for j in range(idx + 1, len(lines)):
+                nxt = lines[j]
+                if nxt.startswith("func "):
+                    break
+                body.append(nxt)
+            return body
+    return None
+
+
+def _check_gdscript_gates(label: str, text: str) -> None:
+    """Lightweight text checks (no Godot binary). Catches common gate failures."""
+    # Anonymous func assignments break simple text-based GDScript gates.
+    if re.search(r"=\s*func\s*\(", text):
+        errors.append(f"{label}: anonymous func assignments are not allowed")
+
+    for lineno, line in enumerate(text.splitlines(), 1):
+        if line.strip() == "=":
+            errors.append(f"{label}:{lineno}: dangling '=' assignment")
+
+    # Heuristic: flag obvious Python/C-style mistakes that indicate corrupt GDScript.
+    for lineno, line in enumerate(text.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.startswith("def "):
+            errors.append(f"{label}:{lineno}: Python 'def' is not valid GDScript")
+
+
 def _check_dialogue_manager_gd() -> None:
-    """Lightweight text checks (no Godot binary). Catches missing API and common gate failures."""
+    """DialogueManager API, DialogueBox wiring (AC4), and GDScript gates."""
     if not DIALOGUE_MANAGER_GD.is_file():
         errors.append("Missing scripts/DialogueManager.gd")
         return
@@ -62,13 +95,70 @@ def _check_dialogue_manager_gd() -> None:
         if fragment not in text:
             errors.append(f"DialogueManager.gd: missing {fragment!r}")
 
-    # Anonymous func assignments break simple text-based GDScript gates.
-    if re.search(r"=\s*func\s*\(", text):
-        errors.append("DialogueManager.gd: anonymous func assignments are not allowed")
+    _check_gdscript_gates("DialogueManager.gd", text)
 
-    for lineno, line in enumerate(text.splitlines(), 1):
-        if line.strip() == "=":
-            errors.append(f"DialogueManager.gd:{lineno}: dangling '=' assignment")
+    lines = text.splitlines()
+    body = _function_body_lines(lines, "func show_dialogue(")
+    if body is None:
+        errors.append("DialogueManager.gd: could not parse show_dialogue() body")
+        return
+
+    body_text = "\n".join(body)
+    needle = "res://scenes/DialogueBox.tscn"
+    if needle not in body_text:
+        errors.append(
+            "DialogueManager.gd: show_dialogue() must reference "
+            f"{needle!r} (instantiate the DialogueBox scene)"
+        )
+
+
+def _check_dialogue_box_gd() -> None:
+    """AC2–AC3: DialogueBox script attached via scene ext_resource; populate() API."""
+    if not DIALOGUE_BOX_GD.is_file():
+        errors.append("Missing scripts/DialogueBox.gd")
+        return
+
+    text = DIALOGUE_BOX_GD.read_text(encoding="utf-8")
+
+    if "extends Control" not in text:
+        errors.append("DialogueBox.gd: expected 'extends Control'")
+
+    if not re.search(r"func\s+populate\s*\(\s*speaker\s*:", text):
+        errors.append(
+            "DialogueBox.gd: expected func populate(speaker: ... with typed speaker parameter"
+        )
+
+    if "NameLabel" not in text or "TextLabel" not in text or "ChoicesContainer" not in text:
+        errors.append(
+            "DialogueBox.gd: expected @onready paths containing NameLabel, TextLabel, "
+            "and ChoicesContainer"
+        )
+
+    _check_gdscript_gates("DialogueBox.gd", text)
+
+
+def _check_dialogue_box_tscn() -> None:
+    """AC1: scene hierarchy Control > VBoxContainer > NameLabel, TextLabel, ChoicesContainer."""
+    if not DIALOGUE_BOX_TSCN.is_file():
+        errors.append("Missing scenes/DialogueBox.tscn")
+        return
+
+    text = DIALOGUE_BOX_TSCN.read_text(encoding="utf-8")
+
+    if 'path="res://scripts/DialogueBox.gd"' not in text and "path='res://scripts/DialogueBox.gd'" not in text:
+        errors.append(
+            "DialogueBox.tscn: missing ext_resource Script path res://scripts/DialogueBox.gd"
+        )
+
+    if "script = ExtResource(" not in text:
+        errors.append("DialogueBox.tscn: root node must assign script = ExtResource(...)")
+
+    for name in ("NameLabel", "TextLabel", "ChoicesContainer"):
+        if f'name="{name}"' not in text:
+            errors.append(f'DialogueBox.tscn: missing node name="{name}"')
+
+    if 'name="VBoxContainer"' not in text:
+        errors.append('DialogueBox.tscn: missing VBoxContainer')
 
 
 def _check_autoload() -> None:
@@ -93,6 +183,8 @@ def _check_autoload() -> None:
         )
 
 
+_check_dialogue_box_tscn()
+_check_dialogue_box_gd()
 _check_dialogue_manager_gd()
 _check_autoload()
 
@@ -101,5 +193,5 @@ if errors:
         print("FAIL:", e)
     sys.exit(1)
 
-print("Validation passed (DialogueManager + autoload checks)")
+print("Validation passed (DialogueBox scene/script + DialogueManager + autoload checks)")
 sys.exit(0)
