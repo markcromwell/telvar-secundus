@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import json
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+DIALOGUE_MANAGER = REPO_ROOT / "scripts" / "dialogue_manager.gd"
+MYRAMAR_DIALOGUE = REPO_ROOT / "assets" / "dialogue" / "myramar.json"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +106,27 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_dialogue_manager_script_present() -> None:
+    assert DIALOGUE_MANAGER.is_file()
+    text = DIALOGUE_MANAGER.read_text(encoding="utf-8")
+    for needle in (
+        "extends Node",
+        "func show_dialogue(",
+        "func set_flag(",
+        "func get_flag(",
+        "var _flags: Dictionary",
+        "QuestManager.start_quest",
+        "hud_toast_requested.emit(\"New Quest!\", 2.0)",
+    ):
+        assert needle in text
+
+
+def test_myramar_dialogue_json_seed() -> None:
+    assert MYRAMAR_DIALOGUE.is_file()
+    raw = MYRAMAR_DIALOGUE.read_text(encoding="utf-8")
+    assert "quest_give" in raw
+    data = json.loads(raw)
+    assert isinstance(data, list)
+    assert len(data) >= 1

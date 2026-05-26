@@ -1,0 +1,31 @@
+[
+  {
+    "id": "start",
+    "text": "Telvar, the market whispers of a lost parcel. Walk with me—this is a trial you can carry without flame.",
+    "speaker": "Myramar",
+    "choices": [
+      {
+        "text": "Another time, Master.",
+        "next": "defer",
+        "flags": []
+      },
+      {
+        "text": "I'll recover it from the spice lane.",
+        "next": "tasked",
+        "flags": ["quest_give:merchants_delivery"]
+      }
+    ]
+  },
+  {
+    "id": "defer",
+    "text": "Then keep your eyes open; Secundus rewards the swift and swallows the hesitant.",
+    "speaker": "Myramar",
+    "next": ""
+  },
+  {
+    "id": "tasked",
+    "text": "Good. Return when the crate rests in honest hands again.",
+    "speaker": "Myramar",
+    "next": ""
+  }
+]
