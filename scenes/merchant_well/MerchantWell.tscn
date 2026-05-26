@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="1_lpcter"]
+[ext_resource type="Script" path="res://scripts/Npc.gd" id="2_npc"]
+[ext_resource type="Script" path="res://scripts/EncounterZone.gd" id="3_enc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_well"]
+radius = 96.0
 
 [node name="MerchantWell" type="Node2D"]
 
@@ -60,5 +65,48 @@ layer_1/tile_data = PackedInt32Array(
 	851968, 65536, 1, 851988, 65536, 1, 917504, 0, 1, 917524, 0, 1, 983040, 65536, 1, 983060, 65536, 1, 1048576, 0, 1, 1048577, 65536, 1, 1048578, 0, 1,
 	1048579, 65536, 1, 1048580, 0, 1, 1048581, 65536, 1, 1048582, 0, 1, 1048583, 65536, 1, 1048584, 0, 1, 1048585, 65536, 1, 1048586, 0, 1, 1048587, 65536, 1,
 	1048588, 0, 1, 1048589, 65536, 1, 1048590, 0, 1, 1048591, 65536, 1, 1048592, 0, 1, 1048593, 65536, 1, 1048594, 0, 1, 1048595, 65536, 1, 1048596, 0, 1,
-	458761, 131072, 0, 458762, 131072, 0, 458763, 131072, 0, 524297, 131072, 0, 524298, 131072, 0, 524299, 131072, 0, 589833, 131072, 0, 589834, 131072, 0, 589835, 131072, 0
+	458761, 131072, 0, 458762, 131072, 0, 458763, 131072, 0, 524297, 131072, 0, 524298, 131072, 0, 524299, 131072, 0, 	589833, 131072, 0, 589834, 131072, 0, 589835, 131072, 0
 )
+
+[node name="MarketTrader" type="CharacterBody2D" parent="."]
+position = Vector2(52, 112)
+script = ExtResource("2_npc")
+npc_name = "Market Trader"
+dialogue = PackedStringArray("Spices from the eastern docks—smell that?", "Copper a pouch. You look like someone who appreciates quality.")
+
+[node name="BeggarChild" type="CharacterBody2D" parent="."]
+position = Vector2(200, 128)
+script = ExtResource("2_npc")
+npc_name = "Beggar Child"
+dialogue = PackedStringArray("A crust of bread, sir? Please?", "The well water tastes of rust since the guilds moved in.")
+
+[node name="WomanNpc" type="CharacterBody2D" parent="."]
+position = Vector2(136, 88)
+script = ExtResource("2_npc")
+npc_name = "Lyssa"
+dialogue = PackedStringArray("Keep your purse close near the well. Strangers gather after dark.", "I saw Veneficturis acolytes arguing with the harbormaster yesterday.")
+
+[node name="Thug" type="CharacterBody2D" parent="."]
+position = Vector2(228, 104)
+script = ExtResource("2_npc")
+npc_name = "Thug"
+dialogue = PackedStringArray("Hand over your coin or bleed.", "Wrong alley, apprentice.")
+
+[node name="Thug2" type="CharacterBody2D" parent="."]
+position = Vector2(248, 132)
+script = ExtResource("2_npc")
+npc_name = "Thug"
+dialogue = PackedStringArray("Stand still while we lighten your belt.", "The boss wants a word.")
+
+[node name="Thug3" type="CharacterBody2D" parent="."]
+position = Vector2(216, 152)
+script = ExtResource("2_npc")
+npc_name = "Thug"
+dialogue = PackedStringArray("Pretty robes. Shame if they got muddy.", "Myramar sends his regards—kidding. Hand over your coin or bleed.")
+
+[node name="EncounterZone" type="Area2D" parent="."]
+position = Vector2(168, 120)
+script = ExtResource("3_enc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EncounterZone"]
+shape = SubResource("CircleShape2D_well")
