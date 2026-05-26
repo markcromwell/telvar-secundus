@@ -12,6 +12,9 @@ REQUIRED_PATHS = [
     REPO_ROOT / "player" / "Player.gd",
     REPO_ROOT / "scripts" / "inventory.gd",
     REPO_ROOT / "scripts" / "wings_enter_sequence.gd",
+    REPO_ROOT / "scripts" / "final_cutscene_epilogue.gd",
+    REPO_ROOT / "cutscenes" / "final_epilogue.tscn",
+    REPO_ROOT / "scenes" / "main_menu.tscn",
     REPO_ROOT / "project.godot",
 ]
 
@@ -35,11 +38,31 @@ FILE_MARKERS: dict[str, list[str]] = {
         "Inventory",
         "2715",
     ],
+    "scripts/final_cutscene_epilogue.gd": [
+        "2716",
+        "PANEL_HOLD_SECONDS",
+        "AnimationPlayer",
+        "final_cut/epilogue",
+        "_epilogue_complete",
+        "CanvasLayer",
+    ],
+    "cutscenes/final_epilogue.tscn": [
+        "AnimationPlayer",
+        "CanvasLayer",
+        "LabelPanel1",
+        "FadeOverlay",
+        "The End — To be continued in The Paladin's Vow",
+    ],
 }
 
 
 def main() -> int:
     errors: list[str] = []
+
+    for path in REQUIRED_PATHS:
+        rel = path.relative_to(REPO_ROOT).as_posix()
+        if not path.is_file():
+            errors.append(f"Missing required file: {rel}")
 
     for rel, needles in FILE_MARKERS.items():
         p = REPO_ROOT / rel
@@ -64,7 +87,7 @@ def main() -> int:
             print("FAIL:", e)
         return 1
 
-    print("validate.py: structural checks passed (phase 2715 wings enter)")
+    print("validate.py: structural checks passed (phases 2715 wings enter + 2716 final epilogue)")
     return 0
 
 
