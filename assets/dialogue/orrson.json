@@ -1,0 +1,20 @@
+[
+  {
+    "id": "start",
+    "text": "Father says I should mind the stall, but I keep thinking about Veneficturis—about the Test of Fire they talk about in the market whispers.",
+    "speaker": "Telvar",
+    "next": "mentor"
+  },
+  {
+    "id": "mentor",
+    "text": "Myramar tells me patience is a kind of spell. I am Red rank if I am anything yet, and the city feels bigger than every map in Secundus.",
+    "speaker": "Telvar",
+    "next": "city"
+  },
+  {
+    "id": "city",
+    "text": "Twelve districts, and each one tries to teach you something different. I wonder which lesson will burn when the real trial comes.",
+    "speaker": "Telvar",
+    "next": null
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "start",
+    "text": "So you've come to Secundus—twelve districts, one old city, and a thousand stories drowning in the gutters.",
+    "speaker": "Sabatha",
+    "next": null,
+    "choices": [
+      { "text": "Ask about the twelve districts.", "next": "districts" },
+      { "text": "Mention Veneficturis and the wizard paths.", "next": "veneficturis" },
+      { "text": "Say you only need directions and mean to move on.", "next": "parting" }
+    ]
+  },
+  {
+    "id": "districts",
+    "text": "Each district thinks it is the city's true heart. The walls remember what the heralds forget—listen to the stone more than the slogans.",
+    "speaker": "Sabatha",
+    "next": "districts_close"
+  },
+  {
+    "id": "districts_close",
+    "text": "If you mean to stay, learn the alleys before you learn the laws. Secundus forgives curiosity less than it forgives pride.",
+    "speaker": "Sabatha",
+    "next": null
+  },
+  {
+    "id": "veneficturis",
+    "text": "The academy spires look clean from down here. Up close, they are crowded with ambition—Red rank is only the first rung, and the ladder does not care who climbs.",
+    "speaker": "Sabatha",
+    "next": "veneficturis_close"
+  },
+  {
+    "id": "veneficturis_close",
+    "text": "Whatever your teacher whispers after lamps are lit, weigh it against what the streets shout at noon.",
+    "speaker": "Sabatha",
+    "next": null
+  },
+  {
+    "id": "parting",
+    "text": "Wise enough for today, then. Secundus keeps its own tally of strangers—try not to become a footnote too soon.",
+    "speaker": "Sabatha",
+    "next": null,
+    "flag": { "key": "met_sabatha", "value": true }
+  }
+]
