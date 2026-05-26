@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "speaker": "Myramar",
+    "text": "You are ready now, Telvar. Take the Sealed Wing Key and meet what waits beyond the academy doors.",
+    "next": "award_sealed_wing_key"
+  },
+  {
+    "id": "award_sealed_wing_key",
+    "speaker": "System",
+    "text": "Sealed Wing Key added to inventory.",
+    "next": null
+  }
+]
