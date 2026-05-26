@@ -112,10 +112,10 @@ def test_export_preset_linux_platform() -> None:
     assert platform == "Linux"
 
 
-def test_main_scene_is_myramar_corridor_cutscene() -> None:
+def test_main_scene_is_main_menu() -> None:
     cp = _load_ini(PROJECT_GODOT)
     main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
-    assert main_scene == "res://scenes/cutscene_myramar_corridor.tscn"
+    assert main_scene == "res://scenes/main_menu.tscn"
 
 
 def test_autoloads_registered() -> None:
