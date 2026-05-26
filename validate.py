@@ -26,7 +26,7 @@ def _read_text(path: Path) -> str:
 def _validate_library_scene(errors: list[str]) -> None:
     scene_path = REPO_ROOT / "scenes/veneficturis/Library.tscn"
     tilemap_script = REPO_ROOT / "scripts/veneficturis/library_tilemap.gd"
-    lore_path = REPO_ROOT / "data/library_lore.json"
+    lore_path = REPO_ROOT / "data/lore.json"
     tileset_path = REPO_ROOT / "assets/tilesets/lpc_terrain.tres"
     png_path = REPO_ROOT / "assets/tilesets/lpc_terrain.png"
 
@@ -66,21 +66,21 @@ def _validate_library_scene(errors: list[str]) -> None:
     try:
         lore = json.loads(_read_text(lore_path))
     except json.JSONDecodeError as exc:
-        _fail(errors, f"library_lore.json is not valid JSON: {exc}")
+        _fail(errors, f"lore.json is not valid JSON: {exc}")
         return
 
     if not isinstance(lore, list) or len(lore) < 1:
-        _fail(errors, "library_lore.json must be a non-empty JSON array")
+        _fail(errors, "lore.json must be a non-empty JSON array")
         return
 
     first = lore[0]
     if not isinstance(first, dict):
-        _fail(errors, "library_lore.json entries must be JSON objects")
+        _fail(errors, "lore.json entries must be JSON objects")
         return
 
     for key in ("id", "title", "body"):
         if key not in first:
-            _fail(errors, f"library_lore.json entries must include '{key}'")
+            _fail(errors, f"lore.json entries must include '{key}'")
 
 
 def main() -> int:

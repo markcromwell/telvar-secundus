@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 LIBRARY_SCENE = REPO_ROOT / "scenes/veneficturis/Library.tscn"
 LIBRARY_TILEMAP = REPO_ROOT / "scripts/veneficturis/library_tilemap.gd"
 LPC_TILESET = REPO_ROOT / "assets/tilesets/lpc_terrain.tres"
-LIBRARY_LORE = REPO_ROOT / "data/library_lore.json"
+LIBRARY_LORE = REPO_ROOT / "data/lore.json"
 
 
 def test_library_scene_exists() -> None:
@@ -47,10 +47,12 @@ def test_lpc_tileset_declares_16px_tiles() -> None:
     assert "tile_size = Vector2i(16, 16)" in text
 
 
-def test_lpc_tileset_has_wall_physics_layer() -> None:
+def test_lpc_tileset_has_wall_and_shelf_physics_layer() -> None:
     text = LPC_TILESET.read_text(encoding="utf-8")
     assert "physics_layer_0/collision_layer = 1" in text
     assert "physics_layer_0/polygon_0/points" in text
+    assert "1:0/0/physics_layer_0/polygon_0/points" in text
+    assert "2:0/0/physics_layer_0/polygon_0/points" in text
 
 
 def test_library_lore_json_is_non_empty_array() -> None:

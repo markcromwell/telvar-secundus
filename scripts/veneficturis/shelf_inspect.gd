@@ -2,7 +2,7 @@ extends Area2D
 
 ## Lore shelf: random JSON entry on interact (ui_accept).
 
-const LORE_PATH := "res://data/library_lore.json"
+const LORE_PATH := "res://data/lore.json"
 
 var _prompt: Label
 var _player_inside := false
@@ -53,7 +53,7 @@ func _load_lore() -> void:
 	if typeof(parsed) == TYPE_ARRAY:
 		_lore_entries = parsed
 	else:
-		push_warning("library_lore.json must be a JSON array")
+		push_warning("lore.json must be a JSON array")
 
 
 func _show_random_lore() -> void:
