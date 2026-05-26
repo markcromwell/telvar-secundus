@@ -15,10 +15,10 @@ config/features=PackedStringArray("4.3", "Mobile")
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=640
+window/size/viewport_height=360
 window/size/content_scale_factor=2
-window/stretch/mode="canvas_items"
+window/stretch/mode="disabled"
 
 [rendering]
 

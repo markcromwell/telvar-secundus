@@ -51,12 +51,18 @@ def test_export_presets_exists() -> None:
     assert EXPORT_PRESETS.is_file()
 
 
-def test_viewport_dimensions_1280x720() -> None:
+def test_viewport_dimensions_640x360() -> None:
     cp = _load_ini(PROJECT_GODOT)
     w = cp.get("display", "window/size/viewport_width")
     h = cp.get("display", "window/size/viewport_height")
-    assert w == "1280"
-    assert h == "720"
+    assert w == "640"
+    assert h == "360"
+
+
+def test_window_stretch_disabled() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    mode = _unquote_godot_value(cp.get("display", "window/stretch/mode"))
+    assert mode == "disabled"
 
 
 def test_renderer_mobile() -> None:
