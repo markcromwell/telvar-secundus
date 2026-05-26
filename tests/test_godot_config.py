@@ -59,10 +59,30 @@ def test_viewport_dimensions_1280x720() -> None:
     assert h == "720"
 
 
-def test_renderer_mobile() -> None:
+def test_renderer_gl_compatibility() -> None:
     cp = _load_ini(PROJECT_GODOT)
     method = _unquote_godot_value(cp.get("rendering", "renderer/rendering_method"))
-    assert method == "mobile"
+    assert method == "gl_compatibility"
+
+
+def test_config_features_includes_4_3_and_gl_compatibility() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    features = cp.get("application", "config/features")
+    assert "4.3" in features
+    assert "GL Compatibility" in features
+
+
+def test_physics_layer_1_named_walls() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("layer_names")
+    layer = _unquote_godot_value(cp.get("layer_names", "2d_physics/layer_1"))
+    assert layer == "walls"
+
+
+def test_window_stretch_mode_canvas_items() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    mode = _unquote_godot_value(cp.get("display", "window/stretch/mode"))
+    assert mode == "canvas_items"
 
 
 def test_pixel_snap_vertices_and_transforms_true_strings() -> None:
@@ -103,3 +123,13 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_export_preset_vram_compression_for_desktop() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.get("preset.0.options", "vram_texture_compression/for_desktop") == "true"
+
+
+def test_export_preset_extensions_support_disabled() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.get("preset.0.options", "variant/extensions_support") == "false"
