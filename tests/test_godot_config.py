@@ -17,6 +17,8 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 ENTRANCE_TOOLTIP_SCENE = REPO_ROOT / "scenes/ui/EntranceTooltip.tscn"
 ENTRANCE_TOOLTIP_SCRIPT = REPO_ROOT / "scripts/ui/entrance_tooltip.gd"
+BUILDING_ENTRANCE_SCENE = REPO_ROOT / "scenes/world/BuildingEntrance.tscn"
+BUILDING_ENTRANCE_SCRIPT = REPO_ROOT / "scripts/world/building_entrance.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -146,3 +148,43 @@ def test_entrance_tooltip_show_hide_toggle_panel() -> None:
 def test_entrance_tooltip_scene_ext_resource_script() -> None:
     body = ENTRANCE_TOOLTIP_SCENE.read_text(encoding="utf-8")
     assert 'path="res://scripts/ui/entrance_tooltip.gd"' in body
+
+
+def test_building_entrance_scene_exists() -> None:
+    assert BUILDING_ENTRANCE_SCENE.is_file()
+
+
+def test_building_entrance_script_exists() -> None:
+    assert BUILDING_ENTRANCE_SCRIPT.is_file()
+
+
+def test_building_entrance_scene_structure() -> None:
+    """Area2D root, collision, 1-tile RectangleShape2D, instanced EntranceTooltip (Phase 2483)."""
+    body = BUILDING_ENTRANCE_SCENE.read_text(encoding="utf-8")
+    assert 'type="Area2D"' in body
+    assert 'path="res://scripts/world/building_entrance.gd"' in body
+    assert '[node name="CollisionShape2D" type="CollisionShape2D" parent="."]' in body
+    assert "RectangleShape2D" in body
+    assert 'size = Vector2(32, 32)' in body
+    assert 'path="res://scenes/ui/EntranceTooltip.tscn"' in body
+    assert "instance=ExtResource(" in body
+
+
+def test_building_entrance_script_contract() -> None:
+    src = BUILDING_ENTRANCE_SCRIPT.read_text(encoding="utf-8")
+    assert "@export var building_name: String" in src
+    assert "@export var entrance_id: String" in src
+    assert "var player_in_range: bool = false" in src
+    assert "signal entered(" in src
+    assert "body_entered.connect" in src
+    assert "body_exited.connect" in src
+    assert "_tooltip.show()" in src
+    assert "_tooltip.hide()" in src
+    assert "func _unhandled_input" in src
+    assert 'event.is_action_pressed("ui_accept")' in src
+    assert "entered.emit(" in src
+    assert "func _on_enter()" in src
+    assert "print(building_name)" in src
+    assert "get_viewport().set_input_as_handled()" in src
+    assert "is_in_group(\"player\")" in src
+    assert "OS.get_name" not in src
