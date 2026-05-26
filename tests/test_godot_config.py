@@ -103,3 +103,21 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_aelyns_room_scene_present() -> None:
+    """Phase 2691: stripped quarters scene ships with the repo."""
+    scene = REPO_ROOT / "scenes" / "rooms" / "aelyns_room.tscn"
+    assert scene.is_file()
+    text = scene.read_text(encoding="utf-8")
+    assert text.startswith("[gd_scene")
+    assert "TileMapLayer" in text
+    assert "res://assets/tilesets/lpc_terrain.png" in text
+    assert "FloorNote" in text
+    assert "Exiled to Antica" in text
+
+
+def test_lpc_terrain_tileset_png_exists() -> None:
+    png = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.png"
+    assert png.is_file()
+    assert png.stat().st_size < 5 * 1024 * 1024
