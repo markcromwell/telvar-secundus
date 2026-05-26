@@ -7,6 +7,8 @@ extends Node2D
 
 
 func _ready() -> void:
+	if is_instance_valid(_player) and SpellBook.has_method("set_caster"):
+		SpellBook.set_caster(_player)
 	if not is_instance_valid(_player) or not is_instance_valid(_hud):
 		return
 	_hud.set_max_mana(_player.max_mana)

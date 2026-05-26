@@ -7,3 +7,4 @@ from tests.test_godot_config import *  # noqa: F401,F403
 from tests.test_hud_mana import *  # noqa: F401,F403
 from tests.test_mana_hud_integration import *  # noqa: F401,F403
 from tests.test_player_mana import *  # noqa: F401,F403
+from tests.test_spell_mana import *  # noqa: F401,F403
