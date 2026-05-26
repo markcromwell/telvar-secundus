@@ -17,6 +17,8 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 OVERWORLD_SCENE = REPO_ROOT / "scenes" / "Overworld.tscn"
 LPC_TERRAIN_TILESET = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.tres"
+DISTRICT_ZONE_SCRIPT = REPO_ROOT / "scripts" / "DistrictZone.gd"
+BUILDING_ENTRANCE_SCRIPT = REPO_ROOT / "scripts" / "BuildingEntrance.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -134,3 +136,23 @@ def test_overworld_camera_smoothing_spawn_containers() -> None:
     assert '[node name="SpawnPoint" type="Marker2D" parent="TileMap"]' in text
     assert '[node name="DistrictZones" type="Node2D" parent="."]' in text
     assert '[node name="BuildingEntrances" type="Node2D" parent="."]' in text
+
+
+def test_district_zone_script_contract() -> None:
+    assert DISTRICT_ZONE_SCRIPT.is_file()
+    text = DISTRICT_ZONE_SCRIPT.read_text(encoding="utf-8")
+    assert "@export var district_name" in text
+    assert "@export var hud_label" in text
+    assert "extends Area2D" in text
+    assert "body_entered.connect" in text
+    assert "Timer" in text
+
+
+def test_building_entrance_script_contract() -> None:
+    assert BUILDING_ENTRANCE_SCRIPT.is_file()
+    text = BUILDING_ENTRANCE_SCRIPT.read_text(encoding="utf-8")
+    assert "@export var building_label" in text
+    assert "extends Area2D" in text
+    assert "body_entered.connect" in text
+    assert "body_exited.connect" in text
+    assert "Press E to enter" in text
