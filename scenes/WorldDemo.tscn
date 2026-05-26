@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8worlddemo2666"]
+[gd_scene load_steps=6 format=3 uid="uid://c8worlddemo2666"]
 
 [ext_resource type="Script" path="res://scripts/TelvarController.gd" id="1_telvar"]
 [ext_resource type="Script" path="res://scripts/EnemyEncounterZone.gd" id="2_encounter"]
 [ext_resource type="PackedScene" uid="uid://b8combatui2665" path="res://scenes/CombatUI.tscn" id="3_combat_ui"]
+[ext_resource type="Script" path="res://scripts/WorldDemoController.gd" id="4_world_ctrl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(14, 22)
@@ -11,6 +12,7 @@ size = Vector2(14, 22)
 size = Vector2(64, 64)
 
 [node name="WorldDemo" type="Node2D"]
+script = ExtResource("4_world_ctrl")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(400, 360)

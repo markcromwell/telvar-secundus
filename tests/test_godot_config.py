@@ -19,6 +19,7 @@ COMBAT_MANAGER_GD = REPO_ROOT / "scripts" / "CombatManager.gd"
 COMBAT_UI_TSCN = REPO_ROOT / "scenes" / "CombatUI.tscn"
 WORLD_DEMO_TSCN = REPO_ROOT / "scenes" / "WorldDemo.tscn"
 ENEMY_ENCOUNTER_GD = REPO_ROOT / "scripts" / "EnemyEncounterZone.gd"
+WORLD_DEMO_CONTROLLER_GD = REPO_ROOT / "scripts" / "WorldDemoController.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -154,8 +155,23 @@ def test_main_scene_is_world_demo() -> None:
 def test_world_demo_has_encounter_area_and_scripts() -> None:
     assert WORLD_DEMO_TSCN.is_file()
     text = WORLD_DEMO_TSCN.read_text(encoding="utf-8")
-    for needle in ('type="Area2D"', "EnemyEncounterZone.gd", "TelvarController.gd", "CombatUI.tscn"):
+    for needle in (
+        'type="Area2D"',
+        "EnemyEncounterZone.gd",
+        "TelvarController.gd",
+        "CombatUI.tscn",
+        "WorldDemoController.gd",
+    ):
         assert needle in text, f"WorldDemo.tscn missing {needle!r}"
+
+
+def test_world_demo_controller_damage_formula_and_actions() -> None:
+    assert WORLD_DEMO_CONTROLLER_GD.is_file()
+    text = WORLD_DEMO_CONTROLLER_GD.read_text(encoding="utf-8")
+    assert "roll_action_damage" in text
+    assert "maxi(1, attacker_attack - defender_defense + randi_range(-2, 2))" in text
+    assert "cast_spell" in text
+    assert "FLEE_SUCCESS_CHANCE" in text
 
 
 def test_enemy_encounter_zone_signals_combat_start() -> None:

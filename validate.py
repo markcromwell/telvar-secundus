@@ -51,13 +51,34 @@ else:
         if needle not in eg:
             errors.append(f"EnemyEncounterZone.gd missing required fragment: {needle!r}")
 
+world_demo_ctrl = os.path.join(ROOT, "scripts", "WorldDemoController.gd")
+if not os.path.isfile(world_demo_ctrl):
+    errors.append("Missing scripts/WorldDemoController.gd")
+else:
+    with open(world_demo_ctrl, encoding="utf-8") as f:
+        wdc = f.read()
+    for needle in (
+        "roll_action_damage",
+        "maxi(1, attacker_attack - defender_defense + randi_range(-2, 2))",
+        "cast_spell",
+        "FLEE_SUCCESS_CHANCE",
+    ):
+        if needle not in wdc:
+            errors.append(f"WorldDemoController.gd missing required fragment: {needle!r}")
+
 world_tscn = os.path.join(ROOT, "scenes", "WorldDemo.tscn")
 if not os.path.isfile(world_tscn):
     errors.append("Missing scenes/WorldDemo.tscn")
 else:
     with open(world_tscn, encoding="utf-8") as f:
         w = f.read()
-    for needle in ('type="Area2D"', "EnemyEncounterZone.gd", "TelvarController.gd", "CombatUI.tscn"):
+    for needle in (
+        'type="Area2D"',
+        "EnemyEncounterZone.gd",
+        "TelvarController.gd",
+        "CombatUI.tscn",
+        "WorldDemoController.gd",
+    ):
         if needle not in w:
             errors.append(f"WorldDemo.tscn missing required fragment: {needle!r}")
 
