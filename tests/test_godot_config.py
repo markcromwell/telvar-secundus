@@ -18,6 +18,8 @@ EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 BUS_LAYOUT = REPO_ROOT / "default_bus_layout.tres"
 AUDIO_MANAGER_SCENE = REPO_ROOT / "AudioManager.tscn"
 AUDIO_MANAGER_SCRIPT = REPO_ROOT / "AudioManager.gd"
+PLAYER_SCENE = REPO_ROOT / "Player.tscn"
+PLAYER_SCRIPT = REPO_ROOT / "scripts" / "Player.gd"
 VALIDATE_PY = REPO_ROOT / "validate.py"
 
 
@@ -145,6 +147,25 @@ def test_ambient_wav_assets_exist() -> None:
     ):
         p = REPO_ROOT / "assets" / "audio" / name
         assert p.is_file(), f"missing {p}"
+
+
+def test_player_scene_and_script_exist() -> None:
+    assert PLAYER_SCENE.is_file()
+    assert PLAYER_SCRIPT.is_file()
+
+
+def test_player_scene_has_camera_smoothing() -> None:
+    text = PLAYER_SCENE.read_text(encoding="utf-8")
+    assert '[node name="Camera2D" type="Camera2D" parent="."]' in text
+    assert "current = true" in text
+    assert "position_smoothing_enabled = true" in text
+    assert "position_smoothing_speed = 10.0" in text
+
+
+def test_player_script_wires_audio_manager_and_settings() -> None:
+    src = PLAYER_SCRIPT.read_text(encoding="utf-8")
+    assert "AudioManager.set_current_district" in src
+    assert "user://settings.json" in src
 
 
 def test_validate_py_exits_zero() -> None:
