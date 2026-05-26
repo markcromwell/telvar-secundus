@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.3", "Mobile")
 [autoload]
 
 ItemDatabase="*res://scripts/items/ItemDatabase.gd"
+Inventory="*res://scripts/autoload/Inventory.gd"
 
 [display]
 
