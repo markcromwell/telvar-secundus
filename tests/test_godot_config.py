@@ -15,6 +15,9 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+DEFAULT_BUS_LAYOUT = REPO_ROOT / "default_bus_layout.tres"
+AUDIO_MANAGER_SCENE = REPO_ROOT / "audio_manager.tscn"
+AUDIO_MANAGER_SCRIPT = REPO_ROOT / "audio_manager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +106,45 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_default_bus_layout_exists() -> None:
+    assert DEFAULT_BUS_LAYOUT.is_file()
+
+
+def test_default_bus_layout_has_master_music_sfx_buses() -> None:
+    text = DEFAULT_BUS_LAYOUT.read_text(encoding="utf-8")
+    assert 'bus/0/name = &"Master"' in text
+    assert 'bus/1/name = &"Music"' in text
+    assert 'bus/2/name = &"SFX"' in text
+
+
+def test_audio_manager_files_exist() -> None:
+    assert AUDIO_MANAGER_SCENE.is_file()
+    assert AUDIO_MANAGER_SCRIPT.is_file()
+
+
+def test_audio_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    autoload = _unquote_godot_value(cp.get("autoload", "AudioManager"))
+    assert autoload == "*res://audio_manager.tscn"
+
+
+def test_project_points_at_default_bus_layout() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    layout = _unquote_godot_value(cp.get("audio", "buses/default_bus_layout"))
+    assert layout == "res://default_bus_layout.tres"
+
+
+def test_audio_manager_script_defines_required_methods() -> None:
+    src = AUDIO_MANAGER_SCRIPT.read_text(encoding="utf-8")
+    assert "func play_music(" in src
+    assert "func play_sfx(" in src
+    assert "func set_volume(" in src
+
+
+def test_audio_manager_scene_has_music_and_sfx_players() -> None:
+    tscn = AUDIO_MANAGER_SCENE.read_text(encoding="utf-8")
+    assert 'name="MusicPlayer"' in tscn
+    assert "type=\"AudioStreamPlayer\"" in tscn
+    assert 'name="SFXPlayer"' in tscn
