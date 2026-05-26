@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "phase_id": 2686,
+  "location_id": "veneficturis_apprentice_room",
+  "description": "Dialogue trees for Telvar's fellow apprentices in the Veneficturis apprentice hall.",
+  "npcs": {
+    "daran": {
+      "display_name": "Daran",
+      "personality_notes": "Ambitious, rank-conscious, treats drills like a contest; respects competence more than birth.",
+      "entry_node": "daran_open",
+      "nodes": {
+        "daran_open": {
+          "lines": [
+            {
+              "speaker": "Daran",
+              "text": "Orsson. Third time this week you've crossed the practice threshold before the second bell — either you're chasing Rutilus stigma off your boots, or Myramar's got you on a leash tighter than the rest of us."
+            }
+          ],
+          "choices": [
+            {
+              "id": "daran_c1",
+              "text": "I'm not running from the rank. I just don't like being late.",
+              "next": "daran_discipline"
+            },
+            {
+              "id": "daran_c2",
+              "text": "Myramar expects precision. I give it.",
+              "next": "daran_mentor"
+            },
+            {
+              "id": "daran_c3",
+              "text": "Say what you want — I beat your candle-flame form yesterday.",
+              "next": "daran_rivalry"
+            }
+          ]
+        },
+        "daran_discipline": {
+          "lines": [
+            {
+              "speaker": "Daran",
+              "text": "Discipline reads well on parchment. In the arena it'll be the Test of Fire that sorts us, not punctuality. Still… I'd rather stand beside someone who shows up than half the named houses who stroll in when they please."
+            }
+          ],
+          "choices": [
+            {
+              "id": "daran_c4",
+              "text": "Then we're agreed — we drill like we mean it.",
+              "next": "daran_closing_push"
+            },
+            {
+              "id": "daran_c5",
+              "text": "I'll take punctuality over noble swagger any day.",
+              "next": "daran_closing_smirk"
+            }
+          ]
+        },
+        "daran_mentor": {
+          "lines": [
+            {
+              "speaker": "Daran",
+              "text": "Myramar's circle doesn't praise idly. If he's carved time for a merchant's son from Secundus, either you're raw talent or he's shaping you for something the rest of us don't get to read yet. Don't waste the edge — some of us would kill for that attention."
+            }
+          ],
+          "choices": [
+            {
+              "id": "daran_c6",
+              "text": "I'll earn it. Every lesson.",
+              "next": "daran_closing_push"
+            }
+          ]
+        },
+        "daran_rivalry": {
+          "lines": [
+            {
+              "speaker": "Daran",
+              "text": "Ha! One lucky gust. Next round I'll pin your wick before you draw breath. Veneficturis loves a ladder — Rutilus floor to red sash — and I'm not stopping for nostalgia."
+            }
+          ],
+          "choices": [
+            {
+              "id": "daran_c7",
+              "text": "Good. Keeps my edge sharp.",
+              "next": "daran_closing_smirk"
+            },
+            {
+              "id": "daran_c8",
+              "text": "Climb all you like — just don't step on my chalk circle.",
+              "next": "daran_closing_push"
+            }
+          ]
+        },
+        "daran_closing_push": {
+          "lines": [
+            {
+              "speaker": "Daran",
+              "text": "Save the talk for the hall. When the masters ring the trial flame, I intend to be ahead of you — and ahead of every crest-born who thinks Secundus grit is a joke."
+            }
+          ],
+          "choices": []
+        },
+        "daran_closing_smirk": {
+          "lines": [
+            {
+              "speaker": "Daran",
+              "text": "Keep that swagger. The academy eats humble; it only respects hungry. See you at bells, Orsson."
+            }
+          ],
+          "choices": []
+        }
+      }
+    },
+    "yessa": {
+      "display_name": "Yessa",
+      "personality_notes": "Observant, careful with words; reads people and faculty politics; quietly loyal to friends.",
+      "entry_node": "yessa_open",
+      "nodes": {
+        "yessa_open": {
+          "lines": [
+            {
+              "speaker": "Yessa",
+              "text": "Telvar — sit, if you want. I've been mapping the old ventilation runes above the apprentice vault; the drafts carry whispers from the lecture tiers. Nothing treasonous… just patterns. You're smiling less than last month."
+            }
+          ],
+          "choices": [
+            {
+              "id": "yessa_c1",
+              "text": "Just tired. Veneficturis doesn't sleep.",
+              "next": "yessa_fatigue"
+            },
+            {
+              "id": "yessa_c2",
+              "text": "What kind of patterns?",
+              "next": "yessa_patterns"
+            },
+            {
+              "id": "yessa_c3",
+              "text": "Myramar's lessons are… a lot.",
+              "next": "yessa_mentor"
+            }
+          ]
+        },
+        "yessa_fatigue": {
+          "lines": [
+            {
+              "speaker": "Yessa",
+              "text": "The city outside still thinks wizards glide on smoke. Truth is we're mortar and ink and bruised knees from chalk circles. If the weight's only exhaustion, rest is honest. If it's doubt, tell someone who won't use it against you."
+            }
+          ],
+          "choices": [
+            {
+              "id": "yessa_c4",
+              "text": "It's exhaustion. Mostly.",
+              "next": "yessa_closing_kind"
+            },
+            {
+              "id": "yessa_c5",
+              "text": "…Maybe a little doubt.",
+              "next": "yessa_closing_kind"
+            }
+          ]
+        },
+        "yessa_patterns": {
+          "lines": [
+            {
+              "speaker": "Yessa",
+              "text": "Schedules shifting without notice. Certain vault keys signed out to tutors who never teach that cohort. It probably means nothing — academies are labyrinths of habit. Still, I keep a second notebook. If your path crosses something that doesn't feel like ordinary Veneficturis fuss… I'd want to know."
+            }
+          ],
+          "choices": [
+            {
+              "id": "yessa_c6",
+              "text": "I'll tell you if something's off.",
+              "next": "yessa_closing_watch"
+            },
+            {
+              "id": "yessa_c7",
+              "text": "You're worrying too much.",
+              "next": "yessa_closing_shrug"
+            }
+          ]
+        },
+        "yessa_mentor": {
+          "lines": [
+            {
+              "speaker": "Yessa",
+              "text": "Myramar's reputation walks ahead of him like a second shadow — brilliant, exacting. Students brag when he singles them out. I just… hope the attention still feels like teaching, not like being filed for later."
+            }
+          ],
+          "choices": [
+            {
+              "id": "yessa_c8",
+              "text": "It still feels like teaching. For now.",
+              "next": "yessa_closing_watch"
+            },
+            {
+              "id": "yessa_c9",
+              "text": "That's uncomfortably close to the mark.",
+              "next": "yessa_closing_kind"
+            }
+          ]
+        },
+        "yessa_closing_kind": {
+          "lines": [
+            {
+              "speaker": "Yessa",
+              "text": "Then breathe with me — four counts in, six out, like the healer hall taught. Secundus didn't raise you to burn out on the first rung. When the Test of Fire comes, I want you whole enough to choose your next step, not stumble into it."
+            }
+          ],
+          "choices": []
+        },
+        "yessa_closing_watch": {
+          "lines": [
+            {
+              "speaker": "Yessa",
+              "text": "Good. I'll hold you to that honesty — and I'll hold mine. We're Rutilus-floor rabble together until the sashes say otherwise; that has to mean something here."
+            }
+          ],
+          "choices": []
+        },
+        "yessa_closing_shrug": {
+          "lines": [
+            {
+              "speaker": "Yessa",
+              "text": "Maybe I am. Better too sharp than too blind. Go — before Daran starts another 'friendly' wager you didn't agree to."
+            }
+          ],
+          "choices": []
+        }
+      }
+    },
+    "corvin": {
+      "display_name": "Corvin",
+      "personality_notes": "Dry humor, street-smart Secundus outlook; skeptical of academy theater, loyal in his own way.",
+      "entry_node": "corvin_open",
+      "nodes": {
+        "corvin_open": {
+          "lines": [
+            {
+              "speaker": "Corvin",
+              "text": "Look who survived another day of 'harmonic resonance' without nodding off. If I have to hear one more lecture on dignified posture while we're sleeping three to a cold stone cell, I'm forging my own diploma out of bacon grease and hubris."
+            }
+          ],
+          "choices": [
+            {
+              "id": "corvin_c1",
+              "text": "Veneficturis isn't *that* bad.",
+              "next": "corvin_defense"
+            },
+            {
+              "id": "corvin_c2",
+              "text": "Bacon grease wouldn't fool the archivists.",
+              "next": "corvin_banter"
+            },
+            {
+              "id": "corvin_c3",
+              "text": "You miss the markets?",
+              "next": "corvin_secundus"
+            }
+          ]
+        },
+        "corvin_defense": {
+          "lines": [
+            {
+              "speaker": "Corvin",
+              "text": "For you, maybe — Myramar's pet project gets the good chalk. For the rest of us it's drafty halls and rules written by people who've never haggled a fishwife down a copper. Still… the view from the parapet beats my uncle's warehouse roof. Slightly fewer rats."
+            }
+          ],
+          "choices": [
+            {
+              "id": "corvin_c4",
+              "text": "I'll save you a seat at supper.",
+              "next": "corvin_closing_soft"
+            },
+            {
+              "id": "corvin_c5",
+              "text": "Pet project? That's harsh.",
+              "next": "corvin_closing_needle"
+            }
+          ]
+        },
+        "corvin_banter": {
+          "lines": [
+            {
+              "speaker": "Corvin",
+              "text": "Archivists sniff everything — ink, fear, last week's soup. That's why I stick to sarcasm; it's the one reagent they haven't catalogued. Come on, Telvar, you've still got merchant timing in those wrists. Use it before the academy irons it flat."
+            }
+          ],
+          "choices": [
+            {
+              "id": "corvin_c6",
+              "text": "Nobody's ironing me flat.",
+              "next": "corvin_closing_soft"
+            }
+          ]
+        },
+        "corvin_secundus": {
+          "lines": [
+            {
+              "speaker": "Corvin",
+              "text": "Course I do — the noise, the honest scams, bread that tastes like work. Up here we're polishing syllables for lords who think Secundus is a smell they stepped over. But… I didn't climb Veneficturis' stairs to crawl back down whining. Just keep reminding me why the air's thinner, wizard-boy."
+            }
+          ],
+          "choices": [
+            {
+              "id": "corvin_c7",
+              "text": "Because down there nobody teaches you how not to burn.",
+              "next": "corvin_closing_fire"
+            },
+            {
+              "id": "corvin_c8",
+              "text": "Because we're stupid enough to want more.",
+              "next": "corvin_closing_soft"
+            }
+          ]
+        },
+        "corvin_closing_soft": {
+          "lines": [
+            {
+              "speaker": "Corvin",
+              "text": "Heh. Same old Orsson — all heart and bad odds. All right, I'll behave till tomorrow's lecture. If Daran starts measuring flame heights again, you're explaining why."
+            }
+          ],
+          "choices": []
+        },
+        "corvin_closing_needle": {
+          "lines": [
+            {
+              "speaker": "Corvin",
+              "text": "Truth's harsh, friend; I leave the velvet phrasing to Yessa. Prove me wrong at the Test of Fire — I'll cheer loudest if you do."
+            }
+          ],
+          "choices": []
+        },
+        "corvin_closing_fire": {
+          "lines": [
+            {
+              "speaker": "Corvin",
+              "text": "Poetic. Disgusting. Accurate. Go on, then — before some tutor mistakes sincerity for curriculum and assigns it as homework."
+            }
+          ],
+          "choices": []
+        }
+      }
+    }
+  }
+}
