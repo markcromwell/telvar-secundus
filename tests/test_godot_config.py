@@ -15,6 +15,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+MYRAMAR_SCENE = REPO_ROOT / "scenes" / "npcs" / "myramar.tscn"
+MYRAMAR_SCRIPT = REPO_ROOT / "scripts" / "npcs" / "myramar.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -45,6 +47,12 @@ def _load_ini(path: Path) -> configparser.ConfigParser:
 
 def test_project_godot_exists() -> None:
     assert PROJECT_GODOT.is_file()
+
+
+def test_project_autoloads_dialogue_and_inventory() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert 'InventoryManager="*res://scripts/inventory_manager.gd"' in text
+    assert 'DialogueManager="*res://scripts/dialogue_manager.gd"' in text
 
 
 def test_export_presets_exists() -> None:
@@ -103,3 +111,14 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_myramar_npc_scene_exists() -> None:
+    assert MYRAMAR_SCENE.is_file()
+
+
+def test_myramar_npc_script_exists() -> None:
+    assert MYRAMAR_SCRIPT.is_file()
+    text = MYRAMAR_SCRIPT.read_text(encoding="utf-8")
+    assert "act_3_complete" in text
+    assert "show_dialogue" in text

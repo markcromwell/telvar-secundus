@@ -9,6 +9,16 @@ import sys, os
 # Bootstrap mode: check only what is strictly required at this stage
 errors = []
 
+repo_root = os.path.dirname(os.path.abspath(__file__))
+myramar_scene = os.path.join(repo_root, "scenes", "npcs", "myramar.tscn")
+myramar_script = os.path.join(repo_root, "scripts", "npcs", "myramar.gd")
+for label, path in (
+    ("Myramar NPC scene", myramar_scene),
+    ("Myramar NPC script", myramar_script),
+):
+    if not os.path.isfile(path):
+        errors.append(f"{label} missing: {path}")
+
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)
 
