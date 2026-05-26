@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4councilchamber"]
+
+[ext_resource type="Script" path="res://scenes/council_chamber/council_chamber.gd" id="1_script"]
+[ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="2_tileset"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stairs"]
+size = Vector2(64, 32)
+
+[node name="CouncilChamber" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Terrain" type="TileMap" parent="."]
+scale = Vector2(2, 2)
+tile_set = ExtResource("2_tileset")
+format = 2
+layer_0/name = "terrain"
+layer_0/tile_data = PackedInt32Array()
+
+[node name="TowerStairsExit" type="Area2D" parent="."]
+collision_layer = 1
+collision_mask = 1
+monitoring = true
+monitorable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TowerStairsExit"]
+shape = SubResource("RectangleShape2D_stairs")

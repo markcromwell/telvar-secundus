@@ -17,6 +17,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 MYRAMAR_DIALOGUE = REPO_ROOT / "assets" / "dialogue" / "myramar.json"
+LPC_TILESET_PNG = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.png"
+LPC_TILESET_TRES = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.tres"
+COUNCIL_CHAMBER_SCENE = REPO_ROOT / "scenes" / "council_chamber" / "council_chamber.tscn"
+COUNCIL_CHAMBER_GD = REPO_ROOT / "scenes" / "council_chamber" / "council_chamber.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -105,6 +109,30 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_lpc_terrain_tileset_assets_exist() -> None:
+    assert LPC_TILESET_PNG.is_file(), f"Missing tileset texture: {LPC_TILESET_PNG}"
+    assert LPC_TILESET_TRES.is_file(), f"Missing TileSet: {LPC_TILESET_TRES}"
+    tres = LPC_TILESET_TRES.read_text(encoding="utf-8")
+    assert "type=\"TileSet\"" in tres
+    assert "res://assets/tilesets/lpc_terrain.png" in tres
+    assert "texture_region_size = Vector2i(16, 16)" in tres
+    assert "physics_layer_0/collision_layer = 1" in tres
+
+
+def test_council_chamber_scene_wired() -> None:
+    assert COUNCIL_CHAMBER_SCENE.is_file()
+    assert COUNCIL_CHAMBER_GD.is_file()
+    tscn = COUNCIL_CHAMBER_SCENE.read_text(encoding="utf-8")
+    assert 'type="TileMap"' in tscn
+    assert "TowerStairsExit" in tscn
+    assert "lpc_terrain.tres" in tscn
+    assert "council_chamber.gd" in tscn
+    gd = COUNCIL_CHAMBER_GD.read_text(encoding="utf-8")
+    assert "GRID_SIZE := 12" in gd
+    assert "set_cell" in gd
+    assert "TowerStairsExit" in gd
 
 
 def test_myramar_dialogue_json_well_formed() -> None:
