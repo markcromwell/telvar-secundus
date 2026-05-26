@@ -15,6 +15,7 @@ config/features=PackedStringArray("4.3", "Mobile")
 
 [autoload]
 
+DialogueManager="*res://scripts/dialogue_manager.gd"
 LoreManager="*res://scripts/lore_manager.gd"
 
 [display]

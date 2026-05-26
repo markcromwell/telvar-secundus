@@ -18,6 +18,7 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 LORE_ENTRIES_JSON = REPO_ROOT / "assets" / "lore" / "lore_entries.json"
 LORE_MANAGER_GD = REPO_ROOT / "scripts" / "lore_manager.gd"
+DIALOGUE_MANAGER_GD = REPO_ROOT / "scripts" / "dialogue_manager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -108,6 +109,40 @@ def test_export_preset_web_runnable() -> None:
     assert runnable == "true"
 
 
+def _autoload_binding_order() -> list[str]:
+    """Return autoload singleton names in file order (Godot instantiates in this order)."""
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    names: list[str] = []
+    in_autoload = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("[") and stripped.endswith("]"):
+            in_autoload = stripped == "[autoload]"
+            continue
+        if not in_autoload or not stripped or stripped.startswith(";"):
+            continue
+        if "=" not in stripped:
+            continue
+        name = stripped.split("=", 1)[0].strip()
+        names.append(name)
+    return names
+
+
+def test_dialogue_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    path = _unquote_godot_value(cp.get("autoload", "DialogueManager"))
+    assert path == "*res://scripts/dialogue_manager.gd"
+
+
+def test_dialogue_manager_autoload_before_lore_manager() -> None:
+    order = _autoload_binding_order()
+    assert "DialogueManager" in order
+    assert "LoreManager" in order
+    assert order.index("DialogueManager") < order.index("LoreManager")
+
+
 def test_lore_manager_autoload_registered() -> None:
     cp = _load_ini(PROJECT_GODOT)
     assert cp.has_section("autoload")
@@ -138,3 +173,17 @@ def test_lore_manager_gd_api_surface() -> None:
     assert "var unlocked: Array[String] = []" in src
     assert "func unlock(entry_id: String)" in src
     assert "func is_unlocked(id: String) -> bool" in src
+
+
+def test_dialogue_manager_gd_lore_flags_covers_all_lore_ids() -> None:
+    assert DIALOGUE_MANAGER_GD.is_file()
+    data = json.loads(LORE_ENTRIES_JSON.read_text(encoding="utf-8"))
+    entry_ids = {item["id"] for item in data}
+    src = DIALOGUE_MANAGER_GD.read_text(encoding="utf-8")
+    assert "var _flags: Dictionary = {}" in src
+    assert "func set_flag(key: String, value)" in src
+    assert "func get_flag(key: String)" in src
+    assert "LoreManager.unlock(LORE_FLAGS[key])" in src
+    for lore_id in entry_ids:
+        needle = f'"{lore_id}"'
+        assert needle in src, f"Missing lore id mapping for {lore_id!r} in dialogue_manager.gd"
