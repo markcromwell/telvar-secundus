@@ -103,3 +103,39 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_export_preset_windows_desktop_platform() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.has_section("preset.1")
+    platform = _unquote_godot_value(cp.get("preset.1", "platform"))
+    assert platform == "Windows Desktop"
+
+
+def test_export_preset_windows_runnable() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.get("preset.1", "runnable") == "true"
+
+
+def test_export_presets_bundle_all_project_resources() -> None:
+    """all_resources ensures every imported resource (including res://audio) ships in PCK."""
+    cp = _load_ini(EXPORT_PRESETS)
+    for section in ("preset.0", "preset.1"):
+        filt = _unquote_godot_value(cp.get(section, "export_filter"))
+        assert filt == "all_resources"
+
+
+def test_export_preset_web_lean_texture_and_wasm_settings() -> None:
+    """HTML5: single-threaded wasm is smaller than threaded; skip mobile VRAM formats when unused."""
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.get("preset.0.options", "variant/thread_support") == "false"
+    assert cp.get("preset.0.options", "variant/extensions_support") == "false"
+    assert cp.get("preset.0.options", "vram_texture_compression/for_mobile") == "false"
+    assert cp.get("preset.0.options", "vram_texture_compression/for_desktop") == "true"
+
+
+def test_export_preset_windows_texture_formats_desktop_only() -> None:
+    """Windows desktop build: S3TC/BPTC only (no redundant ETC2/ASTC transcodes in the export)."""
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.get("preset.1.options", "texture_format/s3tc_bptc") == "true"
+    assert cp.get("preset.1.options", "texture_format/etc2_astc") == "false"
