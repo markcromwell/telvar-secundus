@@ -1,0 +1,8 @@
+{
+  "id": "merchants_delivery",
+  "title": "Merchant's Delivery",
+  "description": "Deliver the package to the merchant in the market district.",
+  "giver": "sabatha",
+  "reward_description": "10 gold pieces",
+  "status": "not_started"
+}

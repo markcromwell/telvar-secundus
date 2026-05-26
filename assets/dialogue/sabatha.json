@@ -1,0 +1,28 @@
+[
+  {
+    "id": "start",
+    "text": "Hello there, young one. Telvar, isn't it?",
+    "speaker": "Sabatha",
+    "next": "node2"
+  },
+  {
+    "id": "node2",
+    "text": "I have a small favor to ask. I need this package delivered.",
+    "speaker": "Sabatha",
+    "next": "node3"
+  },
+  {
+    "id": "node3",
+    "text": "Could you take it to the merchant for me?",
+    "speaker": "Sabatha",
+    "next": "end",
+    "action": "assign_quest",
+    "quest_id": "merchants_delivery"
+  },
+  {
+    "id": "end",
+    "text": "Thank you, Telvar.",
+    "speaker": "Sabatha",
+    "next": null
+  }
+]
