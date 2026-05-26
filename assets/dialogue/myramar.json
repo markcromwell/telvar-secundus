@@ -1,0 +1,75 @@
+[
+  {
+    "id": "start",
+    "text": "Your steps are heavy. If you must speak of whatever has you worked up, you may do so as a student ought—or you may squander breath on noise. Choose your tone carefully; my patience is not endless.",
+    "speaker": "Myramar",
+    "choices": [
+      {
+        "text": "Master, I only wish to be useful. If there has been unease among the newer students, I hoped you might counsel me on how not to dishonor the house.",
+        "next": "myramar_deflect_missing_apprentices_diplomatic_a"
+      },
+      {
+        "text": "People are talking about apprentices going missing. If you know anything about it, say it—do not send me off with empty comfort.",
+        "next": "myramar_deflect_missing_apprentices_confrontational_a"
+      }
+    ]
+  },
+  {
+    "id": "myramar_deflect_missing_apprentices_diplomatic_a",
+    "text": "Unease is a word for those who have time to invent it. You have lessons, forms, and duties—attend to those, and you will find your footing without borrowing trouble from the corridor.",
+    "speaker": "Myramar",
+    "choices": [
+      {
+        "text": "I understand. I only hoped a word from you might keep me from stumbling into something… awkward.",
+        "next": "myramar_deflect_missing_apprentices_diplomatic_b"
+      },
+      {
+        "text": "You are right. I should return to my exercises.",
+        "next": "myramar_missing_apprentices_close_neutral"
+      }
+    ]
+  },
+  {
+    "id": "myramar_deflect_missing_apprentices_diplomatic_b",
+    "text": "Awkwardness is cured by competence, not by gossip dressed in courtesy. If you are truly concerned with honor, prove it in your work—not in whispered inventories of other people's comings and goings.",
+    "speaker": "Myramar",
+    "choices": [
+      {
+        "text": "Yes, Master. Forgive the distraction.",
+        "next": "myramar_missing_apprentices_close_neutral"
+      }
+    ]
+  },
+  {
+    "id": "myramar_deflect_missing_apprentices_confrontational_a",
+    "text": "You mistake volume for truth. I am not obliged to chase every rumor you drag in from the stairwell—and you are not entitled to answers simply because you demand them like a market haggler.",
+    "speaker": "Myramar",
+    "choices": [
+      {
+        "text": "Then say plainly that there is nothing to it and be done.",
+        "next": "myramar_deflect_missing_apprentices_confrontational_b"
+      },
+      {
+        "text": "Fine. Waste my time if that pleases you.",
+        "next": "myramar_missing_apprentices_close_neutral"
+      }
+    ]
+  },
+  {
+    "id": "myramar_deflect_missing_apprentices_confrontational_b",
+    "text": "Plainly? Plainly you are wasting breath that would be better spent on what is in front of you. Return to your studies before you teach the stones to answer back.",
+    "speaker": "Myramar",
+    "choices": [
+      {
+        "text": "…Understood.",
+        "next": "myramar_missing_apprentices_close_neutral"
+      }
+    ]
+  },
+  {
+    "id": "myramar_missing_apprentices_close_neutral",
+    "text": "Good. See that your next entrance is quieter.",
+    "speaker": "Myramar",
+    "next": null
+  }
+]
