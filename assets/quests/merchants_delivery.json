@@ -1,0 +1,10 @@
+{
+  "id": "merchants_delivery",
+  "title": "Merchant's Delivery",
+  "objectives": [
+    {
+      "id": "find_package",
+      "desc": "Locate the missing package for the market stall."
+    }
+  ]
+}
