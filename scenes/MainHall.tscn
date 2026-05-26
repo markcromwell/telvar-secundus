@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="1_tileset"]
+[ext_resource type="Script" path="res://scenes/main_hall_tilemap.gd" id="2_tilemap_script"]
+[ext_resource type="Script" path="res://scenes/scene_transition_door.gd" id="3_door_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_class"]
+size = Vector2(40, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_lab"]
+size = Vector2(40, 28)
+
+[node name="MainHall" type="Node2D"]
+
+[node name="Terrain" type="TileMap" parent="."]
+tile_set = ExtResource("1_tileset")
+format = 2
+script = ExtResource("2_tilemap_script")
+
+[node name="DoorToClassroom" type="Area2D" parent="."]
+collision_mask = 1
+position = Vector2(64, 188)
+script = ExtResource("3_door_script")
+target_scene = "res://scenes/Classroom.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorToClassroom"]
+shape = SubResource("RectangleShape2D_door_class")
+
+[node name="DoorToLaboratory" type="Area2D" parent="."]
+collision_mask = 1
+position = Vector2(176, 188)
+script = ExtResource("3_door_script")
+target_scene = "res://scenes/Laboratory.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorToLaboratory"]
+shape = SubResource("RectangleShape2D_door_lab")
