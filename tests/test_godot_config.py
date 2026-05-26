@@ -151,3 +151,30 @@ def test_dialogue_box_scene_exists() -> None:
     assert 'name="TextLabel"' in body
     assert 'name="ChoicesContainer"' in body
     assert 'name="PortraitTexture"' in body
+
+
+def test_npc_script_markers() -> None:
+    path = REPO_ROOT / "scripts" / "NPC.gd"
+    assert path.is_file()
+    body = path.read_text(encoding="utf-8")
+    assert "@export var npc_id" in body
+    assert 'Input.is_action_just_pressed("interact")' in body
+    assert "func _load_dialogue(" in body
+
+
+def test_npc_scene_structure() -> None:
+    path = REPO_ROOT / "scenes" / "NPC.tscn"
+    assert path.is_file()
+    body = path.read_text(encoding="utf-8")
+    assert 'type="Area2D"' in body
+    assert "res://scripts/NPC.gd" in body
+    assert "CircleShape2D" in body
+    assert 'type="Sprite2D"' in body
+
+
+def test_player_script_movement_lock_guard() -> None:
+    path = REPO_ROOT / "scripts" / "Player.gd"
+    assert path.is_file()
+    body = path.read_text(encoding="utf-8")
+    assert "var can_move" in body
+    assert "if not can_move:" in body

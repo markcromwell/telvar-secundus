@@ -13,6 +13,9 @@ errors = []
 project_godot = REPO_ROOT / "project.godot"
 dialogue_manager = REPO_ROOT / "scripts" / "DialogueManager.gd"
 dialogue_box = REPO_ROOT / "scenes" / "DialogueBox.tscn"
+npc_script = REPO_ROOT / "scripts" / "NPC.gd"
+npc_scene = REPO_ROOT / "scenes" / "NPC.tscn"
+player_script = REPO_ROOT / "scripts" / "Player.gd"
 
 if not dialogue_manager.is_file():
     errors.append(f"Missing DialogueManager script: {dialogue_manager}")
@@ -51,6 +54,40 @@ if project_godot.is_file():
             errors.append(
                 "DialogueManager.show_dialogue must guard on is_dialogue_active"
             )
+
+if not npc_script.is_file():
+    errors.append(f"Missing NPC script: {npc_script}")
+else:
+    npc_src = npc_script.read_text(encoding="utf-8")
+    for marker in (
+        "@export var npc_id",
+        'Input.is_action_just_pressed("interact")',
+        "func _load_dialogue(",
+    ):
+        if marker not in npc_src:
+            errors.append(f"NPC.gd missing required marker: {marker!r}")
+
+if not npc_scene.is_file():
+    errors.append(f"Missing NPC scene: {npc_scene}")
+else:
+    npc_tscn = npc_scene.read_text(encoding="utf-8")
+    if 'type="Area2D"' not in npc_tscn:
+        errors.append("NPC.tscn must include root or node type Area2D")
+    if "res://scripts/NPC.gd" not in npc_tscn:
+        errors.append("NPC.tscn must reference script res://scripts/NPC.gd")
+    if "CircleShape2D" not in npc_tscn:
+        errors.append("NPC.tscn must define a CircleShape2D for CollisionShape2D")
+    if 'type="Sprite2D"' not in npc_tscn:
+        errors.append("NPC.tscn must include a Sprite2D child node")
+
+if not player_script.is_file():
+    errors.append(f"Missing Player script: {player_script}")
+else:
+    player_src = player_script.read_text(encoding="utf-8")
+    if "var can_move" not in player_src:
+        errors.append("Player.gd must declare var can_move")
+    if "if not can_move:" not in player_src:
+        errors.append("Player.gd _physics_process must guard with if not can_move")
 
 if errors:
     for e in errors:
