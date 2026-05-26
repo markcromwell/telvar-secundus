@@ -15,6 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+SAVE_DIALOG_TSCN = REPO_ROOT / "ui" / "save_dialog.tscn"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +104,21 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_save_dialog_scene_has_three_slot_buttons_and_hidden_notification() -> None:
+    assert SAVE_DIALOG_TSCN.is_file()
+    text = SAVE_DIALOG_TSCN.read_text(encoding="utf-8")
+    for slot in ("Slot1", "Slot2", "Slot3"):
+        assert f'[node name="{slot}" type="Button"' in text
+    assert '[node name="NotificationLabel" type="Label"' in text
+    assert "visible = false" in text
+
+
+def test_main_scene_setting_points_at_existing_file() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    raw = cp.get("application", "run/main_scene")
+    main_scene = _unquote_godot_value(raw)
+    assert main_scene.startswith("res://")
+    rel = main_scene.removeprefix("res://")
+    assert (REPO_ROOT / rel).is_file()
