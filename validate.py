@@ -38,6 +38,46 @@ if not _save_menu_script.is_file():
 if not _scene_transition_script.is_file():
     errors.append("Missing scripts/scene_transition.gd (scene_changed + autosave hook).")
 
+_credits_md = REPO_ROOT / "CREDITS.md"
+_main_menu = REPO_ROOT / "scenes" / "main_menu.tscn"
+_credits_scene = REPO_ROOT / "scenes" / "credits.tscn"
+_end_screen = REPO_ROOT / "scenes" / "end_screen.tscn"
+_credits_gd = REPO_ROOT / "scripts" / "credits.gd"
+_active_slot = REPO_ROOT / "scripts" / "active_save_slot.gd"
+if not _credits_md.is_file():
+    errors.append("Missing CREDITS.md")
+else:
+    _credits_text = _credits_md.read_text(encoding="utf-8")
+    for line in (
+        "# Credits",
+        "## Art",
+        "LPC Base Sprites",
+        "## Code",
+        "Godot Engine 4.3",
+        "## Story",
+        "New Paladin Order",
+    ):
+        if line not in _credits_text:
+            errors.append(f"CREDITS.md missing expected line: {line!r}")
+if not _main_menu.is_file():
+    errors.append("Missing scenes/main_menu.tscn")
+if not _credits_scene.is_file():
+    errors.append("Missing scenes/credits.tscn")
+if not _end_screen.is_file():
+    errors.append("Missing scenes/end_screen.tscn")
+if not _credits_gd.is_file():
+    errors.append("Missing scripts/credits.gd")
+if not _active_slot.is_file():
+    errors.append("Missing scripts/active_save_slot.gd")
+if _project.is_file() and 'ActiveSaveSlot="*res://scripts/active_save_slot.gd"' not in _project.read_text(
+    encoding="utf-8"
+):
+    errors.append("project.godot must register ActiveSaveSlot autoload at res://scripts/active_save_slot.gd")
+if _main_menu.is_file():
+    _mm_txt = _main_menu.read_text(encoding="utf-8")
+    if '[node name="Credits" type="Button"' not in _mm_txt:
+        errors.append("scenes/main_menu.tscn must include a Credits button.")
+
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)
 

@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmcredits2604"]
+
+[ext_resource type="Script" path="res://scripts/credits.gd" id="1_cr"]
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cr")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="PlayTime" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Play time: 0:00:00"
+
+[node name="Scroll" type="ScrollContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CreditsBody" type="RichTextLabel" parent="VBox/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = false
+fit_content = true
+scroll_active = false
+
+[node name="Finish" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Finish (save & return to menu)"

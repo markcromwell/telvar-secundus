@@ -11,12 +11,14 @@ config_version=5
 [application]
 
 config/name="Telvar Secundus"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 
 [autoload]
 
 SaveSystem="*res://save_system.gd"
 SceneTransition="*res://scripts/scene_transition.gd"
+ActiveSaveSlot="*res://scripts/active_save_slot.gd"
 
 [display]
 
