@@ -21,6 +21,7 @@ APPRENTICE_ROOM_SCENE = REPO_ROOT / "apprentice_room.tscn"
 APPRENTICE_ROOM_SCRIPT = REPO_ROOT / "apprentice_room_floor.gd"
 APPRENTICE_NPC_SCRIPT = REPO_ROOT / "apprentice_npc.gd"
 APPRENTICE_ROOM_FRIENDS_JSON = REPO_ROOT / "data" / "dialogue" / "apprentice_room_friends.json"
+GAME_DATA_RESOURCES_JSON = REPO_ROOT / "data" / "game_data_resources.json"
 NPC_DARAN_SCENE = REPO_ROOT / "npcs" / "npc_daran.tscn"
 NPC_YESSA_SCENE = REPO_ROOT / "npcs" / "npc_yessa.tscn"
 NPC_CORVIN_SCENE = REPO_ROOT / "npcs" / "npc_corvin.tscn"
@@ -136,6 +137,61 @@ def test_apprentice_room_floor_dimensions_8_by_6() -> None:
     script = APPRENTICE_ROOM_SCRIPT.read_text(encoding="utf-8")
     assert "ROOM_WIDTH_TILES := 8" in script
     assert "ROOM_HEIGHT_TILES := 6" in script
+
+
+def test_apprentice_room_floor_loads_game_data_resources() -> None:
+    script = APPRENTICE_ROOM_SCRIPT.read_text(encoding="utf-8")
+    assert "game_data_resources.json" in script
+    assert "veneficturis_apprentice_room" in script
+    assert "_apply_npc_spawns_from_game_data" in script
+
+
+def _res_to_repo_path(res_path: str) -> Path:
+    assert res_path.startswith("res://")
+    return REPO_ROOT / res_path.removeprefix("res://")
+
+
+def test_game_data_resources_registers_apprentice_room_scene() -> None:
+    assert GAME_DATA_RESOURCES_JSON.is_file()
+    gdr = json.loads(GAME_DATA_RESOURCES_JSON.read_text(encoding="utf-8"))
+    locs = gdr["locations"]
+    loc = locs["veneficturis_apprentice_room"]
+    scene_res = loc["scene_path"]
+    assert scene_res == "res://apprentice_room.tscn"
+    scene_path = _res_to_repo_path(scene_res)
+    assert scene_path.is_file()
+
+
+def test_game_data_npc_spawns_align_with_dialogue_location() -> None:
+    """Registry location id must match dialogue resource so runtime wiring stays consistent."""
+    gdr = json.loads(GAME_DATA_RESOURCES_JSON.read_text(encoding="utf-8"))
+    dialogue = json.loads(APPRENTICE_ROOM_FRIENDS_JSON.read_text(encoding="utf-8"))
+    assert "veneficturis_apprentice_room" in gdr["locations"]
+    assert dialogue["location_id"] == "veneficturis_apprentice_room"
+
+
+def test_game_data_npc_spawns_three_friends_within_room() -> None:
+    gdr = json.loads(GAME_DATA_RESOURCES_JSON.read_text(encoding="utf-8"))
+    spawns = gdr["locations"]["veneficturis_apprentice_room"]["npc_spawns"]
+    for key in ("daran", "yessa", "corvin"):
+        assert key in spawns
+        tile = spawns[key]["tile"]
+        assert len(tile) == 2
+        tx, ty = int(tile[0]), int(tile[1])
+        assert 0 <= tx < 8
+        assert 0 <= ty < 6
+
+
+def test_dialogue_npcs_ready_for_runtime_init() -> None:
+    """Mirrors apprentice_npc.gd expectations: entry_node exists inside nodes."""
+    data = json.loads(APPRENTICE_ROOM_FRIENDS_JSON.read_text(encoding="utf-8"))
+    for key in ("daran", "yessa", "corvin"):
+        block = data["npcs"][key]
+        entry = block["entry_node"]
+        nodes = block["nodes"]
+        assert entry in nodes
+        assert block["display_name"]
+        assert isinstance(nodes[entry].get("lines"), list)
 
 
 def test_lpc_dark_stone_png_is_16_square() -> None:
