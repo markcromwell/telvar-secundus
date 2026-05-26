@@ -145,3 +145,17 @@ sources/0 = SubResource("TileSetAtlasSource_cobble")
 sources/1 = SubResource("TileSetAtlasSource_marble")
 sources/2 = SubResource("TileSetAtlasSource_dark_stone")
 sources/3 = SubResource("TileSetAtlasSource_dock")
+
+; Static text markers for CI: display_name strings must match DistrictBounds in district_bounds.gd.
+; Veneficturis
+; Old City
+; Mercator Ward
+; Aspirant Commons
+; Red Quarter
+; Eastmarket
+; Foundry Deep
+; Crystal Promenade
+; Undercroft
+; Harborfront North
+; Severen Quays
+; Severen River
