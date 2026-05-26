@@ -103,3 +103,44 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_dialogue_manager_autoload_registered() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert 'DialogueManager="*res://scripts/DialogueManager.gd"' in text
+
+
+def test_ui_interact_input_action_registered() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert "[input]" in text
+    assert "ui_interact=" in text
+    assert "InputEventKey" in text
+
+
+def test_dialogue_manager_script_public_api() -> None:
+    script = REPO_ROOT / "scripts" / "DialogueManager.gd"
+    assert script.is_file()
+    body = script.read_text(encoding="utf-8")
+    assert "func show_dialogue(" in body
+    assert "func set_flag(" in body
+    assert "func get_flag(" in body
+
+
+def test_dialogue_manager_missing_dir_warns_via_log() -> None:
+    script = REPO_ROOT / "scripts" / "DialogueManager.gd"
+    body = script.read_text(encoding="utf-8")
+    assert "func _load_dialogue_files(" in body
+    assert "DirAccess.open(dir_path)" in body
+    assert "if dir == null:" in body
+    assert "Log.warn(" in body
+
+
+def test_myramar_dialogue_json_contains_quest_flag_token() -> None:
+    """Regression: bracket tokens in dialogue text are parsed into flags at runtime (see DialogueManager)."""
+    import json
+
+    path = REPO_ROOT / "assets" / "dialogue" / "myramar.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    texts = [str(entry.get("text", "")) for entry in data if isinstance(entry, dict)]
+    assert any("[quest_give]" in t for t in texts)
