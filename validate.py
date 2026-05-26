@@ -4,6 +4,7 @@ TELVAR-RPG validation script (bootstrap stub).
 Full validation is implemented in spec #1246.
 During early development, this exits 0 to allow the pipeline to proceed.
 """
+import re
 import sys
 from pathlib import Path
 
@@ -30,23 +31,43 @@ _OBTAIN_SCENE = _REPO / "scenes/ui/obtain_card.tscn"
 _OBTAIN_SCRIPT = _REPO / "scripts/ui/obtain_card.gd"
 _AWARD_CEREMONY = _REPO / "scripts/story/award_ceremony.gd"
 
+
+def _scene_node_block(scene_text, node_name):
+    match = re.search(
+        rf'^\[node name="{re.escape(node_name)}"(?P<header>[^\]]*)\]\n'
+        r'(?P<body>.*?)(?=^\[|\Z)',
+        scene_text,
+        re.MULTILINE | re.DOTALL,
+    )
+    return match
+
+
 for path in _REQUIRED_PATHS:
     if not path.is_file():
         errors.append(f"Missing required file: {path.relative_to(_REPO)}")
 
 if _WIZARD_BAND.is_file():
     band_text = _WIZARD_BAND.read_text(encoding="utf-8")
-    if "magical" not in band_text:
-        errors.append("wizard_band_red.tres must include the magical tag")
-    if "wizard_band_red" not in band_text:
+    if '[gd_resource type="Resource"' not in band_text:
+        errors.append("wizard_band_red.tres must be a Godot Resource")
+    if 'path="res://scripts/resources/item.gd"' not in band_text:
+        errors.append("wizard_band_red.tres must use scripts/resources/item.gd")
+    if 'id = "wizard_band_red"' not in band_text:
         errors.append("wizard_band_red.tres must define id wizard_band_red")
+    if 'display_name = "Red Wizard Band"' not in band_text:
+        errors.append("wizard_band_red.tres must define display_name Red Wizard Band")
+    if not re.search(r'tags\s*=\s*PackedStringArray\([^)]*"magical"', band_text):
+        errors.append("wizard_band_red.tres must include the magical tag")
 
 if _PLAYER_SCENE.is_file():
     player_scene = _PLAYER_SCENE.read_text(encoding="utf-8")
-    if 'name="WristBand"' not in player_scene or "type=\"Sprite2D\"" not in player_scene:
+    wrist_band = _scene_node_block(player_scene, "WristBand")
+    if not wrist_band or 'type="Sprite2D"' not in wrist_band.group("header"):
         errors.append("Player.tscn must define a WristBand Sprite2D node")
-    if "wizard_band_red_wrist.png" not in player_scene:
-        errors.append("Player.tscn must reference the wrist band texture")
+    elif 'texture = ExtResource(' not in wrist_band.group("body"):
+        errors.append("Player.tscn WristBand node must assign a texture")
+    if 'path="res://assets/sprites/wizard_band_red_wrist.png"' not in player_scene:
+        errors.append("Player.tscn must reference assets/sprites/wizard_band_red_wrist.png")
 
 if _PLAYER_SCRIPT.is_file():
     player_gd = _PLAYER_SCRIPT.read_text(encoding="utf-8")
