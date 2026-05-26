@@ -103,3 +103,25 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_export_preset_linux_platform() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    assert cp.has_section("preset.1")
+    platform = _unquote_godot_value(cp.get("preset.1", "platform"))
+    assert platform == "Linux"
+
+
+def test_main_scene_is_myramar_corridor_cutscene() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
+    assert main_scene == "res://scenes/cutscene_myramar_corridor.tscn"
+
+
+def test_autoloads_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    gs = _unquote_godot_value(cp.get("autoload", "gamesession"))
+    ps = _unquote_godot_value(cp.get("autoload", "progressstore"))
+    assert "game_session.gd" in gs
+    assert "progress_store.gd" in ps
