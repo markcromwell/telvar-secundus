@@ -1,21 +1,69 @@
 #!/usr/bin/env python3
-"""
-TELVAR-RPG validation script (bootstrap stub).
-Full validation is implemented in spec #1246.
-During early development, this exits 0 to allow the pipeline to proceed.
-"""
-import sys, os
+"""Structural validation for Telvar Secundus (Godot 4.x) — text checks only, no Godot binary."""
 
-# Bootstrap mode: check only what is strictly required at this stage
-errors = []
+from __future__ import annotations
 
-# Only enforce critical structural checks here
-# (Full validation in spec 1246)
+import sys
+from pathlib import Path
 
-if errors:
-    for e in errors:
-        print("FAIL:", e)
-    sys.exit(1)
+REPO_ROOT = Path(__file__).resolve().parent
 
-print("Bootstrap checks passed (spec 1246 will add full validation)")
-sys.exit(0)
+REQUIRED_FILES: list[str] = [
+    "scripts/enemy/enemy.gd",
+    "scripts/enemy/enemy_ai.gd",
+    "scripts/enemy/enemy_definitions.gd",
+]
+
+# Markers that prove the bootstrap enemy spec is present (names + mechanics).
+FILE_MARKERS: dict[str, list[str]] = {
+    "scripts/enemy/enemy_definitions.gd": [
+        "Rookery Thug",
+        "Corrupted Apprentice",
+        "Shade",
+        "fire_dart",
+        "physical_immune",
+        "ENEMY_ROOKERY_THUG",
+        "ENEMY_CORRUPTED_APPRENTICE",
+        "ENEMY_SHADE",
+    ],
+    "scripts/enemy/enemy.gd": [
+        "class_name Enemy",
+        "MSG_NO_EFFECT",
+        "apply_incoming_damage",
+        "can_cast",
+    ],
+    "scripts/enemy/enemy_ai.gd": [
+        "class_name EnemyAI",
+        "choose_action",
+        "ACTION_CAST",
+        "ACTION_ATTACK",
+    ],
+}
+
+
+def _collect_errors() -> list[str]:
+    errors: list[str] = []
+    for rel in REQUIRED_FILES:
+        path = REPO_ROOT / rel
+        if not path.is_file():
+            errors.append(f"Missing required file: {rel}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for marker in FILE_MARKERS.get(rel, []):
+            if marker not in text:
+                errors.append(f"{rel}: missing marker {marker!r}")
+    return errors
+
+
+def main() -> int:
+    errors = _collect_errors()
+    if errors:
+        for e in errors:
+            print("FAIL:", e)
+        return 1
+    print("Validation OK: enemy scripts and markers present.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
