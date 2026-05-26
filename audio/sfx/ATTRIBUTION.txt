@@ -1,0 +1,8 @@
+SFX in this folder are derived from Kenney's "UI Audio" pack (CC0 / public domain).
+
+Original assets: https://kenney.nl/assets/ui-audio
+
+Source mirror used for pipeline import (lossless WAV, converted here to Ogg Vorbis for web size):
+https://github.com/Calinou/kenney-ui-audio
+
+Credit to Kenney (www.kenney.nl) is appreciated but not required by the license.
