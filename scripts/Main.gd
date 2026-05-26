@@ -5,7 +5,11 @@ extends Control
 
 
 func _on_credits_pressed() -> void:
-	credits_panel.visible = true
+	# Same-origin on Pages: CREDITS.md is copied next to index.html in CI (no CORS).
+	if OS.has_feature("web"):
+		OS.shell_open("CREDITS.md")
+	else:
+		credits_panel.visible = true
 
 
 func _on_credits_closed() -> void:

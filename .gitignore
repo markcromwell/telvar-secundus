@@ -12,6 +12,7 @@ Thumbs.db
 
 # Export artifacts
 build/
+export/
 
 # Python
 __pycache__/

@@ -103,3 +103,10 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_export_preset_web_export_path() -> None:
+    """CI and editor exports must target a concrete path (used by export.yml)."""
+    cp = _load_ini(EXPORT_PRESETS)
+    path = _unquote_godot_value(cp.get("preset.0", "export_path"))
+    assert path == "export/index.html"
