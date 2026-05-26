@@ -8,6 +8,8 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -131,3 +133,16 @@ def test_toggle_spell_panel_input_action_key_s() -> None:
     assert "toggle_spell_panel" in text
     # Godot 4 serializes InputEventKey with quoted keys inside Object(...)
     assert '"physical_keycode":83' in text
+
+
+def test_validate_py_exits_zero() -> None:
+    """Phase 2653: structural validate.py (spell panel, mana bar, spell resources)."""
+    script = REPO_ROOT / "validate.py"
+    proc = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
