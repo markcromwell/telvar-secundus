@@ -1,0 +1,32 @@
+[
+  {
+    "id": "veneficturis_districts",
+    "title": "Twelve districts",
+    "body": "Secundus spreads beyond the academy walls: twelve districts, each with its own guilds, markets, and quiet corners where rumor outruns truth."
+  },
+  {
+    "id": "rutilus_rank",
+    "title": "Red rank",
+    "body": "Rutilus is the first rung of the Veneficturis ladder — the red sash, the smallest voice in council, and the longest road upward."
+  },
+  {
+    "id": "myramar_whispers",
+    "title": "Mentor's notes",
+    "body": "Myramar's marginalia are neat as scripture. Telvar has learned to read them twice: once for the lesson, once for what is not said."
+  },
+  {
+    "id": "test_of_fire",
+    "title": "The Test of Fire",
+    "body": "Older students speak of the Test of Fire in half-sentences, as if naming it fully might call its heat into the room."
+  },
+  {
+    "id": "restricted_sigils",
+    "title": "Sigils behind cordon",
+    "body": "The Restricted Section shelves are warded with layered sigils. Even the rope is part of the working — a polite boundary with teeth."
+  },
+  {
+    "id": "veneficturis_founders",
+    "title": "Founders' oath",
+    "body": "The founders swore Veneficturis would teach restraint before power. The oath is carved above the main hall; the library remembers the exceptions."
+  }
+]
