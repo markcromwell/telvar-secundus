@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://c8worlddemo2666"]
+
+[ext_resource type="Script" path="res://scripts/TelvarController.gd" id="1_telvar"]
+[ext_resource type="Script" path="res://scripts/EnemyEncounterZone.gd" id="2_encounter"]
+[ext_resource type="PackedScene" uid="uid://b8combatui2665" path="res://scenes/CombatUI.tscn" id="3_combat_ui"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(14, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(64, 64)
+
+[node name="WorldDemo" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(400, 360)
+
+[node name="CombatUI" parent="." instance=ExtResource("3_combat_ui")]
+
+[node name="Telvar" type="CharacterBody2D" parent="." groups=PackedStringArray("player")]
+collision_layer = 1
+collision_mask = 0
+position = Vector2(160, 360)
+script = ExtResource("1_telvar")
+
+[node name="BodyVisual" type="ColorRect" parent="Telvar"]
+offset_left = -7.0
+offset_top = -11.0
+offset_right = 7.0
+offset_bottom = 11.0
+color = Color(0.25, 0.55, 0.95, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Telvar"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="EncounterZone" type="Area2D" parent="."]
+collision_mask = 1
+monitoring = true
+position = Vector2(640, 360)
+script = ExtResource("2_encounter")
+
+[node name="ZoneVisual" type="ColorRect" parent="EncounterZone"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.85, 0.35, 0.2, 0.35)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EncounterZone"]
+shape = SubResource("RectangleShape2D_zone")

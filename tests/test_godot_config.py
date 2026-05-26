@@ -17,6 +17,8 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 COMBAT_MANAGER_GD = REPO_ROOT / "scripts" / "CombatManager.gd"
 COMBAT_UI_TSCN = REPO_ROOT / "scenes" / "CombatUI.tscn"
+WORLD_DEMO_TSCN = REPO_ROOT / "scenes" / "WorldDemo.tscn"
+ENEMY_ENCOUNTER_GD = REPO_ROOT / "scripts" / "EnemyEncounterZone.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -141,3 +143,24 @@ def test_combat_ui_scene_exists_with_required_nodes() -> None:
         "CombatUI.gd",
     ):
         assert needle in text, f"CombatUI.tscn missing {needle!r}"
+
+
+def test_main_scene_is_world_demo() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
+    assert main_scene == "res://scenes/WorldDemo.tscn"
+
+
+def test_world_demo_has_encounter_area_and_scripts() -> None:
+    assert WORLD_DEMO_TSCN.is_file()
+    text = WORLD_DEMO_TSCN.read_text(encoding="utf-8")
+    for needle in ('type="Area2D"', "EnemyEncounterZone.gd", "TelvarController.gd", "CombatUI.tscn"):
+        assert needle in text, f"WorldDemo.tscn missing {needle!r}"
+
+
+def test_enemy_encounter_zone_signals_combat_start() -> None:
+    assert ENEMY_ENCOUNTER_GD.is_file()
+    text = ENEMY_ENCOUNTER_GD.read_text(encoding="utf-8")
+    assert "body_entered" in text
+    assert "CombatManager.start_combat" in text
+    assert 'is_in_group("player")' in text

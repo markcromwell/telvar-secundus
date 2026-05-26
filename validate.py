@@ -41,6 +41,26 @@ else:
         if needle not in cu:
             errors.append(f"CombatUI.tscn missing required fragment: {needle!r}")
 
+encounter_gd = os.path.join(ROOT, "scripts", "EnemyEncounterZone.gd")
+if not os.path.isfile(encounter_gd):
+    errors.append("Missing scripts/EnemyEncounterZone.gd")
+else:
+    with open(encounter_gd, encoding="utf-8") as f:
+        eg = f.read()
+    for needle in ("body_entered", "CombatManager.start_combat", 'is_in_group("player")'):
+        if needle not in eg:
+            errors.append(f"EnemyEncounterZone.gd missing required fragment: {needle!r}")
+
+world_tscn = os.path.join(ROOT, "scenes", "WorldDemo.tscn")
+if not os.path.isfile(world_tscn):
+    errors.append("Missing scenes/WorldDemo.tscn")
+else:
+    with open(world_tscn, encoding="utf-8") as f:
+        w = f.read()
+    for needle in ('type="Area2D"', "EnemyEncounterZone.gd", "TelvarController.gd", "CombatUI.tscn"):
+        if needle not in w:
+            errors.append(f"WorldDemo.tscn missing required fragment: {needle!r}")
+
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)
 
