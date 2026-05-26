@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import struct
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+SABATHA_PORTRAIT = REPO_ROOT / "assets/portraits/sabatha.png"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +105,18 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_sabatha_portrait_is_valid_png_48x48() -> None:
+    assert SABATHA_PORTRAIT.is_file()
+    data = SABATHA_PORTRAIT.read_bytes()
+    assert data.startswith(b"\x89PNG")
+    assert data[12:16] == b"IHDR"
+    w, h = struct.unpack(">II", data[16:24])
+    assert w == 48 and h == 48
+
+
+def test_project_autoloads_quest_and_dialogue_managers() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert text.count("QuestManager") >= 1
+    assert text.count("DialogueManager") >= 1
