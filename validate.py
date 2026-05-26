@@ -28,17 +28,31 @@ def main():
     if os.path.exists("MainScene.tscn"):
         with open("MainScene.tscn", "r", encoding="utf-8") as f:
             content = f.read()
-            if 'node name="TileMap"' in content:
+            if 'node name="TileMap"' in content and 'type="TileMap"' in content:
                 print("PASS: MainScene.tscn contains TileMap node")
             else:
                 print("FAIL: MainScene.tscn missing TileMap node")
                 errors.append("MainScene.tscn missing TileMap node")
-                
-            if 'node name="Player"' in content:
-                print("PASS: MainScene.tscn contains Player node")
+
+            if '[node name="Player" type="CharacterBody2D"' in content:
+                print("PASS: MainScene.tscn contains Player as CharacterBody2D")
             else:
-                print("FAIL: MainScene.tscn missing Player node")
-                errors.append("MainScene.tscn missing Player node")
+                print("FAIL: MainScene.tscn Player must be CharacterBody2D")
+                errors.append('MainScene.tscn: expected [node name="Player" type="CharacterBody2D"')
+
+            cam_block_ok = (
+                'node name="Camera2D" type="Camera2D" parent="Player"' in content
+                and "position_smoothing_enabled = true" in content
+                and "position_smoothing_speed = 10.0" in content
+            )
+            if cam_block_ok:
+                print("PASS: MainScene.tscn Player has Camera2D with position smoothing")
+            else:
+                print("FAIL: MainScene.tscn missing Camera2D smoothing under Player")
+                errors.append(
+                    "MainScene.tscn: Camera2D child of Player must set "
+                    "position_smoothing_enabled=true and position_smoothing_speed=10.0"
+                )
 
     # Check Player.gd line-by-line
     if os.path.exists("Player.gd"):
@@ -46,9 +60,10 @@ def main():
         found_can_move = False
         with open("Player.gd", "r", encoding="utf-8") as f:
             for line in f:
-                if "export" in line and "var speed" in line:
+                stripped = line.strip()
+                if stripped.startswith("@export") and "var speed" in line:
                     found_speed = True
-                if "export" in line and "var can_move" in line:
+                if stripped.startswith("@export") and "var can_move" in line:
                     found_can_move = True
         
         if found_speed:
