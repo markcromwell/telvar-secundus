@@ -40,3 +40,18 @@ text = "Spells"
 
 [node name="SpellSlots" type="VBoxContainer" parent="SpellPanel/VBoxContainer"]
 layout_mode = 2
+
+[node name="SpellSlot1" type="Button" parent="SpellPanel/VBoxContainer/SpellSlots"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = ""
+
+[node name="SpellSlot2" type="Button" parent="SpellPanel/VBoxContainer/SpellSlots"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = ""
+
+[node name="SpellSlot3" type="Button" parent="SpellPanel/VBoxContainer/SpellSlots"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = ""

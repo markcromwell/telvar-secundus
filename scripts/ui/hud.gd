@@ -28,7 +28,13 @@ func _ready() -> void:
 		mana_bar.max_value = mana_component.max_mana
 		mana_bar.value = mana_component.current_mana
 		current_mana = mana_component.current_mana
-	
+
+	for i in range(spell_slots.get_child_count()):
+		var slot_btn = spell_slots.get_child(i)
+		if slot_btn is Button:
+			slot_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			slot_btn.pressed.connect(_on_spell_slot_pressed.bind(i))
+
 	_populate_spell_panel()
 
 func setup(p_mana_component: ManaComponent) -> void:
@@ -57,37 +63,55 @@ func _toggle_spell_panel() -> void:
 	spell_panel.visible = not spell_panel.visible
 	if spell_panel.visible:
 		_populate_spell_panel()
-		_update_spell_buttons()
 
 func _populate_spell_panel() -> void:
-	# Clear existing
-	for child in spell_slots.get_children():
-		child.queue_free()
-		
 	var spell_book = get_node_or_null("/root/SpellBook")
-	if not spell_book:
-		return
-		
-	for spell in spell_book.known_spells:
+	for i in range(mini(3, spell_slots.get_child_count())):
+		var btn = spell_slots.get_child(i) as Button
+		if btn == null:
+			continue
+		if btn.has_meta("spell"):
+			btn.remove_meta("spell")
+		btn.text = "—"
+		btn.disabled = true
+		btn.modulate = Color(0.55, 0.55, 0.55, 1.0)
+		if spell_book == null:
+			continue
+		if i >= spell_book.known_spells.size():
+			continue
+		var spell: Spell = spell_book.known_spells[i]
 		if spell == null:
 			continue
-			
-		var btn = Button.new()
 		btn.text = "%s (%d MP)" % [spell.name, spell.mana_cost]
-		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		btn.pressed.connect(func(): _on_spell_button_pressed(spell))
 		btn.set_meta("spell", spell)
-		spell_slots.add_child(btn)
+
+	_update_spell_buttons()
 
 func _update_spell_buttons() -> void:
-	for btn in spell_slots.get_children():
-		if btn is Button:
-			var spell: Spell = btn.get_meta("spell")
-			if spell:
-				var can_cast = current_mana >= spell.mana_cost
-				btn.disabled = not can_cast
+	for i in range(mini(3, spell_slots.get_child_count())):
+		var btn = spell_slots.get_child(i) as Button
+		if btn == null:
+			continue
+		if not btn.has_meta("spell"):
+			btn.disabled = true
+			btn.modulate = Color(0.55, 0.55, 0.55, 1.0)
+			continue
+		var spell: Spell = btn.get_meta("spell") as Spell
+		if spell == null:
+			btn.disabled = true
+			btn.modulate = Color(0.55, 0.55, 0.55, 1.0)
+			continue
+		var can_cast := current_mana >= spell.mana_cost
+		btn.disabled = not can_cast
+		btn.modulate = Color(0.55, 0.55, 0.55, 1.0) if not can_cast else Color.WHITE
 
-func _on_spell_button_pressed(spell: Spell) -> void:
+func _on_spell_slot_pressed(slot_index: int) -> void:
+	var btn = spell_slots.get_child(slot_index) as Button
+	if btn == null or not btn.has_meta("spell"):
+		return
+	var spell: Spell = btn.get_meta("spell") as Spell
+	if spell == null:
+		return
 	if current_mana >= spell.mana_cost:
 		if mana_component and mana_component.use_mana(spell.mana_cost):
 			spell_cast.emit(spell)
