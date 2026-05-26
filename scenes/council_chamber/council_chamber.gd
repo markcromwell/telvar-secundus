@@ -18,15 +18,21 @@ const FLOOR_R2 := 30.25
 ## South doorway cells for return to Tower stairs (y ≥ 10, x 5–6).
 const STAIRS_DOOR_MIN := Vector2i(5, 10)
 const STAIRS_DOOR_MAX := Vector2i(6, 11)
+## South-west landing for Myramar's office (Act 2+).
+const OFFICE_DOOR_MIN := Vector2i(2, 11)
+const OFFICE_DOOR_MAX := Vector2i(3, 11)
 
 @onready var _terrain: TileMap = $Terrain
 @onready var _tower_stairs_exit: Area2D = $TowerStairsExit
+@onready var _office_door: Area2D = $OfficeDoor
 
 
 func _ready() -> void:
 	_build_circle()
 	_build_furniture()
 	_place_tower_stairs_area()
+	_place_office_door_area()
+	_office_door.body_entered.connect(_on_office_door_body_entered)
 
 
 func _build_circle() -> void:
@@ -35,13 +41,17 @@ func _build_circle() -> void:
 			var dx := float(x) - 5.5
 			var dy := float(y) - 5.5
 			var dist_sq := dx * dx + dy * dy
-			var is_floor := dist_sq <= FLOOR_R2 or _is_stairs_landing(x, y)
+			var is_floor := dist_sq <= FLOOR_R2 or _is_stairs_landing(x, y) or _is_office_landing(x, y)
 			var atlas := ATLAS_FLOOR if is_floor else ATLAS_WALL
 			_terrain.set_cell(TILE_LAYER, Vector2i(x, y), SOURCE_ID, atlas)
 
 
 func _is_stairs_landing(x: int, y: int) -> bool:
 	return x >= STAIRS_DOOR_MIN.x and x <= STAIRS_DOOR_MAX.x and y >= STAIRS_DOOR_MIN.y and y <= STAIRS_DOOR_MAX.y
+
+
+func _is_office_landing(x: int, y: int) -> bool:
+	return x >= OFFICE_DOOR_MIN.x and x <= OFFICE_DOOR_MAX.x and y >= OFFICE_DOOR_MIN.y and y <= OFFICE_DOOR_MAX.y
 
 
 func _build_furniture() -> void:
@@ -61,3 +71,23 @@ func _place_tower_stairs_area() -> void:
 	var px := cx * TILE_PX * TILE_SCALE
 	var py := cy * TILE_PX * TILE_SCALE
 	_tower_stairs_exit.position = Vector2(px, py)
+
+
+func _place_office_door_area() -> void:
+	var cx := (float(OFFICE_DOOR_MIN.x) + float(OFFICE_DOOR_MAX.x) + 1.0) * 0.5
+	var cy := float(OFFICE_DOOR_MAX.y) + 0.5
+	var px := cx * TILE_PX * TILE_SCALE
+	var py := cy * TILE_PX * TILE_SCALE
+	_office_door.position = Vector2(px, py)
+
+
+func _on_office_door_body_entered(body: Node) -> void:
+	if not body.is_in_group("player"):
+		return
+	if int(DialogueManager.get_flag("act", 1)) >= 2:
+		get_tree().change_scene_to_file("res://scenes/myramar_office/myramar_office.tscn")
+	else:
+		DialogueManager.show_message(
+			"The mentor's office stays sealed until the story moves into Act II.",
+			"Narrator",
+		)

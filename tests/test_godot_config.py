@@ -21,6 +21,9 @@ LPC_TILESET_PNG = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.png"
 LPC_TILESET_TRES = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.tres"
 COUNCIL_CHAMBER_SCENE = REPO_ROOT / "scenes" / "council_chamber" / "council_chamber.tscn"
 COUNCIL_CHAMBER_GD = REPO_ROOT / "scenes" / "council_chamber" / "council_chamber.gd"
+MYRAMAR_OFFICE_SCENE = REPO_ROOT / "scenes" / "myramar_office" / "myramar_office.tscn"
+MYRAMAR_OFFICE_GD = REPO_ROOT / "scenes" / "myramar_office" / "myramar_office.gd"
+DIALOGUE_MANAGER_GD = REPO_ROOT / "autoload" / "dialogue_manager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -85,6 +88,13 @@ def test_content_scale_factor_2x() -> None:
     assert factor == "2"
 
 
+def test_dialogue_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    path = _unquote_godot_value(cp.get("autoload", "dialoguemanager"))
+    assert path == "*res://autoload/dialogue_manager.gd"
+
+
 def test_nearest_neighbor_canvas_texture_filter() -> None:
     """Godot 4: default_texture_filter=0 is nearest (pixel art)."""
     cp = _load_ini(PROJECT_GODOT)
@@ -119,6 +129,7 @@ def test_lpc_terrain_tileset_assets_exist() -> None:
     assert "res://assets/tilesets/lpc_terrain.png" in tres
     assert "texture_region_size = Vector2i(16, 16)" in tres
     assert "physics_layer_0/collision_layer = 1" in tres
+    assert "4:0/0 = 0" in tres and "5:0/0 = 0" in tres and "6:0/0 = 0" in tres
 
 
 def test_council_chamber_scene_wired() -> None:
@@ -127,12 +138,38 @@ def test_council_chamber_scene_wired() -> None:
     tscn = COUNCIL_CHAMBER_SCENE.read_text(encoding="utf-8")
     assert 'type="TileMap"' in tscn
     assert "TowerStairsExit" in tscn
+    assert "OfficeDoor" in tscn
     assert "lpc_terrain.tres" in tscn
     assert "council_chamber.gd" in tscn
     gd = COUNCIL_CHAMBER_GD.read_text(encoding="utf-8")
     assert "GRID_SIZE := 12" in gd
     assert "set_cell" in gd
     assert "TowerStairsExit" in gd
+    assert "OfficeDoor" in gd
+    assert "OFFICE_DOOR_MIN" in gd
+    assert "DialogueManager" in gd
+
+
+def test_myramar_office_scene_wired() -> None:
+    assert MYRAMAR_OFFICE_SCENE.is_file()
+    assert MYRAMAR_OFFICE_GD.is_file()
+    assert DIALOGUE_MANAGER_GD.is_file()
+    tscn = MYRAMAR_OFFICE_SCENE.read_text(encoding="utf-8")
+    assert 'type="TileMap"' in tscn
+    assert "lpc_terrain.tres" in tscn
+    assert "myramar_office.gd" in tscn
+    assert "DeskInspectArea" in tscn
+    assert "MyramarTalkArea" in tscn
+    assert "CouncilReturn" in tscn
+    gd = MYRAMAR_OFFICE_GD.read_text(encoding="utf-8")
+    assert "OFFICE_W := 10" in gd
+    assert "OFFICE_H := 8" in gd
+    assert 'show_dialogue("myramar"' in gd
+    assert '"desk"' in gd
+    assert "get_flag(\"act\"" in gd
+    dm = DIALOGUE_MANAGER_GD.read_text(encoding="utf-8")
+    assert "func show_dialogue" in dm
+    assert "func get_flag" in dm
 
 
 def test_myramar_dialogue_json_well_formed() -> None:

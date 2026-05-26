@@ -1,9 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4councilchamber"]
+[gd_scene load_steps=5 format=3 uid="uid://d4councilchamber"]
 
 [ext_resource type="Script" path="res://scenes/council_chamber/council_chamber.gd" id="1_script"]
 [ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="2_tileset"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_stairs"]
+size = Vector2(64, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_office"]
 size = Vector2(64, 32)
 
 [node name="CouncilChamber" type="Node2D"]
@@ -24,3 +27,10 @@ monitorable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TowerStairsExit"]
 shape = SubResource("RectangleShape2D_stairs")
+
+[node name="OfficeDoor" type="Area2D" parent="."]
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OfficeDoor"]
+shape = SubResource("RectangleShape2D_office")
