@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemTable" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/ItemTable.gd" id="1_vgq4a"]
+[ext_resource type="Resource" path="res://resources/items/sealed_wing_key.tres" id="2_nm2m8"]
+
+[resource]
+script = ExtResource("1_vgq4a")
+items = {
+&"sealed_wing_key": ExtResource("2_nm2m8")
+}
