@@ -103,3 +103,9 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_export_preset_web_export_path() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    path = _unquote_godot_value(cp.get("preset.0", "export_path"))
+    assert path == "res://export/index.html"
