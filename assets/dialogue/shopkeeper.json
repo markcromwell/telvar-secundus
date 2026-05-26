@@ -1,0 +1,20 @@
+[
+  {
+    "id": "start",
+    "text": "Salt, needles, lamp oil—Secundus eats small things first. What are you short on, apprentice?",
+    "speaker": "Shopkeeper",
+    "next": "wares"
+  },
+  {
+    "id": "wares",
+    "text": "Twelve districts, one purse. Buy what you need before the bells change the prices.",
+    "speaker": "Shopkeeper",
+    "next": "farewell"
+  },
+  {
+    "id": "farewell",
+    "text": "Mind the alleys near the river wards. Even wizards trip on loose cobbles.",
+    "speaker": "Shopkeeper",
+    "next": ""
+  }
+]

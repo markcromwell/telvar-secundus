@@ -8,6 +8,9 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -15,6 +18,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+VALIDATE_SCRIPT = REPO_ROOT / "validate.py"
+DIALOGUE_DIR = REPO_ROOT / "assets" / "dialogue"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +108,41 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_validate_py_exits_zero() -> None:
+    """Regression: validate.py must succeed (dialogue JSON structural checks)."""
+    assert VALIDATE_SCRIPT.is_file()
+    proc = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT)],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_dialogue_directory_and_required_npcs() -> None:
+    """AC1–AC4: dialogue folder and required NPC JSON exist and stay small."""
+    assert DIALOGUE_DIR.is_dir()
+    for name in ("myramar.json", "shopkeeper.json"):
+        path = DIALOGUE_DIR / name
+        assert path.is_file()
+        assert path.stat().st_size < 5 * 1024 * 1024
+        data = json.loads(path.read_text(encoding="utf-8"))
+        assert isinstance(data, list)
+        for entry in data:
+            assert isinstance(entry, dict)
+            for key in ("id", "text", "speaker", "next"):
+                assert key in entry
+                assert isinstance(entry[key], str)
+
+    # At least one choices block across the bundle (exercise choice UI later)
+    any_choices = False
+    for name in ("myramar.json", "shopkeeper.json"):
+        for entry in json.loads((DIALOGUE_DIR / name).read_text(encoding="utf-8")):
+            ch = entry.get("choices")
+            if isinstance(ch, list) and 2 <= len(ch) <= 4:
+                any_choices = True
+    assert any_choices

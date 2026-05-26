@@ -1,0 +1,31 @@
+[
+  {
+    "id": "start",
+    "text": "Telvar. The Veneficturis gates close at dusk—walk with me while we still have light.",
+    "speaker": "Myramar",
+    "next": "mentor_probe"
+  },
+  {
+    "id": "mentor_probe",
+    "text": "Your father thinks coin will keep you safe in Secundus. What do you believe will?",
+    "speaker": "Myramar",
+    "next": "after_path",
+    "choices": [
+      { "text": "Discipline—the ranks, starting at Rutilus.", "next": "after_path" },
+      { "text": "Cleverness—reading the city before it reads me.", "next": "after_path" },
+      { "text": "Luck—and a fast pair of boots.", "next": "after_path" }
+    ]
+  },
+  {
+    "id": "after_path",
+    "text": "Good. The Test of Fire will not care what you wish were true—only what you can hold when the heat arrives.",
+    "speaker": "Myramar",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "text": "Rest tonight. Tomorrow we begin the lesson you will not forget.",
+    "speaker": "Myramar",
+    "next": ""
+  }
+]
