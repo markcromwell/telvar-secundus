@@ -19,6 +19,8 @@ DEFAULT_BUS_LAYOUT = REPO_ROOT / "default_bus_layout.tres"
 AUDIO_MANAGER_SCENE = REPO_ROOT / "audio_manager.tscn"
 AUDIO_MANAGER_SCRIPT = REPO_ROOT / "audio_manager.gd"
 AUDIO_SETTINGS_PERSISTENCE_SCRIPT = REPO_ROOT / "audio_settings_persistence.gd"
+SETTINGS_MENU_SCENE = REPO_ROOT / "settings_menu.tscn"
+SETTINGS_MENU_SCRIPT = REPO_ROOT / "settings_menu.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -166,3 +168,27 @@ def test_audio_manager_scene_has_music_and_sfx_players() -> None:
     assert 'name="MusicPlayer"' in tscn
     assert "type=\"AudioStreamPlayer\"" in tscn
     assert 'name="SFXPlayer"' in tscn
+
+
+def test_settings_menu_scene_exists() -> None:
+    assert SETTINGS_MENU_SCENE.is_file()
+    assert SETTINGS_MENU_SCRIPT.is_file()
+
+
+def test_settings_menu_scene_root_and_sliders() -> None:
+    tscn = SETTINGS_MENU_SCENE.read_text(encoding="utf-8")
+    assert 'name="SettingsMenu"' in tscn
+    assert 'type="Control"' in tscn
+    assert tscn.count('type="HSlider"') == 3
+    assert 'name="MasterSlider"' in tscn
+    assert 'name="MusicSlider"' in tscn
+    assert 'name="SfxSlider"' in tscn
+    assert 'min_value = 0.0' in tscn
+    assert 'max_value = 100.0' in tscn
+
+
+def test_settings_menu_script_wires_persistence_and_buses() -> None:
+    src = SETTINGS_MENU_SCRIPT.read_text(encoding="utf-8")
+    assert "AudioSettingsPersistence.apply_settings" in src
+    assert "AudioSettingsPersistence.save_settings_to_disk" in src
+    assert "AudioSettingsPersistence.load_settings_from_disk" in src
