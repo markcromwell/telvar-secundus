@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/entrance_trigger.gd" id="2_entrance"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(2400, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ent"]
+size = Vector2(56, 44)
+
+[node name="MainScene" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(640, 620)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(640, 500)
+
+[node name="EntranceOrssonEmporium" type="Area2D" parent="."]
+position = Vector2(180, 500)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+script = ExtResource("2_entrance")
+target_scene = "res://scenes/interiors/interior_emporium.tscn"
+spawn_point_id = "emporium_spawn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceOrssonEmporium"]
+shape = SubResource("RectangleShape2D_ent")
+
+[node name="EntrancePaladinTemple" type="Area2D" parent="."]
+position = Vector2(460, 480)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+script = ExtResource("2_entrance")
+target_scene = "res://scenes/interiors/interior_paladin_temple.tscn"
+spawn_point_id = "temple_spawn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntrancePaladinTemple"]
+shape = SubResource("RectangleShape2D_ent")
+
+[node name="EntranceCathedralOfAten" type="Area2D" parent="."]
+position = Vector2(760, 510)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+script = ExtResource("2_entrance")
+target_scene = "res://scenes/interiors/interior_cathedral_aten.tscn"
+spawn_point_id = "cathedral_spawn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceCathedralOfAten"]
+shape = SubResource("RectangleShape2D_ent")
+
+[node name="EntranceRookeryTavern" type="Area2D" parent="."]
+position = Vector2(1040, 520)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+script = ExtResource("2_entrance")
+target_scene = "res://scenes/interiors/interior_rookery_tavern.tscn"
+spawn_point_id = "tavern_spawn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceRookeryTavern"]
+shape = SubResource("RectangleShape2D_ent")

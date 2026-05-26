@@ -15,6 +15,15 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+MAIN_SCENE = REPO_ROOT / "scenes" / "MainScene.tscn"
+INTERIOR_SCENES = [
+    REPO_ROOT / "scenes" / "interiors" / "interior_emporium.tscn",
+    REPO_ROOT / "scenes" / "interiors" / "interior_paladin_temple.tscn",
+    REPO_ROOT / "scenes" / "interiors" / "interior_cathedral_aten.tscn",
+    REPO_ROOT / "scenes" / "interiors" / "interior_rookery_tavern.tscn",
+]
+FLOOR_WOOD_TILESET = REPO_ROOT / "resources" / "tilesets" / "floor_wood.tres"
+FLOOR_STONE_TILESET = REPO_ROOT / "resources" / "tilesets" / "floor_stone.tres"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +112,46 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_main_scene_exists() -> None:
+    assert MAIN_SCENE.is_file()
+
+
+def test_main_scene_entrance_triggers_have_scene_and_spawn_id() -> None:
+    """Phase 2528: four overworld entrances must declare target_scene and spawn_point_id."""
+    text = MAIN_SCENE.read_text(encoding="utf-8")
+    for name in (
+        "EntranceOrssonEmporium",
+        "EntrancePaladinTemple",
+        "EntranceCathedralOfAten",
+        "EntranceRookeryTavern",
+    ):
+        assert f'[node name="{name}"' in text, f"missing entrance node {name}"
+    assert text.count("target_scene = ") >= 4
+    assert text.count("spawn_point_id = ") >= 4
+    for line in text.splitlines():
+        if "target_scene = " in line and "ext_resource" not in line:
+            _, _, rhs = line.partition("=")
+            val = rhs.strip()
+            assert val not in ('""', "''"), f"empty target_scene: {line.strip()}"
+        if "spawn_point_id = " in line and "ext_resource" not in line:
+            _, _, rhs = line.partition("=")
+            val = rhs.strip()
+            assert val not in ('""', "''"), f"empty spawn_point_id: {line.strip()}"
+
+
+def test_interior_scenes_exist_with_spawn_and_exit() -> None:
+    for path in INTERIOR_SCENES:
+        t = path.read_text(encoding="utf-8")
+        assert '[node name="SpawnPoint"' in t
+        assert '[node name="ExitDoor"' in t
+        assert "exit_trigger.gd" in t
+
+
+def test_floor_tilesets_mark_wood_and_stone() -> None:
+    wood = FLOOR_WOOD_TILESET.read_text(encoding="utf-8")
+    stone = FLOOR_STONE_TILESET.read_text(encoding="utf-8")
+    assert 'custom_data_0 = "wood"' in wood
+    assert 'custom_data_0 = "stone"' in stone
+    assert "floor_type" in wood and "floor_type" in stone
