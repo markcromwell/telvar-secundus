@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8overworld2499"]
+
+[ext_resource type="Script" path="res://scripts/OverworldMap.gd" id="1_owmap"]
+[ext_resource type="TileSet" uid="uid://c8lpcterrainset" path="res://assets/tilesets/lpc_terrain.tres" id="2_lpctiles"]
+
+[node name="Overworld" type="Node2D"]
+script = ExtResource("1_owmap")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_lpctiles")
+rendering_quadrant_size = 16
+y_sort_enabled = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1280, 720)
+zoom = Vector2(2, 2)
+limit_enabled = true
+limit_left = 0
+limit_top = 0
+limit_right = 2559
+limit_bottom = 1439
