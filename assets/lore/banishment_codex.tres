@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/lore_entry.gd" id="1_lore"]
+
+[resource]
+script = ExtResource("1_lore")
+lore_id = "banishment_codex"
+title = "The Banishment Codex"
+body = "The Banishment Codex was never meant to rest whole on a single lectern. Its sigils were split across chained folios and cached in sealed wings—each annex a warden against the rite it describes.\n\nTimon's work in the stacks makes plain what Veneficturis archivists will not say aloud: the Codex is a manual of exile. To read it cover to cover is to retrace banishment itself—how names are unhooked from the city's weave, how a life is filed under ash and law.\n\nGathering the scattered pages does not flatter a scholar's pride; it rebuilds the lattice that keeps certain truths, and certain persons, outside Secundus for good."
