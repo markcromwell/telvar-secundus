@@ -1,0 +1,60 @@
+[
+  {
+    "id": "start",
+    "text": "There you are, Telvar. Step inside—doors keep secrets better than hallways.",
+    "speaker": "Myramar",
+    "next": "start_2"
+  },
+  {
+    "id": "start_2",
+    "text": "Before the council, remember your place: Rutilus is the floor you stand on, not the ceiling you own. Veneficturis rewards the obedient apprentice.",
+    "speaker": "Myramar",
+    "next": "start_3"
+  },
+  {
+    "id": "start_3",
+    "text": "The Test of Fire is not a rumor for children's ears. It is a ledger—names chosen early, debts counted late.",
+    "speaker": "Myramar",
+    "next": "start_4"
+  },
+  {
+    "id": "start_4",
+    "text": "If you are clever, you will practice what I gave you: clean lines, quiet breath, and no theatrics. The city watches Secundus; Secundus watches you.",
+    "speaker": "Myramar",
+    "next": "start_close"
+  },
+  {
+    "id": "start_close",
+    "text": "Go. Sharpen your focus—not your tongue.",
+    "speaker": "Myramar"
+  },
+  {
+    "id": "desk",
+    "text": "Myramar's desk is almost insultingly neat: sealed letters, a rack of crimson wax, and a single folded note pinned beneath a brass weight.",
+    "speaker": "Narrator",
+    "next": "desk_read"
+  },
+  {
+    "id": "desk_read",
+    "text": "You ease the weight aside. The paper is a roster titled 'Secundus — Advanced Ordeal Candidates (Act II onward)'. The ink is tidy, official, and cruelly plain.",
+    "speaker": "Narrator",
+    "next": "desk_list"
+  },
+  {
+    "id": "desk_list",
+    "text": "Halfway down the column your stomach drops: Telvar Orsson — sponsored (Myramar, Rutilus). Your name sits on the list like it was always meant to be there.",
+    "speaker": "Narrator",
+    "next": "desk_telvar"
+  },
+  {
+    "id": "desk_telvar",
+    "text": "He… wrote me in. Before I even understood what 'candidate' meant.",
+    "speaker": "Telvar",
+    "next": "desk_narrator_close"
+  },
+  {
+    "id": "desk_narrator_close",
+    "text": "You slide the note back exactly as it was. Some truths read louder when nobody knows you've read them.",
+    "speaker": "Narrator"
+  }
+]

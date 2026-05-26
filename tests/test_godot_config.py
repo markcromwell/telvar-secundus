@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import json
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+MYRAMAR_DIALOGUE = REPO_ROOT / "assets" / "dialogue" / "myramar.json"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +105,33 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_myramar_dialogue_json_well_formed() -> None:
+    """NPC dialogue at assets/dialogue/{name}.json: valid graph, roster reveal text."""
+    assert MYRAMAR_DIALOGUE.is_file(), f"Missing dialogue file: {MYRAMAR_DIALOGUE}"
+    data = json.loads(MYRAMAR_DIALOGUE.read_text(encoding="utf-8"))
+    assert isinstance(data, list) and data, "Dialogue root must be a non-empty JSON array"
+
+    ids: list[str] = []
+    for i, entry in enumerate(data):
+        assert isinstance(entry, dict), f"Entry {i} must be an object"
+        assert "id" in entry and isinstance(entry["id"], str) and entry["id"], f"Entry {i} needs non-empty string id"
+        assert "text" in entry and isinstance(entry["text"], str), f"Entry {i} needs string text"
+        assert "speaker" in entry and isinstance(entry["speaker"], str), f"Entry {i} needs string speaker"
+        ids.append(entry["id"])
+        nxt = entry.get("next")
+        if nxt is not None:
+            assert isinstance(nxt, str) and nxt, f"Entry {i} next must be a non-empty string if present"
+
+    assert len(ids) == len(set(ids)), "Dialogue ids must be unique"
+
+    id_set = set(ids)
+    for entry in data:
+        nxt = entry.get("next")
+        if nxt is not None:
+            assert nxt in id_set, f"Unknown next id {nxt!r} from {entry['id']!r}"
+
+    combined = "\n".join(e["text"] for e in data)
+    assert "Telvar Orsson" in combined, "Candidate list reveal must name Telvar Orsson"
+    assert "desk" in id_set and "start" in id_set, "Expected entry roots start and desk"
