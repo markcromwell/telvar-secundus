@@ -15,6 +15,9 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+ITEM_SCRIPT = REPO_ROOT / "scripts/resources/item.gd"
+INVENTORY_SCRIPT = REPO_ROOT / "scripts/inventory/inventory.gd"
+WIZARD_BAND_RED = REPO_ROOT / "resources/items/wizard_band_red.tres"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +106,25 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_item_resource_script_exists() -> None:
+    assert ITEM_SCRIPT.is_file()
+    text = ITEM_SCRIPT.read_text(encoding="utf-8")
+    assert "class_name Item" in text
+    assert "@export var tags" in text
+
+
+def test_inventory_script_exists() -> None:
+    assert INVENTORY_SCRIPT.is_file()
+    text = INVENTORY_SCRIPT.read_text(encoding="utf-8")
+    assert "class_name Inventory" in text
+    assert "func add_item" in text
+
+
+def test_wizard_band_red_tres_exists_and_magical() -> None:
+    assert WIZARD_BAND_RED.is_file()
+    text = WIZARD_BAND_RED.read_text(encoding="utf-8")
+    assert "wizard_band_red" in text
+    assert "magical" in text
+    assert "res://scripts/resources/item.gd" in text
