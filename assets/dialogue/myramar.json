@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "speaker": "Myramar",
+    "text": "Telvar, Veneficturis academy will not soften the Test of Fire for a Red-rank apprentice.",
+    "next": "warning"
+  },
+  {
+    "id": "warning",
+    "speaker": "Myramar",
+    "text": "Listen closely to your mentor, and you may yet learn which flames are meant to teach and which are meant to reveal.",
+    "next": ""
+  }
+]
