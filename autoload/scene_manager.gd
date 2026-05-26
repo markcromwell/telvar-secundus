@@ -65,3 +65,19 @@ func get_save_state() -> Dictionary:
 		if p.has_method("capture_save_state"):
 			state["player"] = p.call("capture_save_state")
 	return state
+
+
+## Writes [method get_save_state] JSON to `user://save_slot_{slot_index}.json` (slots 1–3).
+func save_to_user_slot(slot_index: int) -> bool:
+	if slot_index < 1 or slot_index > 3:
+		push_error("save_to_user_slot: slot_index must be 1–3, got %d" % slot_index)
+		return false
+	var path := "user://save_slot_%d.json" % slot_index
+	var text := JSON.stringify(get_save_state())
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		push_error("Save failed (could not open path): %s" % path)
+		return false
+	file.store_string(text)
+	file.close()
+	return true

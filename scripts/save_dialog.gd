@@ -25,15 +25,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_slot_pressed(slot_index: int) -> void:
-	var path := "user://save_slot_%d.json" % slot_index
-	var payload: Variant = SceneManager.get_save_state()
-	var text := JSON.stringify(payload)
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	if file == null:
-		push_error("Save failed (could not open path): %s" % path)
+	if not SceneManager.save_to_user_slot(slot_index):
 		return
-	file.store_string(text)
-	file.close()
 	await _flash_saved_notification()
 
 
