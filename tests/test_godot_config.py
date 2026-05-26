@@ -103,3 +103,32 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_combat_manager_autoload_configured() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert "CombatManager=" in text
+    assert "scripts/combat_manager.gd" in text
+
+
+def test_main_scene_is_combat_ui() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert "run/main_scene" in text
+    assert "combat_ui.tscn" in text
+
+
+def test_combat_ui_scene_exists() -> None:
+    scene = REPO_ROOT / "scenes" / "combat_ui.tscn"
+    assert scene.is_file()
+
+
+def test_combat_ui_scene_structure() -> None:
+    scene = REPO_ROOT / "scenes" / "combat_ui.tscn"
+    body = scene.read_text(encoding="utf-8")
+    for needle in ("CanvasLayer", "ProgressBar", "VBoxContainer", "Attack", "Cast Spell", "Flee", "Use Item"):
+        assert needle in body
+
+
+def test_combat_scripts_exist() -> None:
+    assert (REPO_ROOT / "scripts" / "combat_ui.gd").is_file()
+    assert (REPO_ROOT / "scripts" / "combat_manager.gd").is_file()
