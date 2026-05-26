@@ -20,6 +20,7 @@ _REQUIRED_PATHS = [
     _REPO / "assets/sprites/wizard_band_red_wrist.png",
     _REPO / "scenes/ui/obtain_card.tscn",
     _REPO / "scripts/ui/obtain_card.gd",
+    _REPO / "scripts/story/award_ceremony.gd",
 ]
 _WIZARD_BAND = _REPO / "resources/items/wizard_band_red.tres"
 _PLAYER_SCENE = _REPO / "scenes/player/Player.tscn"
@@ -27,6 +28,7 @@ _PLAYER_SCRIPT = _REPO / "scripts/player/Player.gd"
 
 _OBTAIN_SCENE = _REPO / "scenes/ui/obtain_card.tscn"
 _OBTAIN_SCRIPT = _REPO / "scripts/ui/obtain_card.gd"
+_AWARD_CEREMONY = _REPO / "scripts/story/award_ceremony.gd"
 
 for path in _REQUIRED_PATHS:
     if not path.is_file():
@@ -64,6 +66,19 @@ if _OBTAIN_SCRIPT.is_file():
         errors.append("obtain_card.gd must define show_for_item")
     if "extends CanvasLayer" not in obtain_gd:
         errors.append("obtain_card.gd must extend CanvasLayer")
+
+if _AWARD_CEREMONY.is_file():
+    ceremony_gd = _AWARD_CEREMONY.read_text(encoding="utf-8")
+    if "class_name AwardCeremony" not in ceremony_gd:
+        errors.append("award_ceremony.gd must define class_name AwardCeremony")
+    if "func complete_award" not in ceremony_gd:
+        errors.append("award_ceremony.gd must define complete_award")
+    if "add_item" not in ceremony_gd:
+        errors.append("award_ceremony.gd must add the item via inventory.add_item")
+    if "set_wrist_band_visible" not in ceremony_gd:
+        errors.append("award_ceremony.gd must call set_wrist_band_visible on the player")
+    if "show_for_item" not in ceremony_gd:
+        errors.append("award_ceremony.gd must call show_for_item on obtain UI")
 
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)

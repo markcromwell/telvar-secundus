@@ -23,6 +23,7 @@ PLAYER_SCRIPT = REPO_ROOT / "scripts/player/Player.gd"
 WRIST_BAND_TEX = REPO_ROOT / "assets/sprites/wizard_band_red_wrist.png"
 OBTAIN_CARD_SCENE = REPO_ROOT / "scenes/ui/obtain_card.tscn"
 OBTAIN_CARD_SCRIPT = REPO_ROOT / "scripts/ui/obtain_card.gd"
+AWARD_CEREMONY_SCRIPT = REPO_ROOT / "scripts/story/award_ceremony.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -163,3 +164,14 @@ def test_obtain_card_scene_and_script_exist() -> None:
     assert "func show_for_item" in gd
     assert "auto_hide_seconds" in gd
     assert "func _close" in gd
+
+
+def test_award_ceremony_wires_inventory_player_obtain_ui() -> None:
+    assert AWARD_CEREMONY_SCRIPT.is_file()
+    text = AWARD_CEREMONY_SCRIPT.read_text(encoding="utf-8")
+    assert "class_name AwardCeremony" in text
+    assert "func complete_award" in text
+    assert "res://resources/items/wizard_band_red.tres" in text
+    assert "inventory.add_item" in text
+    assert "set_wrist_band_visible" in text
+    assert "show_for_item" in text
