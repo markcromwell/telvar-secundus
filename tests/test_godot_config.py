@@ -15,6 +15,10 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+BUS_LAYOUT = REPO_ROOT / "default_bus_layout.tres"
+AUDIO_MANAGER_SCENE = REPO_ROOT / "AudioManager.tscn"
+AUDIO_MANAGER_SCRIPT = REPO_ROOT / "AudioManager.gd"
+VALIDATE_PY = REPO_ROOT / "validate.py"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +107,54 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_autoload_audio_manager_singleton() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    assert cp.has_option("autoload", "AudioManager")
+    val = _unquote_godot_value(cp.get("autoload", "AudioManager"))
+    assert val.startswith("*")
+    assert "AudioManager.tscn" in val
+
+
+def test_audio_bus_layout_points_to_default_tres() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("audio")
+    bus_path = _unquote_godot_value(cp.get("audio", "buses/default_bus_layout"))
+    assert bus_path == "res://default_bus_layout.tres"
+
+
+def test_default_bus_layout_lists_master_music_sfx() -> None:
+    text = BUS_LAYOUT.read_text(encoding="utf-8")
+    assert 'bus/0/name = &"Master"' in text or '&"Master"' in text
+    assert 'name = &"Music"' in text
+    assert 'name = &"SFX"' in text
+
+
+def test_audio_manager_sources_exist() -> None:
+    assert AUDIO_MANAGER_SCRIPT.is_file()
+    assert AUDIO_MANAGER_SCENE.is_file()
+
+
+def test_ambient_wav_assets_exist() -> None:
+    for name in (
+        "ambient_merchant_medieval.wav",
+        "ambient_veneficturis_dark.wav",
+        "ambient_rookery_tension.wav",
+    ):
+        p = REPO_ROOT / "assets" / "audio" / name
+        assert p.is_file(), f"missing {p}"
+
+
+def test_validate_py_exits_zero() -> None:
+    import subprocess
+
+    r = subprocess.run(
+        ["python3", str(VALIDATE_PY)],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert r.returncode == 0, r.stdout + r.stderr
