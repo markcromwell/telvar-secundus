@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="1_tileset"]
+
+[node name="Overworld" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("1_tileset")
+format = 2
+rendering_quadrant_size = 16
+layer_0/name = "Ground"
+layer_0/tile_data = PackedInt32Array()
+layer_1/name = "Walls"
+layer_1/tile_data = PackedInt32Array()
+
+[node name="Camera2D" type="Camera2D" parent="TileMap"]
+position_smoothing_enabled = true
+
+[node name="SpawnPoint" type="Marker2D" parent="TileMap"]
+position = Vector2(1288, 728)
+
+[node name="DistrictZones" type="Node2D" parent="."]
+
+[node name="BuildingEntrances" type="Node2D" parent="."]
