@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/WellEvent.gd" id="2_well"]
+[ext_resource type="PackedScene" path="res://scenes/effects/WellBurst.tscn" id="3_burst"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/MyramarDistant.tscn" id="4_myramar"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/ThugNPC.tscn" id="5_thug"]
+[ext_resource type="Texture2D" path="res://assets/tilesets/lpc_terrain.png" id="6_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(22, 30)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_well"]
+radius = 96.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_terr"]
+texture = ExtResource("6_tex")
+texture_region_size = Vector2i(16, 16)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, 0, 16, 0, 16, 16, 0, 16)
+
+[sub_resource type="TileSet" id="TileSet_main"]
+tile_size = Vector2i(16, 16)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_terr")
+
+[node name="World" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_main")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 0, 131072, 0, 0, 196608, 0, 0, 262144, 0, 0)
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(640, 520)
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_player")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="WellArea" type="Area2D" parent="."]
+position = Vector2(640, 360)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+script = ExtResource("2_well")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WellArea"]
+shape = SubResource("CircleShape2D_well")
+
+[node name="BurstParticles" parent="WellArea" instance=ExtResource("3_burst")]
+position = Vector2(0, 0)
+
+[node name="MyramarSprite" parent="WellArea" instance=ExtResource("4_myramar")]
+modulate = Color(1, 1, 1, 1)
+position = Vector2(-520, -280)
+
+[node name="ThugA" parent="." instance=ExtResource("5_thug")]
+position = Vector2(720, 360)
+
+[node name="ThugB" parent="." instance=ExtResource("5_thug")]
+position = Vector2(560, 360)
+
+[connection signal="body_entered" from="WellArea" to="WellArea" method="_on_well_entered"]
