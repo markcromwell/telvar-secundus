@@ -18,6 +18,8 @@ EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 COMBAT_UI_SCENE = REPO_ROOT / "scenes" / "CombatUI.tscn"
 COMBAT_UI_SCRIPT = REPO_ROOT / "scripts" / "CombatUI.gd"
 COMBAT_MANAGER_SCRIPT = REPO_ROOT / "scripts" / "CombatManager.gd"
+DAMAGE_FLOAT_SCENE = REPO_ROOT / "scenes" / "DamageFloat.tscn"
+DAMAGE_FLOAT_SCRIPT = REPO_ROOT / "scripts" / "DamageFloat.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -133,3 +135,25 @@ def test_combat_ui_scene_has_canvas_layer_and_overlay() -> None:
     assert 'type="ColorRect"' in text
     assert 'name="DarkOverlay"' in text
     assert "res://scripts/CombatUI.gd" in text
+
+
+def test_damage_float_scene_exists() -> None:
+    assert DAMAGE_FLOAT_SCENE.is_file()
+
+
+def test_damage_float_script_exists() -> None:
+    assert DAMAGE_FLOAT_SCRIPT.is_file()
+
+
+def test_damage_float_scene_has_label_and_animation_player() -> None:
+    text = DAMAGE_FLOAT_SCENE.read_text(encoding="utf-8")
+    assert 'type="Label"' in text
+    assert 'type="AnimationPlayer"' in text
+    assert "res://scripts/DamageFloat.gd" in text
+    assert "float_up" in text
+
+
+def test_combat_manager_preloads_damage_float_scene() -> None:
+    src = COMBAT_MANAGER_SCRIPT.read_text(encoding="utf-8")
+    assert 'preload("res://scenes/DamageFloat.tscn")' in src
+    assert "DAMAGE_FLOAT_SCENE" in src

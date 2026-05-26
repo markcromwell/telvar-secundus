@@ -5,6 +5,7 @@ extends Node
 ## stays a thin overlay shell owned by another phase.
 
 const COMBAT_UI_SCENE := preload("res://scenes/CombatUI.tscn")
+const DAMAGE_FLOAT_SCENE := preload("res://scenes/DamageFloat.tscn")
 
 enum CombatState {
 	PLAYER_TURN,
@@ -314,20 +315,14 @@ func _refresh_ui() -> void:
 func _spawn_damage_float(amount: int, defender_index: int) -> void:
 	if _hud_root == null or not is_instance_valid(_hud_root):
 		return
-	var flo := Label.new()
-	flo.text = "-%d" % amount
-	flo.add_theme_font_size_override("font_size", 26)
-	flo.modulate = Color(1.0, 0.35, 0.35, 1.0)
+	var flo: Control = DAMAGE_FLOAT_SCENE.instantiate() as Control
 	var x_base: float = 400.0 + float(defender_index) * 40.0
 	var y_base: float = 200.0
 	flo.position = Vector2(x_base, y_base)
 	flo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hud_root.add_child(flo)
-	var tw := create_tween()
-	tw.set_parallel(true)
-	tw.tween_property(flo, "position:y", y_base - 72.0, 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw.tween_property(flo, "modulate:a", 0.0, 0.55)
-	tw.chain().tween_callback(flo.queue_free)
+	if flo.has_method("play_damage"):
+		flo.call("play_damage", amount)
 
 
 func _check_end_conditions() -> void:
