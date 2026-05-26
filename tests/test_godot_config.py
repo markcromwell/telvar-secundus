@@ -18,6 +18,9 @@ EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 ITEM_SCRIPT = REPO_ROOT / "scripts/resources/item.gd"
 INVENTORY_SCRIPT = REPO_ROOT / "scripts/inventory/inventory.gd"
 WIZARD_BAND_RED = REPO_ROOT / "resources/items/wizard_band_red.tres"
+PLAYER_SCENE = REPO_ROOT / "scenes/player/Player.tscn"
+PLAYER_SCRIPT = REPO_ROOT / "scripts/player/Player.gd"
+WRIST_BAND_TEX = REPO_ROOT / "assets/sprites/wizard_band_red_wrist.png"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -128,3 +131,19 @@ def test_wizard_band_red_tres_exists_and_magical() -> None:
     assert "wizard_band_red" in text
     assert "magical" in text
     assert "res://scripts/resources/item.gd" in text
+
+
+def test_player_scene_and_wrist_band_sprite() -> None:
+    assert PLAYER_SCENE.is_file()
+    assert WRIST_BAND_TEX.is_file()
+    scene = PLAYER_SCENE.read_text(encoding="utf-8")
+    assert 'name="WristBand"' in scene
+    assert "type=\"Sprite2D\"" in scene
+    assert "wizard_band_red_wrist.png" in scene
+
+
+def test_player_script_exposes_wrist_band_visibility() -> None:
+    assert PLAYER_SCRIPT.is_file()
+    text = PLAYER_SCRIPT.read_text(encoding="utf-8")
+    assert "func set_wrist_band_visible" in text
+    assert "extends CharacterBody2D" in text
