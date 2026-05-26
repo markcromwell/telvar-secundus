@@ -1,0 +1,88 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://settings_menu.tscn" id="1_settings_menu"]
+[ext_resource type="Script" path="res://pause_layer.gd" id="2_pause_layer"]
+[ext_resource type="Script" path="res://pause_input.gd" id="3_pause_input"]
+
+[node name="GameWorld" type="Node2D"]
+
+[node name="PauseInput" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("3_pause_input")
+
+[node name="WorldLabel" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 400.0
+offset_bottom = 48.0
+text = "Press ESC to pause (Settings from pause menu)."
+
+[node name="PauseLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 100
+script = ExtResource("2_pause_layer")
+
+[node name="Dim" type="ColorRect" parent="PauseLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="PausePanel" type="CenterContainer" parent="PauseLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="PauseLayer/PausePanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PausedTitle" type="Label" parent="PauseLayer/PausePanel/VBox"]
+layout_mode = 2
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PauseLayer/PausePanel/VBox"]
+layout_mode = 2
+text = "Resume"
+
+[node name="SettingsButton" type="Button" parent="PauseLayer/PausePanel/VBox"]
+layout_mode = 2
+text = "Settings"
+
+[node name="MainMenuButton" type="Button" parent="PauseLayer/PausePanel/VBox"]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="SettingsHost" type="Control" parent="PauseLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SettingsMenu" parent="PauseLayer/SettingsHost" instance=ExtResource("1_settings_menu")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackFromSettings" type="Button" parent="PauseLayer/SettingsHost"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 120.0
+offset_bottom = 48.0
+text = "Back"
+
+[connection signal="pressed" from="PauseLayer/PausePanel/VBox/ResumeButton" to="PauseLayer" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseLayer/PausePanel/VBox/SettingsButton" to="PauseLayer" method="_on_settings_pressed"]
+[connection signal="pressed" from="PauseLayer/PausePanel/VBox/MainMenuButton" to="PauseLayer" method="_on_main_menu_pressed"]
+[connection signal="pressed" from="PauseLayer/SettingsHost/BackFromSettings" to="PauseLayer" method="_on_back_from_settings_pressed"]

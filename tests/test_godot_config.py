@@ -8,6 +8,8 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -21,6 +23,9 @@ AUDIO_MANAGER_SCRIPT = REPO_ROOT / "audio_manager.gd"
 AUDIO_SETTINGS_PERSISTENCE_SCRIPT = REPO_ROOT / "audio_settings_persistence.gd"
 SETTINGS_MENU_SCENE = REPO_ROOT / "settings_menu.tscn"
 SETTINGS_MENU_SCRIPT = REPO_ROOT / "settings_menu.gd"
+MAIN_MENU_SCENE = REPO_ROOT / "main_menu.tscn"
+GAME_WORLD_SCENE = REPO_ROOT / "game_world.tscn"
+VALIDATE_SCRIPT = REPO_ROOT / "validate.py"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -192,3 +197,32 @@ def test_settings_menu_script_wires_persistence_and_buses() -> None:
     assert "AudioSettingsPersistence.apply_settings" in src
     assert "AudioSettingsPersistence.save_settings_to_disk" in src
     assert "AudioSettingsPersistence.load_settings_from_disk" in src
+
+
+def test_run_main_scene_is_main_menu() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert 'run/main_scene="res://main_menu.tscn"' in text
+
+
+def test_main_menu_instances_settings_menu() -> None:
+    assert MAIN_MENU_SCENE.is_file()
+    tscn = MAIN_MENU_SCENE.read_text(encoding="utf-8")
+    assert 'path="res://settings_menu.tscn"' in tscn
+    assert "instance=ExtResource(" in tscn
+    assert 'method="_on_settings_pressed"' in tscn
+
+
+def test_game_world_has_pause_and_settings_instance() -> None:
+    assert GAME_WORLD_SCENE.is_file()
+    tscn = GAME_WORLD_SCENE.read_text(encoding="utf-8")
+    assert 'name="PauseLayer"' in tscn
+    assert 'path="res://pause_layer.gd"' in tscn
+    assert 'path="res://pause_input.gd"' in tscn
+    assert 'path="res://settings_menu.tscn"' in tscn
+    assert 'method="_on_settings_pressed"' in tscn
+
+
+def test_validate_script_exits_zero() -> None:
+    assert VALIDATE_SCRIPT.is_file()
+    proc = subprocess.run([sys.executable, str(VALIDATE_SCRIPT)], cwd=str(REPO_ROOT), capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stdout + proc.stderr
