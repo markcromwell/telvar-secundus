@@ -21,8 +21,22 @@ if _project.is_file():
     project_text = _project.read_text(encoding="utf-8")
     if 'SaveSystem="*res://save_system.gd"' not in project_text:
         errors.append("project.godot must register SaveSystem autoload at res://save_system.gd")
+    if 'SceneTransition="*res://scripts/scene_transition.gd"' not in project_text:
+        errors.append(
+            "project.godot must register SceneTransition autoload at res://scripts/scene_transition.gd"
+        )
 else:
     errors.append("Missing project.godot")
+
+_save_menu_scene = REPO_ROOT / "scenes" / "save_menu.tscn"
+_save_menu_script = REPO_ROOT / "scripts" / "save_menu.gd"
+_scene_transition_script = REPO_ROOT / "scripts" / "scene_transition.gd"
+if not _save_menu_scene.is_file():
+    errors.append("Missing scenes/save_menu.tscn (SaveMenu UI).")
+if not _save_menu_script.is_file():
+    errors.append("Missing scripts/save_menu.gd (SaveMenu logic).")
+if not _scene_transition_script.is_file():
+    errors.append("Missing scripts/scene_transition.gd (scene_changed + autosave hook).")
 
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)
