@@ -51,18 +51,18 @@ def test_export_presets_exists() -> None:
     assert EXPORT_PRESETS.is_file()
 
 
-def test_viewport_dimensions_1280x720() -> None:
+def test_viewport_dimensions() -> None:
     cp = _load_ini(PROJECT_GODOT)
     w = cp.get("display", "window/size/viewport_width")
     h = cp.get("display", "window/size/viewport_height")
-    assert w == "1280"
-    assert h == "720"
+    assert w == "384"
+    assert h == "320"
 
 
-def test_renderer_mobile() -> None:
+def test_renderer() -> None:
     cp = _load_ini(PROJECT_GODOT)
     method = _unquote_godot_value(cp.get("rendering", "renderer/rendering_method"))
-    assert method == "mobile"
+    assert method == "gl_compatibility"
 
 
 def test_pixel_snap_vertices_and_transforms_true_strings() -> None:
