@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2563hudtoast01"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_hud")
+
+[node name="ToastPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 2
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -240.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = 64.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="ToastLabel" type="Label" parent="ToastPanel"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+text = ""
+
+[node name="ToastTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
