@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal mana_changed(current: float)
+
 @export var speed: float = 64.0  # pixels/sec (2 tiles at 32px)
 @export var can_move: bool = true
 
@@ -30,4 +32,18 @@ func _regenerate_mana(delta: float) -> void:
 
 
 func _clamp_mana() -> void:
+	var before := mana
 	mana = clampf(mana, 0.0, max_mana)
+	if mana != before:
+		mana_changed.emit(mana)
+
+
+## Returns false if there is not enough mana; otherwise spends and notifies listeners.
+func spend_mana(cost: float) -> bool:
+	if cost <= 0.0:
+		return true
+	if mana < cost:
+		return false
+	mana -= cost
+	_clamp_mana()
+	return true
