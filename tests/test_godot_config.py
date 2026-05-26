@@ -8,6 +8,8 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -18,6 +20,10 @@ PROJECT_GODOT = GODOT_ROOT / "project.godot"
 EXPORT_PRESETS = GODOT_ROOT / "export_presets.cfg"
 LPC_TERRAIN_PNG = GODOT_ROOT / "assets" / "tilesets" / "lpc_terrain.png"
 LPC_TERRAIN_IMPORT = LPC_TERRAIN_PNG.with_suffix(".png.import")
+DISTRICT_BOUNDS = GODOT_ROOT / "scripts" / "district_bounds.gd"
+OVERWORLD_BOOTSTRAP = GODOT_ROOT / "scripts" / "overworld_bootstrap.gd"
+OVERWORLD_POPULATOR = GODOT_ROOT / "scripts" / "overworld_tile_populator.gd"
+VALIDATE_PY = REPO_ROOT / "validate.py"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -124,3 +130,32 @@ def test_lpc_terrain_import_lossless() -> None:
     assert LPC_TERRAIN_IMPORT.is_file()
     text = LPC_TERRAIN_IMPORT.read_text(encoding="utf-8")
     assert "compress/mode=0" in text
+
+
+def test_district_scripts_exist() -> None:
+    assert DISTRICT_BOUNDS.is_file()
+    assert OVERWORLD_BOOTSTRAP.is_file()
+    assert OVERWORLD_POPULATOR.is_file()
+
+
+def test_validate_py_exits_zero() -> None:
+    proc = subprocess.run(
+        [sys.executable, str(VALIDATE_PY)],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_project_autoloads_overworld_bootstrap() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    assert cp.has_option("autoload", "OverworldBootstrap")
+
+
+def test_project_main_scene_is_overworld() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
+    assert main_scene == "res://scenes/OverworldMap.tscn"

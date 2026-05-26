@@ -11,7 +11,12 @@ config_version=5
 [application]
 
 config/name="Telvar Secundus"
+run/main_scene="res://scenes/OverworldMap.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
+
+[autoload]
+
+OverworldBootstrap="*res://scripts/overworld_bootstrap.gd"
 
 [display]
 
