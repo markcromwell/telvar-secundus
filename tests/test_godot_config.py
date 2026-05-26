@@ -103,3 +103,21 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+QUEST_MANAGER_SCRIPT = REPO_ROOT / "scripts" / "quest_manager.gd"
+
+
+def test_quest_manager_script_exists() -> None:
+    assert QUEST_MANAGER_SCRIPT.is_file()
+    head = QUEST_MANAGER_SCRIPT.read_text(encoding="utf-8").lstrip("\ufeff").splitlines()[:5]
+    assert any(line.strip() == "extends Node" for line in head)
+
+
+def test_quest_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    assert cp.has_option("autoload", "questmanager")
+    raw = cp.get("autoload", "questmanager")
+    path = _unquote_godot_value(raw).lstrip("*")
+    assert path == "res://scripts/quest_manager.gd"

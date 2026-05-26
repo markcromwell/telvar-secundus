@@ -1,0 +1,8 @@
+{
+  "id": "merchants_delivery",
+  "title": "Merchant's Delivery",
+  "objectives": [
+    {"id": "find_package", "desc": "Locate the missing package."},
+    {"id": "deliver_package", "desc": "Bring it to the dock master."}
+  ]
+}
