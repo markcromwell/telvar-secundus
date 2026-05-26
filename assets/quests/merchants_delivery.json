@@ -1,0 +1,10 @@
+{
+  "id": "merchants_delivery",
+  "title": "Merchant's Delivery",
+  "objectives": [
+    {
+      "id": "return_to_emporium",
+      "desc": "Return to the Emporium after the incident and speak with Sabatha."
+    }
+  ]
+}
