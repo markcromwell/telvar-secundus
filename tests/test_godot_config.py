@@ -18,6 +18,8 @@ EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 CREDITS_MD = REPO_ROOT / "CREDITS.md"
 CREDITS_SCENE = REPO_ROOT / "Credits.tscn"
 CREDITS_SCRIPT = REPO_ROOT / "Credits.gd"
+MAIN_MENU_SCENE = REPO_ROOT / "MainMenu.tscn"
+MAIN_MENU_SCRIPT = REPO_ROOT / "MainMenu.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -140,3 +142,21 @@ def test_credits_script_loads_res_credits_md() -> None:
     src = CREDITS_SCRIPT.read_text(encoding="utf-8")
     assert "res://CREDITS.md" in src
     assert "RichTextLabel" in src
+
+
+def test_main_menu_scene_has_credits_button_and_script() -> None:
+    assert MAIN_MENU_SCENE.is_file()
+    assert MAIN_MENU_SCRIPT.is_file()
+    tscn = MAIN_MENU_SCENE.read_text(encoding="utf-8")
+    assert 'name="CreditsButton"' in tscn
+    assert 'type="Button"' in tscn
+    assert "MainMenu.gd" in tscn
+    menu_src = MAIN_MENU_SCRIPT.read_text(encoding="utf-8")
+    assert "res://Credits.tscn" in menu_src
+    assert "_on_credits_pressed" in menu_src
+
+
+def test_project_main_scene_is_main_menu() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
+    assert main_scene == "res://MainMenu.tscn"
