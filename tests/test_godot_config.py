@@ -8,6 +8,8 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -15,6 +17,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+HUD_TSCN = REPO_ROOT / "HUD.tscn"
+HUD_GD = REPO_ROOT / "HUD.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +107,37 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_hud_scene_exists() -> None:
+    assert HUD_TSCN.is_file()
+
+
+def test_hud_script_exists() -> None:
+    assert HUD_GD.is_file()
+
+
+def test_hud_scene_has_district_label_node() -> None:
+    text = HUD_TSCN.read_text(encoding="utf-8")
+    assert '[node name="DistrictLabel"' in text
+
+
+def test_hud_scene_has_hold_timer_node() -> None:
+    text = HUD_TSCN.read_text(encoding="utf-8")
+    assert '[node name="DistrictHoldTimer"' in text
+
+
+def test_hud_script_defines_show_district_name() -> None:
+    text = HUD_GD.read_text(encoding="utf-8")
+    assert "func show_district_name" in text
+
+
+def test_validate_py_exits_zero() -> None:
+    r = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "validate.py")],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert r.returncode == 0, r.stderr or r.stdout
