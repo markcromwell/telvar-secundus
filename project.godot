@@ -34,3 +34,4 @@ anti_aliasing/quality/screen_space_aa=0
 [autoload]
 
 QuestManager="*res://scripts/quest_manager.gd"
+DialogueManager="*res://scripts/dialogue_manager.gd"

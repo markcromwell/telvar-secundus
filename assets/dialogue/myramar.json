@@ -1,0 +1,30 @@
+[
+  {
+    "id": "start",
+    "text": "Telvar. Listen carefully—the market needs reliable hands, not excuses.",
+    "speaker": "Myramar",
+    "choices": [
+      {
+        "text": "I'll take the delivery work.",
+        "next": "end",
+        "flags": ["[quest_give:merchants_delivery]"]
+      },
+      {
+        "text": "Not today.",
+        "next": "decline"
+      }
+    ]
+  },
+  {
+    "id": "end",
+    "text": "Good. Do not disappoint me.",
+    "speaker": "Myramar",
+    "next": ""
+  },
+  {
+    "id": "decline",
+    "text": "Then stay out of the way.",
+    "speaker": "Myramar",
+    "next": ""
+  }
+]

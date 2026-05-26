@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import json
 from pathlib import Path
 
 import pytest
@@ -103,3 +104,35 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_autoload_includes_quest_and_dialogue_managers() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    assert cp.has_option("autoload", "QuestManager")
+    assert cp.has_option("autoload", "DialogueManager")
+    qm = _unquote_godot_value(cp.get("autoload", "QuestManager"))
+    dm = _unquote_godot_value(cp.get("autoload", "DialogueManager"))
+    assert qm == "*res://scripts/quest_manager.gd"
+    assert dm == "*res://scripts/dialogue_manager.gd"
+
+
+def test_dialogue_manager_script_contract() -> None:
+    path = REPO_ROOT / "scripts" / "dialogue_manager.gd"
+    assert path.is_file()
+    text = path.read_text(encoding="utf-8")
+    for needle in (
+        "func show_dialogue(",
+        "func set_flag(",
+        "func get_flag(",
+        "var _flags: Dictionary",
+    ):
+        assert needle in text
+
+
+def test_myramar_dialogue_json_seed() -> None:
+    path = REPO_ROOT / "assets" / "dialogue" / "myramar.json"
+    assert path.is_file()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert isinstance(data, list)
+    assert "quest_give" in path.read_text(encoding="utf-8")
