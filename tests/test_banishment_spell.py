@@ -57,6 +57,45 @@ def test_cast_spell_panel_scene_wires_script() -> None:
     assert "SpellBook" in panel
 
 
+def test_main_scene_handles_spell_panel_toggle() -> None:
+    main_gd = REPO_ROOT / "scenes/main.gd"
+    assert main_gd.is_file()
+    src = main_gd.read_text(encoding="utf-8")
+    assert "_unhandled_input" in src
+    assert "toggle_cast_spell" in src
+
+
+def test_cast_spell_panel_uses_spellbook_lists() -> None:
+    panel = CAST_PANEL_GD.read_text(encoding="utf-8")
+    assert "SpellBook.get_learnable_display_lines" in panel
+    assert "SpellBook.mana_current" in panel
+
+
+def test_spell_book_learnable_catalog_and_helper() -> None:
+    src = SPELL_BOOK_GD.read_text(encoding="utf-8")
+    assert "LEARNABLE_CATALOG" in src
+    assert "get_learnable_display_lines" in src
+
+
+def test_project_input_toggle_cast_spell_s_key() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert "toggle_cast_spell" in text
+    assert "keycode" in text and "83" in text
+
+
+def test_main_scene_loads_cast_spell_panel() -> None:
+    main = REPO_ROOT / "scenes/main.tscn"
+    assert main.is_file()
+    mt = main.read_text(encoding="utf-8")
+    assert "cast_spell_panel.tscn" in mt
+    assert "main.gd" in mt
+
+
+def test_project_main_scene_set() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert 'run/main_scene="res://scenes/main.tscn"' in text
+
+
 def test_project_autoload_spellbook() -> None:
     cp = _load_ini(PROJECT_GODOT)
     assert cp.has_section("autoload")

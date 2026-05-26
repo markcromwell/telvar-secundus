@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://ui/cast_spell_panel.gd" id="1_panel"]
 
 [node name="CastSpellPanel" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,3 +11,64 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_panel")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.05, 0.05, 0.08, 0.65)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Frame" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(360, 280)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Frame"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Center/Frame/VBox"]
+layout_mode = 2
+text = "Cast Spell"
+horizontal_alignment = 1
+
+[node name="ManaLabel" type="Label" parent="Center/Frame/VBox"]
+layout_mode = 2
+text = "Mana: 0 / 0"
+horizontal_alignment = 1
+
+[node name="KnownHeader" type="Label" parent="Center/Frame/VBox"]
+layout_mode = 2
+text = "Known spells"
+
+[node name="KnownList" type="ItemList" parent="Center/Frame/VBox"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_vertical = 3
+fixed_icon_size = Vector2i(0, 0)
+
+[node name="LearnableHeader" type="Label" parent="Center/Frame/VBox"]
+layout_mode = 2
+text = "Learnable spells"
+
+[node name="LearnableList" type="ItemList" parent="Center/Frame/VBox"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_vertical = 3
+fixed_icon_size = Vector2i(0, 0)
+
+[node name="Hint" type="Label" parent="Center/Frame/VBox"]
+layout_mode = 2
+text = "Press S to toggle"
+horizontal_alignment = 1
