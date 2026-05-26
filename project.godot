@@ -8,6 +8,10 @@
 
 config_version=5
 
+[autoload]
+
+CombatManager="*res://scripts/CombatManager.gd"
+
 [application]
 
 config/name="Telvar Secundus"

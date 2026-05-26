@@ -15,6 +15,9 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+COMBAT_UI_SCENE = REPO_ROOT / "scenes" / "CombatUI.tscn"
+COMBAT_UI_SCRIPT = REPO_ROOT / "scripts" / "CombatUI.gd"
+COMBAT_MANAGER_SCRIPT = REPO_ROOT / "scripts" / "CombatManager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +106,30 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_combat_ui_scene_exists() -> None:
+    assert COMBAT_UI_SCENE.is_file()
+
+
+def test_combat_ui_script_exists() -> None:
+    assert COMBAT_UI_SCRIPT.is_file()
+
+
+def test_combat_manager_script_exists() -> None:
+    assert COMBAT_MANAGER_SCRIPT.is_file()
+
+
+def test_combat_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    path = _unquote_godot_value(cp.get("autoload", "CombatManager"))
+    assert path == "*res://scripts/CombatManager.gd"
+
+
+def test_combat_ui_scene_has_canvas_layer_and_overlay() -> None:
+    text = COMBAT_UI_SCENE.read_text(encoding="utf-8")
+    assert 'type="CanvasLayer"' in text
+    assert 'type="ColorRect"' in text
+    assert 'name="DarkOverlay"' in text
+    assert "res://scripts/CombatUI.gd" in text
