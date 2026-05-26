@@ -4,5 +4,8 @@
 
 [node name="MainHall" type="Node2D"]
 
-[node name="SealedWingDoor" parent="." instance=ExtResource("1_door")]
-position = Vector2(640, 360)
+[node name="SealedWingDoorWest" parent="." instance=ExtResource("1_door")]
+position = Vector2(160, 360)
+
+[node name="SealedWingDoorEast" parent="." instance=ExtResource("1_door")]
+position = Vector2(1120, 360)
