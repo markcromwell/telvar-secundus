@@ -1,0 +1,10 @@
+{
+  "id": "timons_spectacles",
+  "title": "Timon's Spectacles",
+  "objectives": [
+    {
+      "id": "find_spectacles",
+      "desc": "Recover Timon's spectacles from the library stacks."
+    }
+  ]
+}
