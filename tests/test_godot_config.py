@@ -15,6 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+QUEST_MANAGER_SCRIPT = REPO_ROOT / "scripts" / "quest_manager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +104,17 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_quest_manager_script_exists() -> None:
+    assert QUEST_MANAGER_SCRIPT.is_file()
+    text = QUEST_MANAGER_SCRIPT.read_text(encoding="utf-8")
+    assert "signal quest_updated" in text
+    assert "signal objective_completed" in text
+
+
+def test_quest_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    entry = cp.get("autoload", "QuestManager")
+    assert "quest_manager.gd" in entry
