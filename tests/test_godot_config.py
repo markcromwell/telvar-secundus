@@ -25,6 +25,25 @@ def _wrap_godot_root_section(text: str) -> str:
     return text
 
 
+def _strip_godot_input_section(text: str) -> str:
+    """Remove [input] map blocks; nested []/braces break ConfigParser."""
+    lines = text.splitlines(True)
+    out: list[str] = []
+    i = 0
+    while i < len(lines):
+        if lines[i].strip() == "[input]":
+            i += 1
+            while i < len(lines):
+                s = lines[i].strip()
+                if s.startswith("[") and s != "[input]":
+                    break
+                i += 1
+            continue
+        out.append(lines[i])
+        i += 1
+    return "".join(out)
+
+
 def _unquote_godot_value(raw: str) -> str:
     s = raw.strip()
     if len(s) >= 2 and s[0] == s[-1] and s[0] in "\"'":
@@ -37,6 +56,7 @@ def _load_ini(path: Path) -> configparser.ConfigParser:
         pytest.fail(f"Missing required file: {path}")
     text = path.read_text(encoding="utf-8")
     if path.name == "project.godot":
+        text = _strip_godot_input_section(text)
         text = _wrap_godot_root_section(text)
     cp = configparser.ConfigParser(interpolation=None)
     cp.read_string(text)
@@ -103,3 +123,31 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_dialogue_manager_autoload_line() -> None:
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert 'DialogueManager="*res://scripts/DialogueManager.gd"' in text
+
+
+def test_interact_input_physical_keycode_e() -> None:
+    """E key: physical_keycode 69 (read raw file; [input] values are not INI-friendly)."""
+    text = PROJECT_GODOT.read_text(encoding="utf-8")
+    assert "[input]" in text
+    assert "interact=" in text
+    assert 'physical_keycode":69' in text or "physical_keycode=69" in text
+
+
+def test_dialogue_manager_script_exists() -> None:
+    path = REPO_ROOT / "scripts" / "DialogueManager.gd"
+    assert path.is_file()
+
+
+def test_dialogue_box_scene_exists() -> None:
+    path = REPO_ROOT / "scenes" / "DialogueBox.tscn"
+    assert path.is_file()
+    body = path.read_text(encoding="utf-8")
+    assert 'name="NameLabel"' in body
+    assert 'name="TextLabel"' in body
+    assert 'name="ChoicesContainer"' in body
+    assert 'name="PortraitTexture"' in body
