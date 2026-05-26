@@ -1,7 +1,48 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="1_tileset"]
 [ext_resource type="Script" path="res://scripts/OverworldMap.gd" id="2_script"]
+[ext_resource type="Script" path="res://scripts/DistrictZone.gd" id="3_district"]
+[ext_resource type="Script" path="res://scripts/BuildingEntrance.gd" id="4_building"]
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_00"]
+size = Vector2(464, 352)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_01"]
+size = Vector2(560, 352)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_02"]
+size = Vector2(400, 272)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_03"]
+size = Vector2(640, 320)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_04"]
+size = Vector2(2560, 160)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_05"]
+size = Vector2(736, 352)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_06"]
+size = Vector2(496, 288)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_07"]
+size = Vector2(400, 432)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_08"]
+size = Vector2(368, 160)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_09"]
+size = Vector2(304, 352)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_10"]
+size = Vector2(432, 224)
+
+[sub_resource type="RectangleShape2D" id="DistrictRect_11"]
+size = Vector2(432, 320)
+
+[sub_resource type="RectangleShape2D" id="BuildingEntranceRect"]
+size = Vector2(28, 28)
 
 [node name="Overworld" type="Node2D"]
 script = ExtResource("2_script")
@@ -22,6 +63,1128 @@ position_smoothing_enabled = true
 [node name="SpawnPoint" type="Marker2D" parent="TileMap"]
 position = Vector2(1288, 728)
 
+[node name="DistrictHUD" type="CanvasLayer" parent="."]
+
+[node name="DistrictNameLabel" type="Label" parent="DistrictHUD"]
+visible = false
+text = "District"
+horizontal_alignment = 1
+offset_left = 440.0
+offset_top = 24.0
+offset_right = 840.0
+offset_bottom = 72.0
+
 [node name="DistrictZones" type="Node2D" parent="."]
 
+[node name="DZ_00_Merchant_District" type="Area2D" parent="DistrictZones"]
+position = Vector2(552.0, 736.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Merchant District"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_00_Merchant_District"]
+shape = SubResource("DistrictRect_00")
+
+[node name="DZ_01_Temple_District" type="Area2D" parent="DistrictZones"]
+position = Vector2(1400.0, 496.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Temple District"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_01_Temple_District"]
+shape = SubResource("DistrictRect_01")
+
+[node name="DZ_02_Old_City" type="Area2D" parent="DistrictZones"]
+position = Vector2(328.0, 840.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Old City"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_02_Old_City"]
+shape = SubResource("DistrictRect_02")
+
+[node name="DZ_03_Reagent_s_Hill" type="Area2D" parent="DistrictZones"]
+position = Vector2(928.0, 224.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Reagent's Hill"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_03_Reagent_s_Hill"]
+shape = SubResource("DistrictRect_03")
+
+[node name="DZ_04_Harbor_District" type="Area2D" parent="DistrictZones"]
+position = Vector2(1280.0, 1360.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Harbor District"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_04_Harbor_District"]
+shape = SubResource("DistrictRect_04")
+
+[node name="DZ_05_Warehouse_District" type="Area2D" parent="DistrictZones"]
+position = Vector2(368.0, 1104.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Warehouse District"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_05_Warehouse_District"]
+shape = SubResource("DistrictRect_05")
+
+[node name="DZ_06_Foreign_Quarter" type="Area2D" parent="DistrictZones"]
+position = Vector2(1768.0, 784.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Foreign Quarter"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_06_Foreign_Quarter"]
+shape = SubResource("DistrictRect_06")
+
+[node name="DZ_07_Cemetery" type="Area2D" parent="DistrictZones"]
+position = Vector2(200.0, 344.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Cemetery"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_07_Cemetery"]
+shape = SubResource("DistrictRect_07")
+
+[node name="DZ_08_The_Rookery" type="Area2D" parent="DistrictZones"]
+position = Vector2(376.0, 848.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "The Rookery"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_08_The_Rookery"]
+shape = SubResource("DistrictRect_08")
+
+[node name="DZ_09_The_Iron_Works" type="Area2D" parent="DistrictZones"]
+position = Vector2(152.0, 976.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "The Iron Works"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_09_The_Iron_Works"]
+shape = SubResource("DistrictRect_09")
+
+[node name="DZ_10_Bazaar" type="Area2D" parent="DistrictZones"]
+position = Vector2(696.0, 592.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Bazaar"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_10_Bazaar"]
+shape = SubResource("DistrictRect_10")
+
+[node name="DZ_11_Golden_Bell" type="Area2D" parent="DistrictZones"]
+position = Vector2(1016.0, 400.0)
+collision_mask = 1
+script = ExtResource("3_district")
+district_name = "Golden Bell"
+hud_label = NodePath("../DistrictHUD/DistrictNameLabel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DistrictZones/DZ_11_Golden_Bell"]
+shape = SubResource("DistrictRect_11")
+
 [node name="BuildingEntrances" type="Node2D" parent="."]
+
+[node name="BE_00_Orsson_s_Emporium" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(504, 760)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Orsson's Emporium"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_00_Orsson_s_Emporium"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_00_Orsson_s_Emporium"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_01_Paladin_Temple" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1320, 600)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Paladin Temple"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_01_Paladin_Temple"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_01_Paladin_Temple"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_02_Cathedral_of_Aten" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1496, 552)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Cathedral of Aten"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_02_Cathedral_of_Aten"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_02_Cathedral_of_Aten"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_03_King_s_Keep" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1032, 424)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "King's Keep"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_03_King_s_Keep"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_03_King_s_Keep"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_04_Veneficturis_West_Spire" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1272, 312)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Veneficturis West Spire"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_04_Veneficturis_West_Spire"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_04_Veneficturis_West_Spire"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_05_Veneficturis_Central_Tower" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1336, 328)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Veneficturis Central Tower"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_05_Veneficturis_Central_Tower"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_05_Veneficturis_Central_Tower"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_06_Veneficturis_East_Spire" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1416, 312)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Veneficturis East Spire"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_06_Veneficturis_East_Spire"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_06_Veneficturis_East_Spire"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_07_Rookery_Tavern" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(344, 856)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Rookery Tavern"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_07_Rookery_Tavern"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_07_Rookery_Tavern"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_08_Harbor_Customs_House" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(712, 1048)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Harbor Customs House"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_08_Harbor_Customs_House"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_08_Harbor_Customs_House"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_09_Harbor_Longshoremen_s_Hall" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(840, 1064)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Harbor Longshoremen's Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_09_Harbor_Longshoremen_s_Hall"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_09_Harbor_Longshoremen_s_Hall"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_10_Harbor_Ropewalk" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(984, 1064)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Harbor Ropewalk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_10_Harbor_Ropewalk"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_10_Harbor_Ropewalk"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_11_Harbor_Pilot_s_Lodge" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1112, 1048)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Harbor Pilot's Lodge"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_11_Harbor_Pilot_s_Lodge"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_11_Harbor_Pilot_s_Lodge"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_12_Harbor_Net_Mender_s_Shed" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(600, 1096)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Harbor Net Mender's Shed"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_12_Harbor_Net_Mender_s_Shed"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_12_Harbor_Net_Mender_s_Shed"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_13_Reagent_s_Hill_Gatehouse" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(808, 184)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Reagent's Hill Gatehouse"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_13_Reagent_s_Hill_Gatehouse"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_13_Reagent_s_Hill_Gatehouse"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_14_Reagent_s_Hill_Alchemist_Barn" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(744, 264)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Reagent's Hill Alchemist Barn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_14_Reagent_s_Hill_Alchemist_Barn"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_14_Reagent_s_Hill_Alchemist_Barn"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_15_Reagent_s_Hill_Signal_Bastion" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(856, 248)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Reagent's Hill Signal Bastion"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_15_Reagent_s_Hill_Signal_Bastion"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_15_Reagent_s_Hill_Signal_Bastion"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_16_Reagent_s_Hill_Storehouse" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(680, 152)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Reagent's Hill Storehouse"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_16_Reagent_s_Hill_Storehouse"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_16_Reagent_s_Hill_Storehouse"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_17_Copper_Lane_Chandlery" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(408, 744)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Copper Lane Chandlery"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_17_Copper_Lane_Chandlery"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_17_Copper_Lane_Chandlery"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_18_Scale_House_Weighing_Hall" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(648, 728)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Scale House Weighing Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_18_Scale_House_Weighing_Hall"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_18_Scale_House_Weighing_Hall"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_19_Guild_Row_Tallow_Works" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(456, 680)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Guild Row Tallow Works"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_19_Guild_Row_Tallow_Works"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_19_Guild_Row_Tallow_Works"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_20_East_Bazaar_Cloth_Hall" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(584, 664)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "East Bazaar Cloth Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_20_East_Bazaar_Cloth_Hall"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_20_East_Bazaar_Cloth_Hall"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_21_Merchant_Counting_House" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(392, 776)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Merchant Counting House"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_21_Merchant_Counting_House"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_21_Merchant_Counting_House"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_22_Old_Cobbles_Smithy" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(248, 824)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Old Cobbles Smithy"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_22_Old_Cobbles_Smithy"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_22_Old_Cobbles_Smithy"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_23_Burgher_Tenement_North" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(200, 888)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Burgher Tenement North"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_23_Burgher_Tenement_North"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_23_Burgher_Tenement_North"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_24_Burgher_Tenement_South" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(200, 952)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Burgher Tenement South"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_24_Burgher_Tenement_South"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_24_Burgher_Tenement_South"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_25_Old_City_Scrivener_s_Shop" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(312, 904)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Old City Scrivener's Shop"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_25_Old_City_Scrivener_s_Shop"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_25_Old_City_Scrivener_s_Shop"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_26_Creakstairs_Inn" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(488, 888)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Creakstairs Inn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_26_Creakstairs_Inn"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_26_Creakstairs_Inn"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_27_Acolyte_Dormitory" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1192, 520)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Acolyte Dormitory"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_27_Acolyte_Dormitory"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_27_Acolyte_Dormitory"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_28_Reliquary_Workshop" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1640, 440)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Reliquary Workshop"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_28_Reliquary_Workshop"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_28_Reliquary_Workshop"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_29_Bellfounder_s_Yard" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1288, 408)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Bellfounder's Yard"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_29_Bellfounder_s_Yard"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_29_Bellfounder_s_Yard"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_30_Sanctuary_Guest_Hall" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1448, 648)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Sanctuary Guest Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_30_Sanctuary_Guest_Hall"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_30_Sanctuary_Guest_Hall"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_31_Pallium_Archive_Annex" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(872, 344)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Pallium Archive Annex"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_31_Pallium_Archive_Annex"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_31_Pallium_Archive_Annex"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_32_Crown_Solicitor_s_Office" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(808, 408)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Crown Solicitor's Office"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_32_Crown_Solicitor_s_Office"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_32_Crown_Solicitor_s_Office"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_33_Royal_Guard_Barracks" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1240, 328)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Royal Guard Barracks"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_33_Royal_Guard_Barracks"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_33_Royal_Guard_Barracks"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_34_Herald_s_Colonnade" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(984, 504)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Herald's Colonnade"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_34_Herald_s_Colonnade"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_34_Herald_s_Colonnade"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_35_North_Watchtower" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1144, 232)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "North Watchtower"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_35_North_Watchtower"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_35_North_Watchtower"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_36_Apprentice_Lodgings_East" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1544, 216)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Apprentice Lodgings East"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_36_Apprentice_Lodgings_East"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_36_Apprentice_Lodgings_East"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_37_Apprentice_Lodgings_West" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1160, 152)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Apprentice Lodgings West"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_37_Apprentice_Lodgings_West"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_37_Apprentice_Lodgings_West"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_38_Astrolabe_Court_Greenhouse" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1640, 200)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Astrolabe Court Greenhouse"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_38_Astrolabe_Court_Greenhouse"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_38_Astrolabe_Court_Greenhouse"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_39_Millrace_Granary" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(184, 648)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Millrace Granary"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_39_Millrace_Granary"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_39_Millrace_Granary"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_40_Quayside_Cooperage" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(328, 1016)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Quayside Cooperage"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_40_Quayside_Cooperage"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_40_Quayside_Cooperage"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_41_River_Gate_Tollhouse" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(120, 776)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "River Gate Tollhouse"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_41_River_Gate_Tollhouse"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_41_River_Gate_Tollhouse"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_42_Lower_Docks_Fishmonger" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(520, 1032)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Lower Docks Fishmonger"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_42_Lower_Docks_Fishmonger"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_42_Lower_Docks_Fishmonger"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_43_Canal_Workshed" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(232, 680)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Canal Workshed"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_43_Canal_Workshed"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_43_Canal_Workshed"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_44_South_Postern_Guardroom" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1464, 984)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "South Postern Guardroom"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_44_South_Postern_Guardroom"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_44_South_Postern_Guardroom"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_45_East_Market_Porters_Den" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1640, 792)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "East Market Porters' Den"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_45_East_Market_Porters_Den"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_45_East_Market_Porters_Den"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_46_Lampwright_s_Shop" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(664, 872)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Lampwright's Shop"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_46_Lampwright_s_Shop"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_46_Lampwright_s_Shop"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_47_Physicker_s_Hall" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1032, 712)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Physicker's Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_47_Physicker_s_Hall"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_47_Physicker_s_Hall"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_48_Carters_Guild_Hall" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1208, 760)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Carters' Guild Hall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_48_Carters_Guild_Hall"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_48_Carters_Guild_Hall"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_49_Silversmith_Row" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(792, 584)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Silversmith Row"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_49_Silversmith_Row"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_49_Silversmith_Row"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_50_Weaver_s_Loft" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(936, 632)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Weaver's Loft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_50_Weaver_s_Loft"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_50_Weaver_s_Loft"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_51_Tannery_Compound" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(104, 920)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Tannery Compound"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_51_Tannery_Compound"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_51_Tannery_Compound"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_52_Charcoal_Yard_Office" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(56, 1000)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Charcoal Yard Office"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_52_Charcoal_Yard_Office"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_52_Charcoal_Yard_Office"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_53_North_Cobbler_s" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(1688, 264)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "North Cobbler's"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_53_North_Cobbler_s"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_53_North_Cobbler_s"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
+[node name="BE_54_Stable_Mews_Central" type="Area2D" parent="BuildingEntrances"]
+position = Vector2(584, 536)
+collision_mask = 1
+script = ExtResource("4_building")
+building_label = "Stable Mews Central"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BuildingEntrances/BE_54_Stable_Mews_Central"]
+shape = SubResource("BuildingEntranceRect")
+
+[node name="EnterPrompt" type="Label" parent="BuildingEntrances/BE_54_Stable_Mews_Central"]
+visible = false
+text = "Press E to enter"
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = -4.0
+horizontal_alignment = 1
+
