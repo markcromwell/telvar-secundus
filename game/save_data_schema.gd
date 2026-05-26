@@ -28,6 +28,11 @@
 ##   data["tile_coords"] = {"x": 12, "y": 5}
 ##   SaveDataSchema.write_slot(1, data)
 ##   var loaded := SaveDataSchema.read_slot(1)
+##
+## Dictionary serialization (JSON-safe, nested dict/array deep-copied):
+##   var snapshot := SaveDataSchema.export_state_to_dictionary(data)
+##   var live: Dictionary = {}
+##   SaveDataSchema.populate_state_from_dictionary(live, snapshot)
 class_name SaveDataSchema
 extends RefCounted
 
@@ -80,6 +85,20 @@ static func merge_with_defaults(data: Dictionary) -> Dictionary:
 		else:
 			out[k] = data[k]
 	return out
+
+
+## Returns a deep-copied save document merged with defaults (nested quest_state / inventory / flags intact).
+## Use before JSON.stringify or handing data to systems that must not see live references.
+static func export_state_to_dictionary(state: Dictionary) -> Dictionary:
+	return merge_with_defaults(state).duplicate(true)
+
+
+## Replaces `target` contents with merge_with_defaults(source) using a deep copy (no shared nested refs).
+static func populate_state_from_dictionary(target: Dictionary, source: Dictionary) -> void:
+	var merged := merge_with_defaults(source).duplicate(true)
+	target.clear()
+	for k in merged.keys():
+		target[k] = merged[k]
 
 
 static func to_json_string(data: Dictionary, pretty: bool = false) -> String:
