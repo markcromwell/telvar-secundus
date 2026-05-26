@@ -1,0 +1,14 @@
+{
+  "id": "where_is_aelyn",
+  "title": "Where is Aelyn?",
+  "objectives": [
+    {
+      "id": "enter_aelyns_room",
+      "desc": "After speaking with Daran, search Aelyn's quarters for any sign of where she went."
+    },
+    {
+      "id": "read_floor_note",
+      "desc": "Read the note left on the floor of her room."
+    }
+  ]
+}
