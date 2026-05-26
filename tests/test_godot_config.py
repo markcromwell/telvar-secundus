@@ -17,6 +17,8 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 MYRAMAR_SCENE = REPO_ROOT / "scenes" / "npcs" / "myramar.tscn"
 MYRAMAR_SCRIPT = REPO_ROOT / "scripts" / "npcs" / "myramar.gd"
+MYRAMAR_OFFICE_SCENE = REPO_ROOT / "scenes" / "myramar_office.tscn"
+LPC_TERRAIN_TEXTURE = REPO_ROOT / "assets" / "tilesets" / "lpc_terrain.png"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -122,3 +124,21 @@ def test_myramar_npc_script_exists() -> None:
     text = MYRAMAR_SCRIPT.read_text(encoding="utf-8")
     assert "act_3_complete" in text
     assert "show_dialogue" in text
+
+
+def test_myramar_office_map_exists() -> None:
+    assert MYRAMAR_OFFICE_SCENE.is_file()
+    assert LPC_TERRAIN_TEXTURE.is_file()
+
+
+def test_myramar_office_uses_tilemap_lpc_and_npc_instance() -> None:
+    text = MYRAMAR_OFFICE_SCENE.read_text(encoding="utf-8")
+    assert 'type="TileMap"' in text
+    assert "res://assets/tilesets/lpc_terrain.png" in text
+    assert "TileSetAtlasSource" in text
+    assert "texture_region_size = Vector2i(16, 16)" in text
+    assert "tile_size = Vector2i(16, 16)" in text
+    assert 'scale = Vector2(2, 2)' in text
+    assert "texture_filter = 0" in text
+    assert 'path="res://scenes/npcs/myramar.tscn"' in text
+    assert "instance=ExtResource(" in text
