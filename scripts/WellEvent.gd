@@ -5,7 +5,13 @@ signal burst_triggered
 func _on_well_entered(player: Node2D) -> void:
     player.can_move = false
     emit_signal("burst_triggered")
-    
+
+    var burst_origin := global_position
+    var thugs := get_tree().get_nodes_in_group("thugs")
+    for thug in thugs:
+        if thug.has_method("start_flee"):
+            thug.start_flee(burst_origin)
+
     var particles = get_node_or_null("BurstParticles")
     if particles:
         particles.emitting = true
@@ -14,12 +20,7 @@ func _on_well_entered(player: Node2D) -> void:
     
     if particles:
         particles.emitting = false
-        
-    var thugs = get_tree().get_nodes_in_group("thugs")
-    for thug in thugs:
-        if thug.has_method("flee"):
-            thug.flee()
-            
+
     var myramar = get_node_or_null("MyramarSprite")
     if myramar:
         myramar.visible = true
