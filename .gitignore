@@ -1,0 +1,21 @@
+# Forge lock files
+.forge-access.lock
+*.forge-lock
+
+# Godot editor generated
+.godot/
+*.uid
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Export artifacts
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
