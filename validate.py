@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Structural validation for lpc_terrain TileSet (text parse; no Godot runtime)."""
+"""Structural validation for TileSet and MainScene (text parse; no Godot runtime)."""
 from __future__ import annotations
 
 import re
@@ -84,6 +84,46 @@ def main() -> None:
                     f"atlas source {bi}: tile ({ax},{ay}) region Rect2i({left},{top},16,16) "
                     f"outside PNG bounds {pw}x{ph}"
                 )
+
+    # MainScene: TileMap + spawn marker (Godot 4 text scene; structural parse only).
+    scene = root / "MainScene.tscn"
+    if not scene.is_file():
+        fail(f"missing {scene.relative_to(root)}")
+    scene_text = scene.read_text(encoding="utf-8")
+    if "[node name=\"TileMap\" type=\"TileMap\"" not in scene_text:
+        fail("MainScene.tscn must contain a TileMap node")
+    if "tile_set = ExtResource(" not in scene_text:
+        fail("MainScene.tscn TileMap must set tile_set = ExtResource(...)")
+    if 'path="res://assets/tilesets/lpc_terrain.tres"' not in scene_text:
+        fail("MainScene.tscn must reference res://assets/tilesets/lpc_terrain.tres")
+    if "[node name=\"PlayerSpawn\" type=\"Node2D\"" not in scene_text:
+        fail("MainScene.tscn must contain a Node2D named PlayerSpawn")
+    if not re.search(r"^\s*position\s*=\s*Vector2\(\s*160\s*,\s*160\s*\)\s*$", scene_text, re.MULTILINE):
+        fail("PlayerSpawn must use position = Vector2(160, 160)")
+
+    total_cells = 0
+    source_ids: set[int] = set()
+    layer_tile_re = re.compile(
+        r"^\s*layer_(\d+)/tile_data\s*=\s*PackedInt32Array\(\s*(.*?)\s*\)\s*$",
+        re.MULTILINE | re.DOTALL,
+    )
+    for m in layer_tile_re.finditer(scene_text):
+        inner = m.group(2).strip()
+        if not inner:
+            nums: list[int] = []
+        else:
+            nums = [int(x.strip()) for x in inner.split(",") if x.strip()]
+        if len(nums) % 3 != 0:
+            fail(f"layer {m.group(1)} tile_data length {len(nums)} is not a multiple of 3")
+        total_cells += len(nums) // 3
+        for i in range(0, len(nums), 3):
+            blob = struct.pack("<iii", nums[i], nums[i + 1], nums[i + 2])
+            _x, _y, sid, _ax, _ay, _alt = struct.unpack_from("<HHHHHH", blob, 0)
+            source_ids.add(int(sid))
+    if total_cells != 40 * 23:
+        fail(f"expected 920 populated TileMap cells, got {total_cells}")
+    if len(source_ids) < 2:
+        fail("TileMap must use at least two distinct tile source IDs across layers")
 
     print("validate: OK")
 
