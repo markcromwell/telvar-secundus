@@ -1,6 +1,6 @@
 """Filesystem validation for Godot 4.x project.godot and export_presets.cfg.
 
-Uses configparser only — no Godot binary. Leading key=value lines before the
+Uses configparser and json only — no Godot binary. Leading key=value lines before the
 first INI section (e.g. config_version) are wrapped in a synthetic section so
 ConfigParser can read Godot's project format.
 """
@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import json
 import struct
 from pathlib import Path
 
@@ -18,8 +19,18 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 APPRENTICE_ROOM_SCENE = REPO_ROOT / "apprentice_room.tscn"
 APPRENTICE_ROOM_SCRIPT = REPO_ROOT / "apprentice_room_floor.gd"
+APPRENTICE_NPC_SCRIPT = REPO_ROOT / "apprentice_npc.gd"
+APPRENTICE_ROOM_FRIENDS_JSON = REPO_ROOT / "data" / "dialogue" / "apprentice_room_friends.json"
+NPC_DARAN_SCENE = REPO_ROOT / "npcs" / "npc_daran.tscn"
+NPC_YESSA_SCENE = REPO_ROOT / "npcs" / "npc_yessa.tscn"
+NPC_CORVIN_SCENE = REPO_ROOT / "npcs" / "npc_corvin.tscn"
 LPC_DARK_STONE_PNG = REPO_ROOT / "assets" / "tilesets" / "lpc_dark_stone.png"
 LPC_DARK_STONE_TILESET = REPO_ROOT / "assets" / "tilesets" / "lpc_dark_stone_tileset.tres"
+LPC_APPRENTICE_SHEETS = [
+    REPO_ROOT / "assets" / "sprites" / "lpc_apprentice" / "daran_sheet.png",
+    REPO_ROOT / "assets" / "sprites" / "lpc_apprentice" / "yessa_sheet.png",
+    REPO_ROOT / "assets" / "sprites" / "lpc_apprentice" / "corvin_sheet.png",
+]
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -142,3 +153,45 @@ def test_lpc_dark_stone_tileset_points_at_png() -> None:
     tres = LPC_DARK_STONE_TILESET.read_text(encoding="utf-8")
     assert "lpc_dark_stone.png" in tres
     assert "Vector2i(16, 16)" in tres
+
+
+def test_apprentice_npc_script_and_dialogue_path() -> None:
+    assert APPRENTICE_NPC_SCRIPT.is_file()
+    text = APPRENTICE_NPC_SCRIPT.read_text(encoding="utf-8")
+    assert "apprentice_room_friends.json" in text
+    assert "walk_down" in text and "walk_up" in text
+
+
+def test_apprentice_room_friends_json_has_three_npcs() -> None:
+    data = json.loads(APPRENTICE_ROOM_FRIENDS_JSON.read_text(encoding="utf-8"))
+    npcs = data["npcs"]
+    for key in ("daran", "yessa", "corvin"):
+        assert key in npcs
+        assert "entry_node" in npcs[key]
+        assert "nodes" in npcs[key]
+
+
+def test_npc_scenes_use_apprentice_npc_script() -> None:
+    for path in (NPC_DARAN_SCENE, NPC_YESSA_SCENE, NPC_CORVIN_SCENE):
+        assert path.is_file()
+        tscn = path.read_text(encoding="utf-8")
+        assert "apprentice_npc.gd" in tscn
+        assert "apprentice_room_friends.json" in tscn
+
+
+def test_apprentice_room_instances_friend_npcs() -> None:
+    text = APPRENTICE_ROOM_SCENE.read_text(encoding="utf-8")
+    assert "npc_daran.tscn" in text
+    assert "npc_yessa.tscn" in text
+    assert "npc_corvin.tscn" in text
+
+
+def test_lpc_apprentice_sprite_sheets_are_128_square() -> None:
+    """32px × 4 frames square sheet; four walk rows for down/left/right/up."""
+    for png_path in LPC_APPRENTICE_SHEETS:
+        data = png_path.read_bytes()
+        assert data[:8] == b"\x89PNG\r\n\x1a\n"
+        assert data[12:16] == b"IHDR"
+        w, h = struct.unpack(">II", data[16:24])
+        assert w == 128
+        assert h == 128
