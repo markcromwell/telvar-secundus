@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
-@export var speed: float = 64.0  # pixels/sec (2 tiles at 32px)
+# ~2560 px Merchant↔Temple centers in Overworld.tscn → ~20 s at this speed (spec timing).
+@export var speed: float = 128.0  # pixels/sec
 @export var can_move: bool = true
 
 
