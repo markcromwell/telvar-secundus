@@ -144,3 +144,23 @@ def test_myramar_dialogue_json_contains_quest_flag_token() -> None:
     data = json.loads(path.read_text(encoding="utf-8"))
     texts = [str(entry.get("text", "")) for entry in data if isinstance(entry, dict)]
     assert any("[quest_give]" in t for t in texts)
+
+
+def test_dialogue_box_scene_and_script() -> None:
+    """DialogueBox UI: layout, visibility default, script hook, DialogueManager usage."""
+    scene_path = REPO_ROOT / "scenes" / "DialogueBox.tscn"
+    script_path = REPO_ROOT / "scripts" / "DialogueBox.gd"
+    assert scene_path.is_file()
+    assert script_path.is_file()
+    tscn = scene_path.read_text(encoding="utf-8")
+    assert '[node name="DialogueBox" type="Control"]' in tscn
+    assert "visible = false" in tscn
+    assert '[node name="VBoxContainer" type="VBoxContainer" parent="."]' in tscn
+    assert '[node name="NameLabel" type="Label" parent="VBoxContainer"]' in tscn
+    assert '[node name="TextLabel" type="Label" parent="VBoxContainer"]' in tscn
+    assert '[node name="ChoicesContainer" type="VBoxContainer" parent="VBoxContainer"]' in tscn
+    assert 'path="res://scripts/DialogueBox.gd"' in tscn
+    assert "script = ExtResource(" in tscn
+    body = script_path.read_text(encoding="utf-8")
+    assert "func show_dialogue(" in body
+    assert "DialogueManager" in body
