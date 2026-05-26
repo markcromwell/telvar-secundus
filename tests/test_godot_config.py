@@ -136,3 +136,25 @@ def test_myramar_dialogue_json_seed() -> None:
     data = json.loads(path.read_text(encoding="utf-8"))
     assert isinstance(data, list)
     assert "quest_give" in path.read_text(encoding="utf-8")
+
+
+def test_dialogue_box_scene_exists_with_named_nodes() -> None:
+    path = REPO_ROOT / "scenes" / "DialogueBox.tscn"
+    assert path.is_file()
+    text = path.read_text(encoding="utf-8")
+    assert 'name="NameLabel"' in text
+    assert 'name="TextLabel"' in text
+    assert 'name="ChoicesContainer"' in text
+    assert 'type="VBoxContainer"' in text
+    assert "res://scripts/dialogue_box.gd" in text
+
+
+def test_dialogue_box_script_flag_dispatch_contract() -> None:
+    path = REPO_ROOT / "scripts" / "dialogue_box.gd"
+    assert path.is_file()
+    src = path.read_text(encoding="utf-8")
+    assert "func _process_flags(" in src
+    assert "QuestManager.start_quest(" in src
+    assert 'DialogueManager.set_flag("shop_open", true)' in src
+    assert 'DialogueManager.set_flag("lore_unlock"' in src
+    assert "QuestManager.complete_objective(" in src
