@@ -139,14 +139,23 @@ def test_audio_manager_sources_exist() -> None:
     assert AUDIO_MANAGER_SCENE.is_file()
 
 
-def test_ambient_wav_assets_exist() -> None:
-    for name in (
-        "ambient_merchant_medieval.wav",
-        "ambient_veneficturis_dark.wav",
-        "ambient_rookery_tension.wav",
-    ):
-        p = REPO_ROOT / "assets" / "audio" / name
-        assert p.is_file(), f"missing {p}"
+def test_ambient_district_assets_wav_or_ogg_trio() -> None:
+    """Matches validate.py: full WAV placeholder set or full district OGG set."""
+    wavs = [
+        REPO_ROOT / "assets" / "audio" / n
+        for n in (
+            "ambient_merchant_medieval.wav",
+            "ambient_veneficturis_dark.wav",
+            "ambient_rookery_tension.wav",
+        )
+    ]
+    oggs = [
+        REPO_ROOT / "assets" / "audio" / n
+        for n in ("merchant_district.ogg", "veneficturis.ogg", "rookery.ogg")
+    ]
+    wav_ok = all(p.is_file() for p in wavs)
+    ogg_ok = all(p.is_file() for p in oggs)
+    assert wav_ok or ogg_ok, "need complete WAV trio or complete OGG trio under assets/audio/"
 
 
 def test_player_scene_and_script_exist() -> None:

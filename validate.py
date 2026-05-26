@@ -2,8 +2,8 @@
 """
 Structural validation for the Telvar Secundus Godot project (no Godot binary).
 
-Checks file presence, autoload registration, audio bus layout, and AudioManager
-scene wiring. Exit 0 on success, 1 on failure.
+Checks file presence, autoload registration, audio bus layout, AudioManager and
+Player scene wiring (Godot 4.x text format). Exit 0 on success, 1 on failure.
 """
 
 from __future__ import annotations
@@ -18,10 +18,17 @@ PROJECT_GODOT = REPO_ROOT / "project.godot"
 BUS_LAYOUT = REPO_ROOT / "default_bus_layout.tres"
 AUDIO_MANAGER_SCENE = REPO_ROOT / "AudioManager.tscn"
 AUDIO_MANAGER_SCRIPT = REPO_ROOT / "AudioManager.gd"
+PLAYER_SCENE = REPO_ROOT / "Player.tscn"
+# District ambient: either LPC-style WAV placeholders or district-named OGG loops (HTML5-friendly).
 REQUIRED_WAVS = (
     REPO_ROOT / "assets/audio/ambient_merchant_medieval.wav",
     REPO_ROOT / "assets/audio/ambient_veneficturis_dark.wav",
     REPO_ROOT / "assets/audio/ambient_rookery_tension.wav",
+)
+REQUIRED_OGGS = (
+    REPO_ROOT / "assets/audio/merchant_district.ogg",
+    REPO_ROOT / "assets/audio/veneficturis.ogg",
+    REPO_ROOT / "assets/audio/rookery.ogg",
 )
 
 
@@ -46,12 +53,21 @@ def _read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8", errors="replace")
 
 
+_RE_AUDIO_STREAM_PLAYER = re.compile(
+    r'^\[node name="([^"]+)" type="AudioStreamPlayer"[^\]]*\]\s*\n\s*bus = &"([^"]+)"',
+    re.MULTILINE,
+)
+
+
+def _audio_stream_player_nodes(scene_text: str) -> list[tuple[str, str]]:
+    """Return (node_name, bus_name) for each AudioStreamPlayer block with bus on the next line."""
+    return [(m.group(1), m.group(2)) for m in _RE_AUDIO_STREAM_PLAYER.finditer(scene_text)]
+
+
 def _scene_has_music_children(scene_text: str) -> bool:
-    return bool(
-        re.search(r'\[node name="MusicA" type="AudioStreamPlayer"', scene_text)
-        and re.search(r'\[node name="MusicB" type="AudioStreamPlayer"', scene_text)
-        and re.search(r'\[node name="SFXPlayer" type="AudioStreamPlayer"', scene_text)
-    )
+    nodes = dict(_audio_stream_player_nodes(scene_text))
+    expected = {"MusicA": "Music", "MusicB": "Music", "SFXPlayer": "SFX"}
+    return all(nodes.get(name) == bus for name, bus in expected.items())
 
 
 def _bus_layout_has_music_sfx(layout_text: str) -> bool:
@@ -119,11 +135,40 @@ def main() -> int:
         if 'path="res://AudioManager.gd"' not in st:
             errors.append("AudioManager.tscn: must reference res://AudioManager.gd")
         if not _scene_has_music_children(st):
-            errors.append('AudioManager.tscn: need MusicA, MusicB, SFXPlayer AudioStreamPlayer nodes')
+            errors.append(
+                "AudioManager.tscn: need MusicA, MusicB, SFXPlayer as AudioStreamPlayer nodes "
+                'with bus = &"Music" / &"Music" / &"SFX" on the line after each node header'
+            )
 
-    for wav in REQUIRED_WAVS:
-        if not wav.is_file():
-            errors.append(f"Missing ambient asset: {wav.relative_to(REPO_ROOT)}")
+    wav_ok = all(p.is_file() for p in REQUIRED_WAVS)
+    ogg_ok = all(p.is_file() for p in REQUIRED_OGGS)
+    if not wav_ok and not ogg_ok:
+        missing_wav = [p for p in REQUIRED_WAVS if not p.is_file()]
+        missing_ogg = [p for p in REQUIRED_OGGS if not p.is_file()]
+        errors.append(
+            "assets/audio: need a complete district ambient set — either all WAV placeholders ("
+            + ", ".join(p.name for p in REQUIRED_WAVS)
+            + ") or all OGG loops ("
+            + ", ".join(p.name for p in REQUIRED_OGGS)
+            + "). Missing WAV: "
+            + (", ".join(p.relative_to(REPO_ROOT).as_posix() for p in missing_wav) or "none")
+            + "; missing OGG: "
+            + (", ".join(p.relative_to(REPO_ROOT).as_posix() for p in missing_ogg) or "none")
+        )
+
+    if not PLAYER_SCENE.is_file():
+        errors.append("Missing Player.tscn")
+    else:
+        pt = _read_text(PLAYER_SCENE)
+        if 'path="res://scripts/Player.gd"' not in pt:
+            errors.append('Player.tscn: must reference script path="res://scripts/Player.gd"')
+        cam = '[node name="Camera2D" type="Camera2D" parent="."]'
+        if cam not in pt:
+            errors.append(f"Player.tscn: missing child node {cam!r}")
+        else:
+            for needle in ("current = true", "position_smoothing_enabled = true", "position_smoothing_speed = 10.0"):
+                if needle not in pt:
+                    errors.append(f"Player.tscn: Camera2D expected {needle!r}")
 
     max_audio = 5 * 1024 * 1024
     audio_total = _total_audio_bytes()
