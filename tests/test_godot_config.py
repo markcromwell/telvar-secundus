@@ -103,3 +103,11 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_myramar_dialogue_json_validate_py_rules() -> None:
+    """Keep validate.py dialogue checks green (Myramar missing-apprentices hub + branches)."""
+    import validate as validate_script
+
+    errs = validate_script.validate_myramar_dialogue()
+    assert errs == [], "\n".join(errs)
