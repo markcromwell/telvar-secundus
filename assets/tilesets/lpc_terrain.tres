@@ -5,17 +5,26 @@
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1"]
 texture = ExtResource("1_tex")
 texture_region_size = Vector2i(16, 16)
+margins = Vector2i(1, 1)
+separation = Vector2i(1, 1)
+use_texture_padding = true
 0:0/next_alternative_id = 1
 0:0/0 = 0
+0:0/0/custom_data_0 = "stone_floor"
 1:0/next_alternative_id = 1
 1:0/0 = 0
+1:0/0/custom_data_0 = "grass"
 2:0/next_alternative_id = 1
 2:0/0 = 0
+2:0/0/custom_data_0 = "dirt"
 0:1/next_alternative_id = 1
 0:1/0 = 0
-1:1/next_alternative_id = 1
-1:1/0 = 0
+0:1/0/custom_data_0 = "wall"
 
 [resource]
-tile_size = Vector2i(16, 16)
+tile_size = Vector2i(32, 32)
+custom_data_layer_0/name = "tile_name"
+custom_data_layer_0/type = 4
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 1
 sources/0 = SubResource("TileSetAtlasSource_1")

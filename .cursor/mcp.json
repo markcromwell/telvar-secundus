@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mcp": {
+      "command": "python",
+      "args": [
+        "/app/nexus.py"
+      ],
+      "transport": "stdio"
+    }
+  }
+}
