@@ -1,0 +1,80 @@
+[
+  {
+    "id": "after_evidence_choice",
+    "text": "You slip back into the room, evidence in hand. Myramar's silhouette does not turn. The air tastes of ash and old sigils.",
+    "speaker": "Narrator",
+    "choices": [
+      {
+        "text": "Step forward and confront Myramar",
+        "next": "confront_exchange_1_telvar"
+      },
+      {
+        "text": "Walk away",
+        "next": "outcome_walk_away_gameover"
+      }
+    ]
+  },
+  {
+    "id": "confront_exchange_1_telvar",
+    "text": "I know what you did. I have proof. Explain yourself—now.",
+    "speaker": "Telvar",
+    "next": "confront_exchange_1_myramar"
+  },
+  {
+    "id": "confront_exchange_1_myramar",
+    "text": "▒░▓ …Veneficturis… ▓▒░ …not for you to read… ░▒▓",
+    "speaker": "Myramar",
+    "next": "confront_exchange_2_telvar"
+  },
+  {
+    "id": "confront_exchange_2_telvar",
+    "text": "Stop hiding behind ranks and titles. Speak plainly. Did you steer me into this on purpose?",
+    "speaker": "Telvar",
+    "next": "confront_exchange_2_myramar"
+  },
+  {
+    "id": "confront_exchange_2_myramar",
+    "text": "▓▒ …Rutilus… ▒▓ …threads… ░ …Test of Fire… ▓ …cannot… ▒",
+    "speaker": "Myramar",
+    "next": "confront_exchange_3_telvar"
+  },
+  {
+    "id": "confront_exchange_3_telvar",
+    "text": "Then answer one thing: am I your student, or your instrument?",
+    "speaker": "Telvar",
+    "next": "confront_exchange_3_myramar"
+  },
+  {
+    "id": "confront_exchange_3_myramar",
+    "text": "░▓▒ …yes… ▒▓░ …and …no… ▓░▒ …walk… ▒░▓ …or… ▓▒░ …burn…",
+    "speaker": "Myramar",
+    "next": "after_confront_choice"
+  },
+  {
+    "id": "after_confront_choice",
+    "text": "The unreadable syllables hang like smoke. A corridor opens toward the deeper wings; the door behind you is still open to the hall.",
+    "speaker": "Narrator",
+    "choices": [
+      {
+        "text": "Walk away",
+        "next": "outcome_walk_away_gameover"
+      },
+      {
+        "text": "Walk into the wings",
+        "next": "outcome_walk_in_wings"
+      }
+    ]
+  },
+  {
+    "id": "outcome_walk_away_gameover",
+    "text": "You turn your back. Footsteps you do not remember making carry you out until the world snaps to black. Load from your last save to try again.",
+    "speaker": "Narrator",
+    "outcome": "game_over_save_prompt"
+  },
+  {
+    "id": "outcome_walk_in_wings",
+    "text": "You pass the threshold into the cold draft of the wings. Whatever Myramar is, you will meet it there.",
+    "speaker": "Narrator",
+    "outcome": "transition_wings"
+  }
+]
