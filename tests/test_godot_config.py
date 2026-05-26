@@ -15,6 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+MAIN_MENU_SCENE = REPO_ROOT / "scenes" / "main_menu.tscn"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -100,6 +101,13 @@ def test_export_preset_web_platform() -> None:
 
 
 def test_export_preset_web_runnable() -> None:
-    cp = _load_ini(EXPORT_PRESETS)
-    runnable = cp.get("preset.0", "runnable")
-    assert runnable == "true"
+	cp = _load_ini(EXPORT_PRESETS)
+	runnable = cp.get("preset.0", "runnable")
+	assert runnable == "true"
+
+
+def test_main_scene_points_at_packaged_main_menu() -> None:
+	cp = _load_ini(PROJECT_GODOT)
+	main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
+	assert main_scene == "res://scenes/main_menu.tscn"
+	assert MAIN_MENU_SCENE.is_file()
