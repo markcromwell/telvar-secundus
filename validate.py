@@ -1,21 +1,72 @@
 #!/usr/bin/env python3
-"""
-TELVAR-RPG validation script (bootstrap stub).
-Full validation is implemented in spec #1246.
-During early development, this exits 0 to allow the pipeline to proceed.
-"""
-import sys, os
+"""Structural validation for Telvar Secundus (Godot 4.x) — text checks only, no Godot binary."""
 
-# Bootstrap mode: check only what is strictly required at this stage
-errors = []
+from __future__ import annotations
 
-# Only enforce critical structural checks here
-# (Full validation in spec 1246)
+import sys
+from pathlib import Path
 
-if errors:
-    for e in errors:
-        print("FAIL:", e)
-    sys.exit(1)
+REPO_ROOT = Path(__file__).resolve().parent
 
-print("Bootstrap checks passed (spec 1246 will add full validation)")
-sys.exit(0)
+REQUIRED_PATHS = [
+    REPO_ROOT / "player" / "Player.gd",
+    REPO_ROOT / "scripts" / "inventory.gd",
+    REPO_ROOT / "scripts" / "wings_enter_sequence.gd",
+    REPO_ROOT / "project.godot",
+]
+
+FILE_MARKERS: dict[str, list[str]] = {
+    "player/Player.gd": [
+        "class_name TelvarPlayer",
+        "manual_input_enabled",
+        "set_scripted_velocity",
+        "move_and_slide",
+    ],
+    "scripts/inventory.gd": [
+        "try_consume_sealed_wings_key",
+        "sealed_wings_key",
+    ],
+    "scripts/wings_enter_sequence.gd": [
+        "WALK_TILE_COUNT",
+        "RENDERED_TILE_PX",
+        "try_begin_enter_from_choice",
+        "try_consume_sealed_wings_key",
+        "manual_input_enabled",
+        "Inventory",
+        "2714",
+    ],
+}
+
+
+def main() -> int:
+    errors: list[str] = []
+
+    for rel, needles in FILE_MARKERS.items():
+        p = REPO_ROOT / rel
+        if not p.is_file():
+            errors.append(f"Missing required file: {rel}")
+            continue
+        text = p.read_text(encoding="utf-8")
+        for needle in needles:
+            if needle not in text:
+                errors.append(f"{rel}: missing marker {needle!r}")
+
+    pg = REPO_ROOT / "project.godot"
+    if not pg.is_file():
+        errors.append("Missing required file: project.godot")
+    else:
+        g = pg.read_text(encoding="utf-8")
+        if "Inventory" not in g or "scripts/inventory.gd" not in g:
+            errors.append("project.godot: missing Inventory autoload for scripts/inventory.gd")
+
+    if errors:
+        for e in errors:
+            print("FAIL:", e)
+        return 1
+
+    print("validate.py: structural checks passed (phase 2714 wings enter)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
