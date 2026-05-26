@@ -1,0 +1,52 @@
+[
+	{
+		"id": "wizard_ranks",
+		"title": "Wizard Ranks",
+		"text": "Secundus mages are sorted by ring color. Red—Rutilus—is the entry rank for novices. Higher rings mark deeper mastery, political weight, and access to restricted archives. A Red-rank wizard still outclasses most citizens, but in the academy's halls they are expected to listen, sweat, and prove themselves daily."
+	},
+	{
+		"id": "secundus_overview",
+		"title": "Secundus, the Vast City",
+		"text": "Secundus is not a single neighborhood but a living lattice of stone, canals, markets, and towers. Trade routes, guild charters, and old wards overlap until the city feels like its own climate. For a child like Telvar Orsson, Secundus is both home and a maze of rules he is only beginning to map."
+	},
+	{
+		"id": "twelve_districts",
+		"title": "Twelve Districts",
+		"text": "Twelve official districts divide Secundus, each with its own character, taxes, and quiet feuds. Some quarters glitter with theaters and banking houses; others smolder with workshops, foundries, and cramped tenements. Knowing which bridge connects which district can be the difference between a shortcut and a knife in an alley."
+	},
+	{
+		"id": "veneficturis_academy",
+		"title": "Veneficturis Academy",
+		"text": "Veneficturis is the great wizard academy of Secundus, where theory meets flame behind guarded gates. Students memorize sigils, endure public critiques, and learn that magic is as much discipline as talent. Graduation is rare; survival of ego is rarer."
+	},
+	{
+		"id": "mentor_myramar",
+		"title": "Myramar, Red-Rank Mentor",
+		"text": "Myramar holds the Red rank yet carries authority beyond her ring. She speaks softly about duty, precision, and the cost of power—lessons Telvar is meant to trust. In whispers among older students, some say mentors like her know more than they teach, and fewer ask what they want in return."
+	},
+	{
+		"id": "test_of_fire",
+		"title": "The Test of Fire",
+		"text": "Legends and nightmares converge on the Test of Fire, a trial spoken of in half-sentences and sudden silences. It is not a classroom exam but a crucible where nerve, control, and conscience are weighed at once. Many who enter hope to emerge changed; some simply hope to emerge."
+	},
+	{
+		"id": "telvar_orson",
+		"title": "Telvar Orsson",
+		"text": "Telvar Orsson is a child of Secundus: quick-eyed, stubborn, and hungry to belong somewhere larger than a cramped stairwell. Veneficturis offers him a path upward, but every corridor also reminds him how small a Red-rank novice can feel beneath vaulted ceilings and older ambitions."
+	},
+	{
+		"id": "child_in_secundus",
+		"title": "Growing Up Between Wards",
+		"text": "Children in Secundus learn early which streets hum with friendly noise and which ones fall quiet when the watch changes. Street cant, market math, and rumor travel faster than ink. For a would-be wizard, those instincts can be as vital as any spellbook when the city tests you first."
+	},
+	{
+		"id": "rutilus_ring",
+		"title": "The Rutilus Ring",
+		"text": "Rutilus—rust-red like old iron—is the color novices wear on cuffs and clasps. It marks beginners, yes, but also the foundation every higher ring rests upon. Mock the Red rank openly in a duel circle and you may learn why even masters still respect its drills."
+	},
+	{
+		"id": "academy_daily_life",
+		"title": "Life Behind the Gates",
+		"text": "Days at Veneficturis blur into ink-stained dawn drills, chalk diagrams that crawl across floors, and meals where gossip competes with exhaustion. Faculty expect punctuality, tidy circles, and the courage to admit failure before it becomes catastrophe. The academy sells a dream of ascent—if you can pay its hidden prices."
+	}
+]

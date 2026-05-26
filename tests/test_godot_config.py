@@ -8,6 +8,7 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import json
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+LORE_ENTRIES_JSON = REPO_ROOT / "assets" / "lore" / "lore_entries.json"
+LORE_MANAGER_GD = REPO_ROOT / "scripts" / "lore_manager.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +106,35 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_lore_manager_autoload_registered() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    path = _unquote_godot_value(cp.get("autoload", "LoreManager"))
+    assert path == "*res://scripts/lore_manager.gd"
+
+
+def test_lore_entries_json_has_ten_unique_entries() -> None:
+    assert LORE_ENTRIES_JSON.is_file()
+    data = json.loads(LORE_ENTRIES_JSON.read_text(encoding="utf-8"))
+    assert isinstance(data, list)
+    assert len(data) == 10
+    ids: list[str] = []
+    for item in data:
+        assert isinstance(item, dict)
+        for key in ("id", "title", "text"):
+            assert key in item
+            assert isinstance(item[key], str)
+            assert item[key].strip() != ""
+        ids.append(item["id"])
+    assert len(ids) == len(set(ids))
+
+
+def test_lore_manager_gd_api_surface() -> None:
+    assert LORE_MANAGER_GD.is_file()
+    src = LORE_MANAGER_GD.read_text(encoding="utf-8")
+    assert "signal lore_unlocked(entry_id: String)" in src
+    assert "var unlocked: Array[String] = []" in src
+    assert "func unlock(entry_id: String)" in src
+    assert "func is_unlocked(id: String) -> bool" in src
