@@ -51,6 +51,8 @@ func return_to_overworld() -> void:
 	var player = get_tree().get_first_node_in_group("player")
 	if player and "global_position" in player:
 		player.global_position = return_position
+	if player and "can_move" in player:
+		player.can_move = false
 
 	tween = create_tween()
 	tween.tween_property(color_rect, "color:a", 0.0, 0.3)
