@@ -1,0 +1,17 @@
+; Engine configuration file.
+; Telvar: Chronicles of Secundus — Godot 4.3
+config_version=5
+
+[application]
+config/name="Telvar Secundus"
+config/description="Top-down RPG in the city of Secundus."
+run/main_scene="res://scenes/Player.tscn"
+config/features=PackedStringArray("4.3", "Forward Plus")
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+textures/canvas_textures/default_texture_filter=0
