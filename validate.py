@@ -9,6 +9,19 @@ import sys, os
 # Bootstrap mode: check only what is strictly required at this stage
 errors = []
 
+root = os.path.dirname(os.path.abspath(__file__))
+_dm = os.path.join(root, "scripts", "detect_magic_passive.gd")
+_pg = os.path.join(root, "project.godot")
+if not os.path.isfile(_dm):
+    errors.append("missing scripts/detect_magic_passive.gd")
+elif not os.path.isfile(_pg):
+    errors.append("missing project.godot")
+else:
+    with open(_pg, encoding="utf-8") as f:
+        pg = f.read()
+    if "DetectMagicPassive=" not in pg or "detect_magic_passive.gd" not in pg:
+        errors.append("project.godot must autoload DetectMagicPassive (detect_magic_passive.gd)")
+
 # Only enforce critical structural checks here
 # (Full validation in spec 1246)
 

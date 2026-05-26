@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.3", "Mobile")
 [autoload]
 
 SpellBook="*res://scripts/spell_book.gd"
+DetectMagicPassive="*res://scripts/detect_magic_passive.gd"
 
 [display]
 
