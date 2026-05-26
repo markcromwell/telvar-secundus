@@ -15,6 +15,9 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+DIALOGUE_MANAGER = REPO_ROOT / "scripts" / "DialogueManager.gd"
+FADE_TRANSITION = REPO_ROOT / "scripts" / "FadeTransition.gd"
+DIALOGUE_BOX = REPO_ROOT / "scenes" / "DialogueBox.tscn"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +106,31 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_dialogue_manager_gd_has_required_api() -> None:
+    text = DIALOGUE_MANAGER.read_text(encoding="utf-8")
+    assert "func show_dialogue(" in text
+    assert "func set_flag(" in text
+    assert "func get_flag(" in text
+
+
+def test_fade_transition_gd_has_fade_to_and_duration() -> None:
+    text = FADE_TRANSITION.read_text(encoding="utf-8")
+    assert "func fade_to(" in text
+    assert "0.3" in text
+
+
+def test_dialogue_box_tscn_structure() -> None:
+    text = DIALOGUE_BOX.read_text(encoding="utf-8")
+    assert "NameLabel" in text
+    assert "TextLabel" in text
+    assert "ChoicesContainer" in text
+
+
+def test_autoloads_dialogue_manager_and_fade_transition() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    assert cp.has_section("autoload")
+    blob = "\n".join(f"{k}={cp.get('autoload', k)}" for k in cp.options("autoload"))
+    assert "DialogueManager" in blob
+    assert "FadeTransition" in blob
