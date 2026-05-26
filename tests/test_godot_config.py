@@ -16,6 +16,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
 CREDITS_MD = REPO_ROOT / "CREDITS.md"
+CREDITS_SCENE = REPO_ROOT / "Credits.tscn"
+CREDITS_SCRIPT = REPO_ROOT / "Credits.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -118,3 +120,23 @@ def test_export_preset_includes_markdown_for_web_build() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     inc = _unquote_godot_value(cp.get("preset.0", "include_filter"))
     assert "*.md" in inc
+
+
+def test_credits_scene_and_script_exist() -> None:
+    assert CREDITS_SCENE.is_file()
+    assert CREDITS_SCRIPT.is_file()
+
+
+def test_credits_scene_has_scroll_and_rich_text() -> None:
+    """Structural check: Credits UI uses ScrollContainer + RichTextLabel (Godot 4 text format)."""
+    tscn = CREDITS_SCENE.read_text(encoding="utf-8")
+    assert 'type="ScrollContainer"' in tscn
+    assert 'type="RichTextLabel"' in tscn
+    assert 'parent="ScrollContainer"' in tscn
+    assert "Credits.gd" in tscn
+
+
+def test_credits_script_loads_res_credits_md() -> None:
+    src = CREDITS_SCRIPT.read_text(encoding="utf-8")
+    assert "res://CREDITS.md" in src
+    assert "RichTextLabel" in src
