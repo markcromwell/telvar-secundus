@@ -4,4 +4,5 @@ Godot project filesystem checks live in tests.test_godot_config.
 """
 
 from tests.test_godot_config import *  # noqa: F401,F403
+from tests.test_game_over_scene import *  # noqa: F401,F403
 from tests.test_myramar_dialogue import *  # noqa: F401,F403
