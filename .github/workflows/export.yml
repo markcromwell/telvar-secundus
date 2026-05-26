@@ -1,0 +1,54 @@
+name: Export Web
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  export-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run validate.py
+        run: python3 validate.py
+
+      - name: Install Godot 4.3 and export templates
+        run: |
+          set -euo pipefail
+          GODOT_VER=4.3
+          BASE="https://github.com/godotengine/godot/releases/download/${GODOT_VER}-stable"
+          wget -q "${BASE}/Godot_v${GODOT_VER}-stable_linux.x86_64.zip"
+          unzip -q "Godot_v${GODOT_VER}-stable_linux.x86_64.zip"
+          sudo install -m 0755 "Godot_v${GODOT_VER}-stable_linux.x86_64" /usr/local/bin/godot
+          rm -f "Godot_v${GODOT_VER}-stable_linux.x86_64.zip"
+
+          wget -q "${BASE}/Godot_v${GODOT_VER}-stable_export_templates.tpz"
+          mkdir -p "${HOME}/.local/share/godot/export_templates/4.3.stable"
+          unzip -q "Godot_v${GODOT_VER}-stable_export_templates.tpz"
+          mv templates/* "${HOME}/.local/share/godot/export_templates/4.3.stable/"
+          rm -rf templates "Godot_v${GODOT_VER}-stable_export_templates.tpz"
+
+      - name: Godot HTML5 export (release)
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          godot --headless --path "${GITHUB_WORKSPACE}" --export-release "Web" "${GITHUB_WORKSPACE}/build/index.html"
+
+      - name: Assert total build size under 5 MB
+        run: |
+          set -euo pipefail
+          python3 << 'PY'
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["GITHUB_WORKSPACE"]) / "build"
+          if not root.is_dir():
+              raise SystemExit(f"FAIL: missing_build_directory: {root}")
+
+          total = sum(p.stat().st_size for p in root.rglob("*") if p.is_file())
+          limit = 5 * 1024 * 1024
+          print(f"build total bytes: {total} (limit {limit})")
+          if total >= limit:
+              raise SystemExit(f"FAIL: build_export_too_large: bytes={total} limit={limit}")
+          PY
