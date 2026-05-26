@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8lorenotif2566"]
+
+[ext_resource type="Script" path="res://scripts/lore_notification.gd" id="1_lorenotif"]
+
+[node name="LoreNotification" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_lorenotif")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+visible = false
+custom_minimum_size = Vector2(320, 48)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_left = -160.0
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+text = ""
+
+[node name="HideTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
