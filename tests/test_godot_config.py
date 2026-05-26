@@ -114,7 +114,7 @@ def test_credits_md_exists_with_required_sections() -> None:
         assert heading in text
 
 
-def test_export_preset_includes_credits_md_for_web_build() -> None:
+def test_export_preset_includes_markdown_for_web_build() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     inc = _unquote_godot_value(cp.get("preset.0", "include_filter"))
-    assert "CREDITS.md" in inc
+    assert "*.md" in inc
