@@ -8,6 +8,8 @@ ConfigParser can read Godot's project format.
 from __future__ import annotations
 
 import configparser
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -178,3 +180,28 @@ def test_player_script_movement_lock_guard() -> None:
     body = path.read_text(encoding="utf-8")
     assert "var can_move" in body
     assert "if not can_move:" in body
+
+
+def test_validate_py_exits_zero() -> None:
+    """Phase 2518: structural validate.py must pass on a complete tree."""
+    script = REPO_ROOT / "validate.py"
+    proc = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, (proc.stdout, proc.stderr)
+
+
+def test_npc_dialogue_gdunit_suite_present() -> None:
+    """Phase 2518: GdUnit suite file exists with required cases (Godot runs GdUnit separately)."""
+    path = REPO_ROOT / "test" / "test_npc_dialogue.gd"
+    assert path.is_file()
+    body = path.read_text(encoding="utf-8")
+    assert "extends GdUnitTestSuite" in body
+    assert "func test_flag_round_trip" in body
+    assert "func test_is_dialogue_active_starts_false_when_idle" in body
+    assert "func test_myramar_json_start_node_has_speaker_key" in body
+    assert "func test_second_show_dialogue_while_active_does_not_double_open" in body

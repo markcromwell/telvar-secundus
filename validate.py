@@ -89,6 +89,42 @@ else:
     if "if not can_move:" not in player_src:
         errors.append("Player.gd _physics_process must guard with if not can_move")
 
+# Phase 2518 — NPC dialogue structural checks (text parsing; mirrors worker spec).
+myramar_dialogue = REPO_ROOT / "assets" / "dialogue" / "myramar.json"
+if not myramar_dialogue.is_file():
+    errors.append(f"[phase 2518] Missing assets/dialogue/myramar.json: {myramar_dialogue}")
+
+if dialogue_manager.is_file():
+    dm_phase = dialogue_manager.read_text(encoding="utf-8")
+    phase_dm_markers = (
+        "func show_dialogue(",
+        "func hide_dialogue()",
+        "func set_flag(",
+        "func get_flag(",
+        "is_dialogue_active",
+    )
+    for marker in phase_dm_markers:
+        if marker not in dm_phase:
+            errors.append(
+                f"[phase 2518] DialogueManager.gd missing required marker: {marker!r}"
+            )
+
+if dialogue_box.is_file():
+    dbx_phase = dialogue_box.read_text(encoding="utf-8")
+    if "NameLabel" not in dbx_phase:
+        errors.append("[phase 2518] scenes/DialogueBox.tscn must contain NameLabel")
+    if "TextLabel" not in dbx_phase:
+        errors.append("[phase 2518] scenes/DialogueBox.tscn must contain TextLabel")
+
+if npc_script.is_file():
+    npc_phase = npc_script.read_text(encoding="utf-8")
+    if "npc_id" not in npc_phase:
+        errors.append("[phase 2518] scripts/NPC.gd must contain npc_id")
+    if "is_action_just_pressed" not in npc_phase:
+        errors.append(
+            "[phase 2518] scripts/NPC.gd must contain is_action_just_pressed"
+        )
+
 if errors:
     for e in errors:
         print("FAIL:", e)
