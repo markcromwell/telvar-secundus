@@ -1,0 +1,189 @@
+[gd_scene load_steps=2 format=3 uid="uid://spec1306mainmenu2727"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_main"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainButtons" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NewGame" type="Button" parent="Center/MainButtons"]
+layout_mode = 2
+text = "New Game"
+
+[node name="LoadGame" type="Button" parent="Center/MainButtons"]
+layout_mode = 2
+text = "Load Game"
+
+[node name="Credits" type="Button" parent="Center/MainButtons"]
+layout_mode = 2
+text = "Credits"
+
+[node name="Quit" type="Button" parent="Center/MainButtons"]
+layout_mode = 2
+text = "Quit"
+
+[node name="LoadSlotPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="LoadSlotPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="LoadSlotPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="LoadSlotPanel/Margin/VBox"]
+layout_mode = 2
+text = "Select Save Slot"
+horizontal_alignment = 1
+
+[node name="Slot1" type="Button" parent="LoadSlotPanel/Margin/VBox"]
+layout_mode = 2
+text = "Slot 1"
+
+[node name="Slot2" type="Button" parent="LoadSlotPanel/Margin/VBox"]
+layout_mode = 2
+text = "Slot 2"
+
+[node name="Slot3" type="Button" parent="LoadSlotPanel/Margin/VBox"]
+layout_mode = 2
+text = "Slot 3"
+
+[node name="Back" type="Button" parent="LoadSlotPanel/Margin/VBox"]
+layout_mode = 2
+text = "Back"
+
+[node name="GameplayPlaceholder" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.09, 0.12, 1)
+
+[node name="Hint" type="Label" parent="GameplayPlaceholder"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -12.0
+offset_right = 200.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Session active — press Escape for pause menu"
+horizontal_alignment = 1
+
+[node name="PausePanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseMargin" type="MarginContainer" parent="PausePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="PauseVBox" type="VBoxContainer" parent="PausePanel/PauseMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PauseTitle" type="Label" parent="PausePanel/PauseMargin/PauseVBox"]
+layout_mode = 2
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="Resume" type="Button" parent="PausePanel/PauseMargin/PauseVBox"]
+layout_mode = 2
+text = "Resume"
+
+[node name="SaveGame" type="Button" parent="PausePanel/PauseMargin/PauseVBox"]
+layout_mode = 2
+text = "Save Game"
+
+[node name="Settings" type="Button" parent="PausePanel/PauseMargin/PauseVBox"]
+layout_mode = 2
+text = "Settings"
+
+[node name="QuitToMenu" type="Button" parent="PausePanel/PauseMargin/PauseVBox"]
+layout_mode = 2
+text = "Quit to Menu"
+
+[node name="SaveSlotPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SaveMargin" type="MarginContainer" parent="SaveSlotPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="SaveVBox" type="VBoxContainer" parent="SaveSlotPanel/SaveMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SaveTitle" type="Label" parent="SaveSlotPanel/SaveMargin/SaveVBox"]
+layout_mode = 2
+text = "Save to Slot"
+horizontal_alignment = 1
+
+[node name="SaveSlot1" type="Button" parent="SaveSlotPanel/SaveMargin/SaveVBox"]
+layout_mode = 2
+text = "Slot 1"
+
+[node name="SaveSlot2" type="Button" parent="SaveSlotPanel/SaveMargin/SaveVBox"]
+layout_mode = 2
+text = "Slot 2"
+
+[node name="SaveSlot3" type="Button" parent="SaveSlotPanel/SaveMargin/SaveVBox"]
+layout_mode = 2
+text = "Slot 3"
+
+[node name="SaveBack" type="Button" parent="SaveSlotPanel/SaveMargin/SaveVBox"]
+layout_mode = 2
+text = "Back"

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/merchant_well/MerchantWell.tscn" id="1_mw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(20, 28)
+
+[node name="MainScene" type="Node2D"]
+
+[node name="MerchantWell" parent="." instance=ExtResource("1_mw")]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(120, 360)
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+enabled = true

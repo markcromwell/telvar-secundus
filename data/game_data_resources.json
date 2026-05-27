@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "phase_id": 2688,
+  "locations": {
+    "veneficturis_apprentice_room": {
+      "scene_path": "res://apprentice_room.tscn",
+      "npc_spawns": {
+        "daran": { "tile": [2, 2] },
+        "yessa": { "tile": [4, 3] },
+        "corvin": { "tile": [6, 2] }
+      }
+    }
+  }
+}

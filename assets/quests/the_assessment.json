@@ -1,0 +1,10 @@
+{
+  "id": "the_assessment",
+  "title": "The Assessment",
+  "objectives": [
+    {
+      "id": "read_veneficturis_letter",
+      "desc": "Read the formal letter from Veneficturis and prepare for academy intake."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
+[ext_resource type="Texture2D" path="res://assets/tilesets/lpc_terrain.png" id="2_terrain"]
+[ext_resource type="Script" path="res://scenes/bedroom/Bedroom.gd" id="3_bedroom"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1"]
+texture = ExtResource("2_terrain")
+texture_region_size = Vector2i(16, 16)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_1"]
+tile_size = Vector2i(16, 16)
+sources/0 = SubResource("TileSetAtlasSource_1")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sabatha"]
+size = Vector2(96, 64)
+
+[node name="Bedroom" type="Node2D"]
+script = ExtResource("3_bedroom")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_1")
+format = 2
+layer_0/tile_data = PackedInt32Array(917504, 0, 0, 917505, 65536, 0, 917506, 131072, 0, 917507, 0, 0, 917508, 65536, 0, 917509, 131072, 0, 917510, 0, 0, 917511, 65536, 0, 917512, 131072, 0, 917513, 0, 0, 917514, 65536, 0, 917515, 131072, 0, 917516, 0, 0, 917517, 65536, 0, 917518, 131072, 0, 917519, 0, 0, 917520, 65536, 0, 917521, 131072, 0, 917522, 0, 0, 917523, 65536, 0)
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(200, 200)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(200, 200)
+
+[node name="SabathaZone" type="Area2D" parent="."]
+position = Vector2(520, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SabathaZone"]
+shape = SubResource("RectangleShape2D_sabatha")

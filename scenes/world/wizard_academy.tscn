@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/sealed_door.tscn" id="1_sealed_door"]
+[ext_resource type="TileSet" path="res://resources/tilesets/lpc_terrain.tres" id="2_lpc_terrain"]
+
+[node name="WizardAcademy" type="Node2D"]
+
+[node name="Terrain" type="TileMap" parent="."]
+tile_set = ExtResource("2_lpc_terrain")
+format = 2
+layer_0/name = "mixed_terrain"
+layer_0/tile_data = PackedInt32Array()
+
+[node name="SealedWingDoor" parent="." instance=ExtResource("1_sealed_door")]
+position = Vector2(320, 256)

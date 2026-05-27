@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8k3n7p2q5r1t4v"]
+
+[ext_resource type="TileSet" uid="uid://b7k2n4m8p1q3r5s" path="res://assets/tilesets/lpc_terrain.tres" id="1_lpcterrain"]
+
+[node name="OverworldMap" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+scale = Vector2(2, 2)
+tile_set = ExtResource("1_lpcterrain")
+rendering_quadrant_size = 16
+collision_animatable = false
+layer_0/name = "cobblestone"
+layer_1/name = "marble"
+layer_2/name = "dark_stone"
+layer_3/name = "dock"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2560, 1440)
+zoom = Vector2(1, 1)

@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://main/Main.gd" id="1_main"]
+[ext_resource type="Script" path="res://player/Player.gd" id="2_player"]
+[ext_resource type="PackedScene" path="res://HUD.tscn" id="3_hud"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(640, 360)
+script = ExtResource("2_player")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]

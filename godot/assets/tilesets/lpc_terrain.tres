@@ -1,0 +1,161 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://b7k2n4m8p1q3r5s"]
+
+[ext_resource type="Texture2D" uid="uid://c7v2h8k4m9n1p" path="res://assets/tilesets/lpc_terrain.png" id="1_terrain"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cobble"]
+resource_name = "cobblestone"
+texture = ExtResource("1_terrain")
+margins = Vector2i(0, 0)
+separation = Vector2i(0, 0)
+texture_region_size = Vector2i(16, 16)
+use_texture_padding = false
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 1
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 1
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrain = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_marble"]
+resource_name = "marble"
+texture = ExtResource("1_terrain")
+margins = Vector2i(0, 0)
+separation = Vector2i(0, 0)
+texture_region_size = Vector2i(16, 16)
+use_texture_padding = false
+0:0/0 = 0
+0:0/0/terrain_set = 1
+0:0/0/terrain = 0
+1:0/0 = 0
+1:0/0/terrain_set = 1
+1:0/0/terrain = 0
+2:0/0 = 0
+2:0/0/terrain_set = 1
+2:0/0/terrain = 0
+0:1/0 = 0
+0:1/0/terrain_set = 1
+0:1/0/terrain = 1
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/terrain_set = 1
+1:1/0/terrain = 1
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/terrain_set = 1
+2:1/0/terrain = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dark_stone"]
+resource_name = "dark_stone"
+texture = ExtResource("1_terrain")
+margins = Vector2i(0, 0)
+separation = Vector2i(0, 0)
+texture_region_size = Vector2i(16, 16)
+use_texture_padding = false
+0:0/0 = 0
+0:0/0/terrain_set = 2
+0:0/0/terrain = 0
+1:0/0 = 0
+1:0/0/terrain_set = 2
+1:0/0/terrain = 0
+2:0/0 = 0
+2:0/0/terrain_set = 2
+2:0/0/terrain = 0
+0:1/0 = 0
+0:1/0/terrain_set = 2
+0:1/0/terrain = 1
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/terrain_set = 2
+1:1/0/terrain = 1
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/terrain_set = 2
+2:1/0/terrain = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dock"]
+resource_name = "dock"
+texture = ExtResource("1_terrain")
+margins = Vector2i(0, 0)
+separation = Vector2i(0, 0)
+texture_region_size = Vector2i(16, 16)
+use_texture_padding = false
+0:0/0 = 0
+0:0/0/terrain_set = 3
+0:0/0/terrain = 0
+1:0/0 = 0
+1:0/0/terrain_set = 3
+1:0/0/terrain = 0
+2:0/0 = 0
+2:0/0/terrain_set = 3
+2:0/0/terrain = 0
+0:1/0 = 0
+0:1/0/terrain_set = 3
+0:1/0/terrain = 1
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/terrain_set = 3
+1:1/0/terrain = 1
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/terrain_set = 3
+2:1/0/terrain = 0
+
+[resource]
+tile_shape = 0
+tile_layout = 0
+tile_offset_axis = 0
+tile_size = Vector2i(16, 16)
+uv_clipping = false
+physics_layer_0/collision_layer = 1
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "cobble_floor"
+terrain_set_0/terrain_0/color = Color(0.55, 0.54, 0.52, 1)
+terrain_set_0/terrain_1/name = "cobble_wall"
+terrain_set_0/terrain_1/color = Color(0.35, 0.34, 0.33, 1)
+terrain_set_1/mode = 2
+terrain_set_1/terrain_0/name = "marble_floor"
+terrain_set_1/terrain_0/color = Color(0.92, 0.9, 0.88, 1)
+terrain_set_1/terrain_1/name = "marble_wall"
+terrain_set_1/terrain_1/color = Color(0.72, 0.7, 0.68, 1)
+terrain_set_2/mode = 2
+terrain_set_2/terrain_0/name = "dark_floor"
+terrain_set_2/terrain_0/color = Color(0.28, 0.27, 0.32, 1)
+terrain_set_2/terrain_1/name = "dark_wall"
+terrain_set_2/terrain_1/color = Color(0.14, 0.13, 0.16, 1)
+terrain_set_3/mode = 2
+terrain_set_3/terrain_0/name = "dock_floor"
+terrain_set_3/terrain_0/color = Color(0.42, 0.48, 0.52, 1)
+terrain_set_3/terrain_1/name = "dock_wall"
+terrain_set_3/terrain_1/color = Color(0.3, 0.36, 0.4, 1)
+sources/0 = SubResource("TileSetAtlasSource_cobble")
+sources/1 = SubResource("TileSetAtlasSource_marble")
+sources/2 = SubResource("TileSetAtlasSource_dark_stone")
+sources/3 = SubResource("TileSetAtlasSource_dock")
+
+; Static text markers for CI: display_name strings must match DistrictBounds in district_bounds.gd.
+; Veneficturis
+; Old City
+; Mercator Ward
+; Aspirant Commons
+; Red Quarter
+; Eastmarket
+; Foundry Deep
+; Crystal Promenade
+; Undercroft
+; Harborfront North
+; Severen Quays
+; Severen River

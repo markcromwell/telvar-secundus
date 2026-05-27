@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d7hqct1c0nclu510"]
+
+[ext_resource type="Script" path="res://scripts/act1_conclusion.gd" id="1_act1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_entrance"]
+size = Vector2(64, 48)
+
+[node name="Act1ConclusionTrigger" type="Area2D"]
+collision_layer = 1
+collision_mask = 1
+monitoring = true
+monitorable = true
+script = ExtResource("1_act1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_entrance")

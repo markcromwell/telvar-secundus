@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/spell.gd" id="1_spell"]
+
+[resource]
+script = ExtResource("1_spell")
+spell_id = "ember"
+name = "Ember"
+mana_cost = 5
+damage = "3-7 fire"
+effect = ""

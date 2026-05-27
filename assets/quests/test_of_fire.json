@@ -1,0 +1,18 @@
+{
+  "id": "test_of_fire",
+  "title": "The Test of Fire",
+  "objectives": [
+    {
+      "id": "enter_veneficturis",
+      "desc": "Enter the Veneficturis academy."
+    },
+    {
+      "id": "speak_myramar",
+      "desc": "Speak with Mentor Myramar."
+    },
+    {
+      "id": "survive_test",
+      "desc": "Survive the climax event."
+    }
+  ]
+}

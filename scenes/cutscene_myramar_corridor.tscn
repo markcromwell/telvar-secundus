@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmyramarcorridor2718"]
+
+[ext_resource type="Script" path="res://scripts/cutscene_myramar_corridor.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_myramar"]
+size = Vector2(32, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_area"]
+size = Vector2(200, 80)
+
+[node name="CutsceneMyramarCorridor" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="CorridorFloor" type="TileMap" parent="."]
+
+[node name="Myramar" type="CharacterBody2D" parent="."]
+position = Vector2(640, 340)
+
+[node name="Sprite2D" type="Sprite2D" parent="Myramar"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Myramar"]
+shape = SubResource("RectangleShape2D_myramar")
+
+[node name="CorridorTrigger" type="Area2D" parent="."]
+position = Vector2(640, 400)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CorridorTrigger"]
+shape = SubResource("RectangleShape2D_area")
+
+[node name="UILayer" type="CanvasLayer" parent="."]

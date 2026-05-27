@@ -1,0 +1,20 @@
+[
+  {
+    "id": "start",
+    "text": "The boy from the lower tiers—Telvar Orsson—walks louder than he thinks. Red rank is a color, not a shield.",
+    "speaker": "Hooded Figure",
+    "next": "myramar"
+  },
+  {
+    "id": "myramar",
+    "text": "Myramar smiles like a mentor and weighs you like ore. The Test of Fire will come; the question is who lights the match.",
+    "speaker": "Hooded Figure",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "text": "Drink your wine. Forget this conversation. That is the only advice I owe you.",
+    "speaker": "Hooded Figure",
+    "next": ""
+  }
+]

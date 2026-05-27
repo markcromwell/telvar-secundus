@@ -1,0 +1,112 @@
+[gd_scene load_steps=9 format=3 uid="uid://rookery_tavern_phase_2545"]
+
+[ext_resource type="Script" path="res://scripts/RookeryTavern.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/NPC.tscn" id="2_npc"]
+[ext_resource type="Texture2D" path="res://assets/tilesets/lpc_terrain.png" id="3_terrain"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_north"]
+size = Vector2(384, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_side"]
+size = Vector2(32, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_south_seg"]
+size = Vector2(160, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(20, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(64, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_player"]
+atlas = ExtResource("3_terrain")
+region = Rect2(48, 0, 16, 16)
+
+[node name="RookeryTavern" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="TileMap" type="TileMapLayer" parent="."]
+editor_description = "TileMapLayer tile_set is built in RookeryTavern.gd from res://assets/tilesets/lpc_terrain.png (12x10 interior)."
+scale = Vector2(2, 2)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="North" type="StaticBody2D" parent="Walls"]
+position = Vector2(192, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/North"]
+shape = SubResource("RectangleShape2D_north")
+
+[node name="West" type="StaticBody2D" parent="Walls"]
+position = Vector2(16, 160)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/West"]
+shape = SubResource("RectangleShape2D_side")
+
+[node name="East" type="StaticBody2D" parent="Walls"]
+position = Vector2(368, 160)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/East"]
+shape = SubResource("RectangleShape2D_side")
+
+[node name="SouthLeft" type="StaticBody2D" parent="Walls"]
+position = Vector2(80, 304)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/SouthLeft"]
+shape = SubResource("RectangleShape2D_south_seg")
+
+[node name="SouthRight" type="StaticBody2D" parent="Walls"]
+position = Vector2(304, 304)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/SouthRight"]
+shape = SubResource("RectangleShape2D_south_seg")
+
+[node name="HoodedFigure1" parent="." instance=ExtResource("2_npc")]
+position = Vector2(112, 200)
+dialogue_id = "hooded_figure_1"
+
+[node name="HoodedFigure2" parent="." instance=ExtResource("2_npc")]
+position = Vector2(272, 200)
+dialogue_id = "hooded_figure_2"
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(192, 220)
+collision_layer = 1
+collision_mask = 1
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_player")
+
+[node name="ExitDoor" type="Area2D" parent="."]
+position = Vector2(192, 308)
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(192, 160)
+enabled = true
+
+[node name="FadeLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="FadeRect" type="ColorRect" parent="FadeLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+modulate = Color(1, 1, 1, 0)

@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://dmyramaroffice2635"]
+
+[ext_resource type="Script" path="res://scenes/myramar_office/myramar_office.gd" id="1_script"]
+[ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="2_tileset"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(64, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_myramar"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_desk"]
+size = Vector2(80, 40)
+
+[node name="MyramarOffice" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Terrain" type="TileMap" parent="."]
+scale = Vector2(2, 2)
+tile_set = ExtResource("2_tileset")
+format = 2
+layer_0/name = "terrain"
+layer_0/tile_data = PackedInt32Array()
+
+[node name="CouncilReturn" type="Area2D" parent="."]
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CouncilReturn"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="MyramarTalkArea" type="Area2D" parent="."]
+position = Vector2(208, 144)
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MyramarTalkArea"]
+shape = SubResource("RectangleShape2D_myramar")
+
+[node name="Label" type="Label" parent="MyramarTalkArea"]
+offset_left = -40.0
+offset_top = -56.0
+offset_right = 80.0
+offset_bottom = -24.0
+text = "Myramar"
+
+[node name="DeskInspectArea" type="Area2D" parent="."]
+position = Vector2(160, 48)
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeskInspectArea"]
+shape = SubResource("RectangleShape2D_desk")

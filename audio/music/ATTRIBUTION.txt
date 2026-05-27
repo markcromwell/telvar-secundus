@@ -1,0 +1,15 @@
+Music loops in this folder are derived from the Godot Engine demo projects
+repository (MIT License). Sources were downloaded as Ogg Vorbis, then
+re-encoded (mono, 22.05 kHz, capped bitrate) for smaller HTML5 exports.
+
+License: https://raw.githubusercontent.com/godotengine/godot-demo-projects/master/LICENSE.md
+
+Original demo paths (same commit tree as import-time `master` on GitHub):
+
+- music_loop_physics_platformer.ogg  ← 2d/physics_platformer/audio/music.ogg
+- music_loop_the_comeback.ogg        ← audio/bpm_sync/the_comeback2.ogg
+- music_loop_maldita.ogg             ← audio/spectrum/maldita.ogg
+- music_loop_spinning_monkeys.ogg    ← audio/audio_effects/sfx/music_monkeys_spinning_monkeys.ogg
+- music_loop_item_spawn.ogg          ← loading/runtime_save_load/examples/audio/item_spawn.ogg
+
+Upstream: https://github.com/godotengine/godot-demo-projects

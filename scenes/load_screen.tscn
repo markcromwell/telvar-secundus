@@ -1,0 +1,78 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4loadscreen2723"]
+
+[ext_resource type="Script" path="res://scripts/load_screen.gd" id="1_load"]
+
+[node name="LoadScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_load")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07, 0.05, 0.1, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Load Game"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Three manual slots and one autosave. Select a slot to restore."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Slot0" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+alignment = 0
+
+[node name="Slot1" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+alignment = 0
+
+[node name="Slot2" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+alignment = 0
+
+[node name="Slot3" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+alignment = 0

@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/exit_trigger.gd" id="2_exit"]
+[ext_resource type="TileSet" path="res://resources/tilesets/floor_stone.tres" id="3_stone"]
+[ext_resource type="Script" path="res://scripts/interior_floor_grid.gd" id="4_grid"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(384, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(72, 36)
+
+[node name="InteriorPaladinTemple" type="Node2D"]
+script = ExtResource("4_grid")
+
+[node name="Floor" type="TileMap" parent="."]
+tile_set = ExtResource("3_stone")
+
+[node name="Body" type="StaticBody2D" parent="Floor"]
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor/Body"]
+position = Vector2(192, 128)
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(210, 135)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(210, 135)
+
+[node name="ExitDoor" type="Area2D" parent="."]
+position = Vector2(210, 295)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+script = ExtResource("2_exit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_exit")

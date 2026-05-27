@@ -1,0 +1,149 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://DistrictZone.tscn" id="1_dz"]
+[ext_resource type="PackedScene" path="res://HUD.tscn" id="2_hud"]
+[ext_resource type="Script" path="res://Player.gd" id="3_plr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_district"]
+size = Vector2(1280, 960)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_player"]
+radius = 12.0
+
+[node name="Overworld" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(640, 480)
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("3_plr")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_player")
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="GoldenBell" parent="." instance=ExtResource("1_dz")]
+position = Vector2(640, 480)
+collision_layer = 8
+collision_mask = 1
+district_name = "Golden Bell"
+
+[node name="CollisionShape2D" parent="GoldenBell" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="TempleDistrict" parent="." instance=ExtResource("1_dz")]
+position = Vector2(1920, 480)
+collision_layer = 8
+collision_mask = 1
+district_name = "Temple District"
+
+[node name="CollisionShape2D" parent="TempleDistrict" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="OldCity" parent="." instance=ExtResource("1_dz")]
+position = Vector2(3200, 480)
+collision_layer = 8
+collision_mask = 1
+district_name = "Old City"
+
+[node name="CollisionShape2D" parent="OldCity" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="MerchantDistrict" parent="." instance=ExtResource("1_dz")]
+position = Vector2(4480, 480)
+collision_layer = 8
+collision_mask = 1
+district_name = "Merchant District"
+
+[node name="CollisionShape2D" parent="MerchantDistrict" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="ReagentsHill" parent="." instance=ExtResource("1_dz")]
+position = Vector2(640, 1440)
+collision_layer = 8
+collision_mask = 1
+district_name = "Reagent's Hill"
+
+[node name="CollisionShape2D" parent="ReagentsHill" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="Bazaar" parent="." instance=ExtResource("1_dz")]
+position = Vector2(1920, 1440)
+collision_layer = 8
+collision_mask = 1
+district_name = "Bazaar"
+
+[node name="CollisionShape2D" parent="Bazaar" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="HarborDistrict" parent="." instance=ExtResource("1_dz")]
+position = Vector2(3200, 1440)
+collision_layer = 8
+collision_mask = 1
+district_name = "Harbor District"
+
+[node name="CollisionShape2D" parent="HarborDistrict" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="WarehouseDistrict" parent="." instance=ExtResource("1_dz")]
+position = Vector2(4480, 1440)
+collision_layer = 8
+collision_mask = 1
+district_name = "Warehouse District"
+
+[node name="CollisionShape2D" parent="WarehouseDistrict" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="ForeignQuarter" parent="." instance=ExtResource("1_dz")]
+position = Vector2(640, 2400)
+collision_layer = 8
+collision_mask = 1
+district_name = "Foreign Quarter"
+
+[node name="CollisionShape2D" parent="ForeignQuarter" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="Cemetery" parent="." instance=ExtResource("1_dz")]
+position = Vector2(1920, 2400)
+collision_layer = 8
+collision_mask = 1
+district_name = "Cemetery"
+
+[node name="CollisionShape2D" parent="Cemetery" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="TheRookery" parent="." instance=ExtResource("1_dz")]
+position = Vector2(3200, 2400)
+collision_layer = 8
+collision_mask = 1
+district_name = "The Rookery"
+
+[node name="CollisionShape2D" parent="TheRookery" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[node name="TheIronWorks" parent="." instance=ExtResource("1_dz")]
+position = Vector2(4480, 2400)
+collision_layer = 8
+collision_mask = 1
+district_name = "The Iron Works"
+
+[node name="CollisionShape2D" parent="TheIronWorks" index="0"]
+shape = SubResource("RectangleShape2D_district")
+
+[connection signal="district_entered" from="GoldenBell" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="TempleDistrict" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="OldCity" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="MerchantDistrict" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="ReagentsHill" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="Bazaar" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="HarborDistrict" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="WarehouseDistrict" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="ForeignQuarter" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="Cemetery" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="TheRookery" to="HUD" method="show_district_name"]
+[connection signal="district_entered" from="TheIronWorks" to="HUD" method="show_district_name"]

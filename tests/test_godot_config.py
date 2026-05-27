@@ -15,6 +15,11 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_GODOT = REPO_ROOT / "project.godot"
 EXPORT_PRESETS = REPO_ROOT / "export_presets.cfg"
+CREDITS_MD = REPO_ROOT / "CREDITS.md"
+CREDITS_SCENE = REPO_ROOT / "Credits.tscn"
+CREDITS_SCRIPT = REPO_ROOT / "Credits.gd"
+MAIN_MENU_SCENE = REPO_ROOT / "MainMenu.tscn"
+MAIN_MENU_SCRIPT = REPO_ROOT / "MainMenu.gd"
 
 
 def _wrap_godot_root_section(text: str) -> str:
@@ -103,3 +108,55 @@ def test_export_preset_web_runnable() -> None:
     cp = _load_ini(EXPORT_PRESETS)
     runnable = cp.get("preset.0", "runnable")
     assert runnable == "true"
+
+
+def test_credits_md_exists_with_required_sections() -> None:
+    assert CREDITS_MD.is_file()
+    text = CREDITS_MD.read_text(encoding="utf-8")
+    assert "# Credits" in text
+    for heading in ("## Art", "## Code", "## Story", "## Audio"):
+        assert heading in text
+
+
+def test_export_preset_includes_markdown_for_web_build() -> None:
+    cp = _load_ini(EXPORT_PRESETS)
+    inc = _unquote_godot_value(cp.get("preset.0", "include_filter"))
+    assert "*.md" in inc
+
+
+def test_credits_scene_and_script_exist() -> None:
+    assert CREDITS_SCENE.is_file()
+    assert CREDITS_SCRIPT.is_file()
+
+
+def test_credits_scene_has_scroll_and_rich_text() -> None:
+    """Structural check: Credits UI uses ScrollContainer + RichTextLabel (Godot 4 text format)."""
+    tscn = CREDITS_SCENE.read_text(encoding="utf-8")
+    assert 'type="ScrollContainer"' in tscn
+    assert 'type="RichTextLabel"' in tscn
+    assert 'parent="ScrollContainer"' in tscn
+    assert "Credits.gd" in tscn
+
+
+def test_credits_script_loads_res_credits_md() -> None:
+    src = CREDITS_SCRIPT.read_text(encoding="utf-8")
+    assert "res://CREDITS.md" in src
+    assert "RichTextLabel" in src
+
+
+def test_main_menu_scene_has_credits_button_and_script() -> None:
+    assert MAIN_MENU_SCENE.is_file()
+    assert MAIN_MENU_SCRIPT.is_file()
+    tscn = MAIN_MENU_SCENE.read_text(encoding="utf-8")
+    assert 'name="CreditsButton"' in tscn
+    assert 'type="Button"' in tscn
+    assert "MainMenu.gd" in tscn
+    menu_src = MAIN_MENU_SCRIPT.read_text(encoding="utf-8")
+    assert "res://Credits.tscn" in menu_src
+    assert "_on_credits_pressed" in menu_src
+
+
+def test_project_main_scene_is_main_menu() -> None:
+    cp = _load_ini(PROJECT_GODOT)
+    main_scene = _unquote_godot_value(cp.get("application", "run/main_scene"))
+    assert main_scene == "res://MainMenu.tscn"

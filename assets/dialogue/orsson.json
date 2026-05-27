@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "text": "Ah—Telvar's friends are always welcome back here. The front counter handles the trade; I handle the ledgers and the quiet questions.",
+    "speaker": "Orsson",
+    "next": "lore_secundus"
+  },
+  {
+    "id": "lore_secundus",
+    "text": "Secundus never sleeps, but it does gossip. Remember: in this city, even a friendly nod can be a contract. Keep your eyes open and your purse tighter.",
+    "speaker": "Orsson",
+    "next": null
+  }
+]

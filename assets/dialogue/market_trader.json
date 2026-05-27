@@ -1,0 +1,20 @@
+[
+  {
+    "id": "start",
+    "text": "Copper honest, silver quick—what are you buying? Secundus eats what it cannot sell, so keep your purse close in this crowd.",
+    "speaker": "Market Trader",
+    "next": "wares"
+  },
+  {
+    "id": "wares",
+    "text": "I get clay from the river wards, salt from the harbor tithe, and rumor from every apprentice who thinks Veneficturis makes them clever.",
+    "speaker": "Market Trader",
+    "next": "warning"
+  },
+  {
+    "id": "warning",
+    "text": "If a Red-rank child waves a wand like a banner, smile and step aside. Pride draws pickpockets the way fruit draws wasps.",
+    "speaker": "Market Trader",
+    "next": null
+  }
+]

@@ -1,0 +1,27 @@
+{
+	"format_version": 1,
+	"timestamp_unix": 1714147200,
+	"act_number": 2,
+	"current_quest_name": "Veneficturis Orientation",
+	"scene_path": "res://scenes/world.tscn",
+	"player": {
+		"position": {
+			"x": 128.5,
+			"y": 256.0
+		},
+		"hp": 18,
+		"max_hp": 24
+	},
+	"inventory": [
+		{
+			"id": "potion_small",
+			"qty": 2
+		}
+	],
+	"quest_state": {
+		"main": "orientation_started"
+	},
+	"flags": {
+		"met_myramar": true
+	}
+}

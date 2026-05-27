@@ -1,0 +1,59 @@
+# Phase 2503: Web export + CREDITS.md for GitHub Pages (same-origin, no CORS).
+name: Export Web and deploy Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-export
+  cancel-in-progress: true
+
+jobs:
+  export-web:
+    runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: "4.3"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.3 and export templates
+        run: |
+          set -euo pipefail
+          VER="${GODOT_VERSION}"
+          GODOT_ZIP="Godot_v${VER}-stable_linux.x86_64.zip"
+          GODOT_BIN="Godot_v${VER}-stable_linux.x86_64"
+          TPZ="Godot_v${VER}-stable_export_templates.tpz"
+          BASE="https://github.com/godotengine/godot/releases/download/${VER}-stable"
+
+          wget -q "$BASE/$GODOT_ZIP" -O "$GODOT_ZIP"
+          unzip -q "$GODOT_ZIP"
+          chmod +x "$GODOT_BIN"
+          sudo mv "$GODOT_BIN" /usr/local/bin/godot
+          rm -f "$GODOT_ZIP"
+
+          wget -q "$BASE/$TPZ" -O "$TPZ"
+          mkdir -p "$HOME/.local/share/godot/export_templates/${VER}.stable"
+          unzip -q "$TPZ" -d .
+          mv templates/* "$HOME/.local/share/godot/export_templates/${VER}.stable/"
+          rm -rf templates "$TPZ"
+
+      - name: Export Web preset
+        run: |
+          set -euo pipefail
+          mkdir -p export
+          godot --headless --path . --export-release "Web" export/index.html
+
+      - name: Copy CREDITS.md into export
+        run: cp CREDITS.md export/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./export

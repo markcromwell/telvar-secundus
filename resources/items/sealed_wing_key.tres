@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/ItemData.gd" id="1_3ghpo"]
+
+[resource]
+script = ExtResource("1_3ghpo")
+id = &"sealed_wing_key"
+display_name = "Sealed Wing Key"
+description = "A cold iron key cut for the sealed wing's heavy stone door."
+item_type = &"key"
+stackable = false
+consumable = false

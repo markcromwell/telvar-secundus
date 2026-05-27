@@ -1,0 +1,31 @@
+[
+  {
+    "id": "start",
+    "text": "Telvar — if you're hunting rumors, keep your voice low. The lodge master doesn't like loose talk.",
+    "speaker": "Daran",
+    "next": "aelyn_gone"
+  },
+  {
+    "id": "aelyn_gone",
+    "text": "Aelyn Vesper's gone. Apprentice runners cleared her bunk before first bell — no kit, no letters, nothing but a scrap on the floor in her quarters. If you want answers, you'll have to read what's left and decide who you trust.",
+    "speaker": "Daran",
+    "effects": [
+      {
+        "type": "start_quest",
+        "quest_id": "where_is_aelyn"
+      }
+    ],
+    "next": "aelyn_parting"
+  },
+  {
+    "id": "aelyn_parting",
+    "text": "Veneficturis doesn't exile in public. When they vanish someone overnight, assume the reason line stays blank until you're high enough rank to fill it in.",
+    "speaker": "Daran",
+    "next": "end"
+  },
+  {
+    "id": "end",
+    "text": "",
+    "speaker": "Daran"
+  }
+]

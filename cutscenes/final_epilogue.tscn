@@ -1,0 +1,179 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqj8finalcut2716"]
+
+[ext_resource type="Script" path="res://scripts/final_cutscene_epilogue.gd" id="1_epilogue"]
+
+[node name="FinalEpilogue" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_epilogue")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Sky" type="ColorRect" parent="CanvasLayer"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+color = Color(0.32, 0.38, 0.62, 1)
+
+[node name="HorizonGlow" type="ColorRect" parent="CanvasLayer"]
+layout_mode = 0
+anchor_top = 0.42
+anchor_right = 1.0
+anchor_bottom = 0.58
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+color = Color(0.95, 0.55, 0.25, 0.55)
+
+[node name="CitySilhouette" type="ColorRect" parent="CanvasLayer"]
+layout_mode = 0
+anchor_top = 0.55
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+color = Color(0.04, 0.05, 0.09, 1)
+
+[node name="LabelPanel1" type="Label" parent="CanvasLayer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -120.0
+offset_right = 420.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "Telvar crawls from the Sealed Wings into biting wind. Stone gives way to open sky — he is outside, alive."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LabelPanel2" type="Label" parent="CanvasLayer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -120.0
+offset_right = 420.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "Dawn spills over Secundus. Twelve districts glow beneath him like embers cooling into morning."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LabelPanel3" type="Label" parent="CanvasLayer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -120.0
+offset_right = 420.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "Veneficturis and the Test of Fire lie behind him. The road ahead is his own — uncertain, but unchained."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LabelPanel4" type="Label" parent="CanvasLayer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -120.0
+offset_right = 420.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "Somewhere in the waking city, Myramar's shadow still stretches long — but the boy who was Telvar Orsson has taken his first true step into morning."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="FadeOverlay" type="ColorRect" parent="CanvasLayer"]
+z_index = 50
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="EndScreen" type="CanvasLayer" parent="."]
+visible = false
+layer = 30
+
+[node name="Dim" type="ColorRect" parent="EndScreen"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.9)
+
+[node name="VBox" type="VBoxContainer" parent="EndScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -100.0
+offset_right = 320.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="EndTitle" type="Label" parent="EndScreen/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "The End — To be continued in The Paladin's Vow"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="MainMenuButton" type="Button" parent="EndScreen/VBox"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Main Menu"
+
+[connection signal="pressed" from="EndScreen/VBox/MainMenuButton" to="." method="_on_main_menu_pressed"]

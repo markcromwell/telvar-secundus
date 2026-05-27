@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://myramar_office_scene2705"]
+
+[ext_resource type="PackedScene" path="res://scenes/npcs/myramar.tscn" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/tilesets/lpc_terrain.png" id="2_terrain"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_terrain"]
+texture = ExtResource("2_terrain")
+texture_region_size = Vector2i(16, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_office"]
+tile_size = Vector2i(16, 16)
+sources/0 = SubResource("TileSetAtlasSource_terrain")
+
+[node name="MyramarOffice" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+scale = Vector2(2, 2)
+texture_filter = 0
+tile_set = SubResource("TileSet_office")
+format = 2
+layer_0/name = "Ground"
+layer_0/tile_data = PackedInt32Array(0, 0, 0)
+
+[node name="Myramar" parent="." instance=ExtResource("1_npc")]
+position = Vector2(320, 224)

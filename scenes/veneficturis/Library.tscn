@@ -1,0 +1,120 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="TileSet" path="res://assets/tilesets/lpc_terrain.tres" id="1_ts"]
+[ext_resource type="Script" path="res://scripts/veneficturis/library_tilemap.gd" id="2_tm"]
+[ext_resource type="Script" path="res://scripts/veneficturis/library_physics.gd" id="3_ph"]
+[ext_resource type="Script" path="res://scripts/veneficturis/shelf_inspect.gd" id="4_sh"]
+[ext_resource type="Script" path="res://scripts/veneficturis/dialogue_data.gd" id="5_dlg"]
+[ext_resource type="Script" path="res://scripts/veneficturis/lore_popup.gd" id="6_pop"]
+[ext_resource type="PackedScene" path="res://scenes/veneficturis/npcs/reading_npc.tscn" id="7_npc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shelf"]
+size = Vector2(40, 48)
+
+[node name="Library" type="Node2D"]
+
+[node name="DialogueData" type="Node" parent="."]
+script = ExtResource("5_dlg")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("1_ts")
+format = 2
+script = ExtResource("2_tm")
+
+[node name="Physics" type="Node2D" parent="."]
+script = ExtResource("3_ph")
+
+[node name="Shelves" type="Node2D" parent="."]
+
+[node name="ShelfRow_4" type="Area2D" parent="Shelves"]
+collision_layer = 1
+collision_mask = 1
+position = Vector2(152, 88)
+script = ExtResource("4_sh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelves/ShelfRow_4"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="ShelfRow_7" type="Area2D" parent="Shelves"]
+collision_layer = 1
+collision_mask = 1
+position = Vector2(152, 136)
+script = ExtResource("4_sh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelves/ShelfRow_7"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="ShelfRow_10" type="Area2D" parent="Shelves"]
+collision_layer = 1
+collision_mask = 1
+position = Vector2(152, 184)
+script = ExtResource("4_sh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelves/ShelfRow_10"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="ShelfRow_13" type="Area2D" parent="Shelves"]
+collision_layer = 1
+collision_mask = 1
+position = Vector2(152, 232)
+script = ExtResource("4_sh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelves/ShelfRow_13"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="ShelfRow_16" type="Area2D" parent="Shelves"]
+collision_layer = 1
+collision_mask = 1
+position = Vector2(152, 280)
+script = ExtResource("4_sh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelves/ShelfRow_16"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="ShelfRow_18" type="Area2D" parent="Shelves"]
+collision_layer = 1
+collision_mask = 1
+position = Vector2(152, 312)
+script = ExtResource("4_sh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelves/ShelfRow_18"]
+shape = SubResource("RectangleShape2D_shelf")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PromptLabel" type="Label" parent="UI"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = -200.0
+offset_right = 200.0
+offset_top = 8.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+text = ""
+
+[node name="LorePopup" type="AcceptDialog" parent="UI"]
+visible = false
+script = ExtResource("6_pop")
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="Maren" parent="NPCs" instance=ExtResource("7_npc")]
+position = Vector2(136, 268)
+dialogue_id = "library_reader_maren"
+portrait_path = "res://assets/portraits/reader_maren.png"
+
+[node name="Soren" parent="NPCs" instance=ExtResource("7_npc")]
+position = Vector2(248, 268)
+dialogue_id = "library_reader_soren"
+portrait_path = "res://assets/portraits/reader_soren.png"
+
+[node name="Ilse" parent="NPCs" instance=ExtResource("7_npc")]
+position = Vector2(408, 268)
+dialogue_id = "library_reader_ilse"
+portrait_path = "res://assets/portraits/reader_ilse.png"

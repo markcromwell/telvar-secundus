@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "text": "Child of Secundus, step softly—the vaults of Aten remember every whispered vow.",
+    "speaker": "Priest",
+    "next": "aten_vault"
+  },
+  {
+    "id": "aten_vault",
+    "text": "The stained light is not decoration; it is doctrine made visible. Let it warm you before the Test of Fire.",
+    "speaker": "Priest",
+    "next": ""
+  }
+]

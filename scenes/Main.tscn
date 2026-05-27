@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3 uid="uid://creditsmain2502"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="TitleScreen" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SettingsButton" type="Button" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -50.0
+offset_right = 120.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Settings"
+
+[node name="CreditsButton" type="Button" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 10.0
+offset_right = 120.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Credits"
+
+[node name="CreditsPanel" type="Control" parent="TitleScreen"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="TitleScreen/CreditsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.88)
+
+[node name="CreditsRichTextLabel" type="RichTextLabel" parent="TitleScreen/CreditsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = false
+scroll_active = true
+text = "# Credits
+## Art
+- LPC Base Sprites by Rhune/Sharm (CC-BY-SA 3.0) — OpenGameArt.org
+- LPC Terrain by various LPC contributors (CC-BY-SA 3.0)
+## Code
+- Godot Engine 4.3 (MIT License) — godotengine.org
+## Story
+- New Paladin Order series by Mark Cromwell
+"
+
+[node name="CloseButton" type="Button" parent="TitleScreen/CreditsPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -56.0
+offset_right = 80.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Close"
+
+[connection signal="pressed" from="TitleScreen/CreditsButton" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="TitleScreen/CreditsPanel/CloseButton" to="." method="_on_credits_closed"]

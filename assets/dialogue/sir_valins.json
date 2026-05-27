@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {
+      "id": "valins_greeting",
+      "speaker": "Sir Valins",
+      "text": "Peace in Aten's light, traveller. This nave has stood since the first paladins swore the golden oath before the altar. Step closer if you seek counsel, not idle gossip.",
+      "next": "valins_order_history"
+    },
+    {
+      "id": "valins_order_history",
+      "speaker": "Sir Valins",
+      "text": "The Order of Aten does not recruit with speeches. We temper souls as Secundus tempers steel—slowly, honestly, and in full view of the flame. When you are ready to be tested, return; until then, walk the city as one who has heard the truth.",
+      "next": null
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/veneficturis_main_hall.gd" id="1_script"]
+[ext_resource type="TileSet" path="res://tilesets/dark_stone_lpc.tres" id="2_tileset"]
+[ext_resource type="Script" path="res://scripts/player_veneficturis.gd" id="3_player"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(14, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_reception"]
+size = Vector2(64, 28)
+
+[node name="VeneficturisMainHall" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="HallTileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_tileset")
+
+[node name="Floor" type="TileMapLayer" parent="HallTileMap"]
+
+[node name="CeilingDecor" type="TileMapLayer" parent="HallTileMap"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(168, 120)
+collision_layer = 1
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("3_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+
+[node name="ReceptionNPC" type="Area2D" parent="."]
+position = Vector2(168, 216)
+collision_layer = 1
+collision_mask = 1
+monitoring = true
+monitorable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReceptionNPC"]
+shape = SubResource("RectangleShape2D_reception")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="DialogueLabel" type="Label" parent="UILayer"]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 1264.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+text = ""

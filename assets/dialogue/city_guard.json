@@ -1,0 +1,20 @@
+[
+  {
+    "id": "start",
+    "text": "Halt—state your business. Secundus keeps twelve gates and one temper; do not test both on the same day.",
+    "speaker": "City Guard",
+    "next": "papers"
+  },
+  {
+    "id": "papers",
+    "text": "Merchants' writs, academy seals, beggars' luck—I've seen every stamp the districts forge. Yours had better match your story.",
+    "speaker": "City Guard",
+    "next": "advice"
+  },
+  {
+    "id": "advice",
+    "text": "If you are bound for Veneficturis, mind the curfew bells. Wizards may bend rules; guards only enforce them.",
+    "speaker": "City Guard",
+    "next": null
+  }
+]

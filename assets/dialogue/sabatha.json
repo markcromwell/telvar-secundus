@@ -1,0 +1,14 @@
+[
+  {
+    "id": "start",
+    "speaker": "Sabatha",
+    "text": "You're back—and in one piece, thank the saints. We always knew you had the gift, Telvar; the emporium just needed a moment to prove it to you.",
+    "next": "after_incident"
+  },
+  {
+    "id": "after_incident",
+    "speaker": "Sabatha",
+    "text": "Take this letter to heart. Veneficturis does not call lightly.",
+    "next": null
+  }
+]

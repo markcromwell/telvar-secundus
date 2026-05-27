@@ -1,0 +1,97 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/tilesets/lpc_terrain.png" id="1_lpc"]
+[ext_resource type="Script" path="res://scripts/CathedralOfAten.gd" id="2_cathedral"]
+[ext_resource type="Script" path="res://scripts/NPC.gd" id="3_npc"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_terrain"]
+texture = ExtResource("1_lpc")
+texture_region_size = Vector2i(16, 16)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_cathedral"]
+tile_size = Vector2i(16, 16)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 1
+sources/0 = SubResource("TileSetAtlasSource_terrain")
+
+[sub_resource type="RectangleShape2D" id="Rect_exit"]
+size = Vector2(80, 40)
+
+[sub_resource type="RectangleShape2D" id="Rect_interact"]
+size = Vector2(44, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_npc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_lpc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="CathedralOfAten" type="Node2D"]
+script = ExtResource("2_cathedral")
+
+[node name="TileMap" type="TileMap" parent="."]
+texture_filter = 0
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_cathedral")
+format = 2
+
+[node name="Priest1" type="StaticBody2D" parent="."]
+position = Vector2(200, 220)
+script = ExtResource("3_npc")
+dialogue_id = "priest_1"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Priest1"]
+position = Vector2(0, -20)
+sprite_frames = SubResource("SpriteFrames_npc")
+animation = &"default"
+autoplay = "default"
+
+[node name="InteractionArea" type="Area2D" parent="Priest1"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Priest1/InteractionArea"]
+position = Vector2(0, -12)
+shape = SubResource("Rect_interact")
+
+[node name="Priest2" type="StaticBody2D" parent="."]
+position = Vector2(440, 220)
+script = ExtResource("3_npc")
+dialogue_id = "priest_2"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Priest2"]
+position = Vector2(0, -20)
+sprite_frames = SubResource("SpriteFrames_npc")
+animation = &"default"
+autoplay = "default"
+
+[node name="InteractionArea" type="Area2D" parent="Priest2"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Priest2/InteractionArea"]
+position = Vector2(0, -12)
+shape = SubResource("Rect_interact")
+
+[node name="ExitDoor" type="Area2D" parent="."]
+position = Vector2(320, 420)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("Rect_exit")
+
+[node name="FootstepPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(320, 240)
+enabled = true

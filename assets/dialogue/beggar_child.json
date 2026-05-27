@@ -1,0 +1,20 @@
+[
+  {
+    "id": "start",
+    "text": "A crust? A copper? The big streets pretend they don't see us, but Secundus has hollow places where even the guards look away.",
+    "speaker": "Beggar Child",
+    "next": "hungry"
+  },
+  {
+    "id": "hungry",
+    "text": "Sometimes an apprentice drops bread like it's a spell component—like pity fixes anything. I'd rather hear a real story than a sermon.",
+    "speaker": "Beggar Child",
+    "next": "dream"
+  },
+  {
+    "id": "dream",
+    "text": "They say Veneficturis lights up at night like a second sky. I would trade a week of meals just to see that fire once.",
+    "speaker": "Beggar Child",
+    "next": null
+  }
+]

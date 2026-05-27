@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8n4tilesetrender2467"]
+
+[ext_resource type="Script" path="res://tests/scenes/test_tileset_render.gd" id="1_script"]
+[ext_resource type="TileSet" uid="uid://c65k4e0b3c6l2" path="res://assets/tilesets/lpc_terrain.tres" id="2_tileset"]
+
+[node name="TestTilesetRender" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_tileset")
+format = 2
+script = ExtResource("1_script")
+layer_0/name = "ground"
+layer_0/tile_data = PackedInt32Array()

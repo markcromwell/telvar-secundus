@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=4]
+
+[ext_resource type="Texture2D" path="res://assets/tiles/lpc_temple_interior.png" id="1_paladin_atlas"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(20, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interaction"]
+size = Vector2(56, 56)
+
+[node name="SirValins" type="CharacterBody2D"]
+editor_description = "Sir Valins NPC: Sprite2D uses LPC atlas region_rect as paladin stand-in until a dedicated paladin_sheet texture is added."
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_paladin_atlas")
+centered = true
+offset = Vector2(0, -8)
+region_enabled = true
+region_rect = Rect2(96, 64, 32, 48)
+editor_description = "Paladin-facing frame: tune region_rect to match final paladin atlas coordinates."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="InteractionZone" type="Area2D" parent="."]
+editor_description = "Player interaction trigger; connect body_entered in gameplay code as needed."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionZone"]
+shape = SubResource("RectangleShape2D_interaction")
