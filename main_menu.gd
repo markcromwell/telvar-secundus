@@ -3,10 +3,12 @@ extends Control
 
 @onready var _main_panel: Control = $MainPanel
 @onready var _settings_host: Control = $SettingsHost
+@onready var _settings_menu: Control = $SettingsHost/SettingsMenu
 
 
 func _ready() -> void:
 	_settings_host.visible = false
+	_settings_menu.back_pressed.connect(_on_back_from_settings_pressed)
 
 
 func _on_settings_pressed() -> void:

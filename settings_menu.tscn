@@ -24,11 +24,12 @@ offset_right = 200.0
 offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 24
 
 [node name="Title" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Audio"
+theme_override_font_sizes/font_size = 32
+text = "Settings"
 horizontal_alignment = 1
 
 [node name="MasterRow" type="HBoxContainer" parent="VBoxContainer"]
@@ -37,6 +38,8 @@ theme_override_constants/separation = 8
 
 [node name="MasterLabel" type="Label" parent="VBoxContainer/MasterRow"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
 text = "Master"
 vertical_alignment = 1
 
@@ -48,12 +51,20 @@ max_value = 100.0
 step = 1.0
 value = 100.0
 
+[node name="MasterValueLabel" type="Label" parent="VBoxContainer/MasterRow"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
 [node name="MusicRow" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="MusicLabel" type="Label" parent="VBoxContainer/MusicRow"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
 text = "Music"
 vertical_alignment = 1
 
@@ -65,12 +76,20 @@ max_value = 100.0
 step = 1.0
 value = 100.0
 
+[node name="MusicValueLabel" type="Label" parent="VBoxContainer/MusicRow"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
 [node name="SfxRow" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="SfxLabel" type="Label" parent="VBoxContainer/SfxRow"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
 text = "SFX"
 vertical_alignment = 1
 
@@ -82,6 +101,18 @@ max_value = 100.0
 step = 1.0
 value = 100.0
 
-[connection signal="value_changed" from="VBoxContainer/MasterRow/MasterSlider" to="." method="_on_slider_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/MusicRow/MusicSlider" to="." method="_on_slider_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/SfxRow/SfxSlider" to="." method="_on_slider_value_changed"]
+[node name="SfxValueLabel" type="Label" parent="VBoxContainer/SfxRow"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "100"
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back"
+
+[connection signal="value_changed" from="VBoxContainer/MasterRow/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/MusicRow/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/SfxRow/SfxSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

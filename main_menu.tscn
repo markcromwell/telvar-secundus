@@ -61,15 +61,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BackFromSettings" type="Button" parent="SettingsHost"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 120.0
-offset_bottom = 48.0
-text = "Back"
-
 [connection signal="pressed" from="MainPanel/PlayButton" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MainPanel/SettingsButton" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="MainPanel/QuitButton" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="SettingsHost/BackFromSettings" to="." method="_on_back_from_settings_pressed"]
