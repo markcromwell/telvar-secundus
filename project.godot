@@ -14,6 +14,10 @@ config/name="Telvar Secundus"
 run/main_scene="res://MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 
+[autoload]
+
+Menu="*res://autoload/Menu.gd"
+
 [display]
 
 window/size/viewport_width=1280
