@@ -29,3 +29,12 @@ bbcode_enabled = false
 fit_content = true
 scroll_active = false
 autowrap_mode = 3
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 112.0
+offset_bottom = 48.0
+text = "Back"
