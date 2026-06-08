@@ -8,6 +8,10 @@
 
 config_version=5
 
+[autoload]
+
+Menu="*res://Menu.gd"
+
 [application]
 
 config/name="Telvar Secundus"
