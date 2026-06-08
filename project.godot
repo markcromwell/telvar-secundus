@@ -11,8 +11,12 @@ config_version=5
 [application]
 
 config/name="Telvar Secundus"
-run/main_scene="res://MainMenu.tscn"
+run/main_scene="res://scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
+
+[autoload]
+
+Menu="*res://autoload/Menu.gd"
 
 [display]
 

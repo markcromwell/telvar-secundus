@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.3", "Mobile")
 [autoload]
 
 OverworldBootstrap="*res://scripts/overworld_bootstrap.gd"
+Menu="*res://autoload/Menu.gd"
 
 [display]
 
