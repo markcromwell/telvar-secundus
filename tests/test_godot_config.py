@@ -152,7 +152,7 @@ def test_main_menu_scene_has_credits_button_and_script() -> None:
     assert 'type="Button"' in tscn
     assert "MainMenu.gd" in tscn
     menu_src = MAIN_MENU_SCRIPT.read_text(encoding="utf-8")
-    assert "res://Credits.tscn" in menu_src
+    assert "Menu.request_credits()" in menu_src
     assert "_on_credits_pressed" in menu_src
 
 

@@ -1,9 +1,12 @@
 # Phase 2503: Web export + CREDITS.md for GitHub Pages (same-origin, no CORS).
-name: Export Web and deploy Pages
+# Phase 3250: Add itch.io packaging.
+name: Export, Package and Deploy
 
 on:
   push:
     branches: [main, master]
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
 
 permissions:
@@ -14,10 +17,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  export-web:
+  build:
     runs-on: ubuntu-latest
     env:
       GODOT_VERSION: "4.3"
+    outputs:
+      build_dir: export
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,8 +57,49 @@ jobs:
       - name: Copy CREDITS.md into export
         run: cp CREDITS.md export/
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: export
+
+  deploy-pages:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: export
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./export
+
+  itch-package:
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: build
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Package for Itch.io
+        run: |
+          chmod +x itch_package.py
+          ./itch_package.py --source-dir ./build --output-path ./itch-build.zip
+      - name: Upload Itch.io package
+        uses: actions/upload-artifact@v4
+        with:
+          name: itch-build
+          path: itch-build.zip
