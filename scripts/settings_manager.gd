@@ -23,7 +23,7 @@ var last_error: String = ""
 
 
 func _ready() -> void:
-	load_settings()
+	load()
 
 
 ## Canonical defaults. Nested as {section: {key: value}} to mirror ConfigFile.
@@ -53,7 +53,7 @@ func _clone_defaults() -> Dictionary:
 ## Load settings from disk into the cache. Always leaves the cache fully
 ## populated with valid values; missing/unreadable/malformed files fall back to
 ## defaults without raising. Returns true if the on-disk file was read cleanly.
-func load_settings() -> bool:
+func load() -> bool:
 	last_error = ""
 	# Start from a complete set of defaults; overlay whatever the file provides.
 	_cache = _clone_defaults()
@@ -86,7 +86,7 @@ func load_settings() -> bool:
 ## renames it over the canonical file via DirAccess, so the canonical file is
 ## never partially written and a failure preserves the prior on-disk values.
 ## Returns true on success; on failure the cache (and prior disk file) are intact.
-func save_settings() -> bool:
+func save() -> bool:
 	last_error = ""
 
 	var cf: ConfigFile = ConfigFile.new()
@@ -121,6 +121,14 @@ func save_settings() -> bool:
 		return false
 
 	return true
+
+
+func load_settings() -> bool:
+	return load()
+
+
+func save_settings() -> bool:
+	return save()
 
 
 ## Best-effort cleanup of a leftover temp file so retries start clean.
