@@ -94,7 +94,7 @@ static func apply_settings(data: Dictionary) -> void:
 		var linear := _percent_to_linear(pct)
 		var idx := AudioServer.get_bus_index(bus_name)
 		if idx >= 0:
-			AudioServer.set_bus_volume_linear(idx, linear)
+			AudioServer.set_bus_volume_db(idx, linear_to_db(linear))
 
 
 static func load_and_apply() -> void:
