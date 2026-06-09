@@ -6,7 +6,7 @@
 # get_node_or_null() so the symbol is never resolved at parse time.
 extends Node
 
-const GAME_WORLD_SCENE   := "res://MainScene.tscn"
+const GAME_WORLD_SCENE   := "res://game_world.tscn"
 const SETTINGS_SCENE     := "res://settings_menu.tscn"
 const CREDITS_SCENE      := "res://Credits.tscn"
 

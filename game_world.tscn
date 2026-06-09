@@ -1,26 +1,24 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=8 format=3]
 
-[ext_resource type="PackedScene" path="res://settings_menu.tscn" id="1_settings_menu"]
-[ext_resource type="Script" path="res://pause_layer.gd" id="2_pause_layer"]
-[ext_resource type="Script" path="res://pause_input.gd" id="3_pause_input"]
+[ext_resource type="Script" path="res://game_world.gd" id="1_d0y4c"]
+[ext_resource type="PackedScene" path="res://settings_menu.tscn" id="2_yvblp"]
+[ext_resource type="Script" path="res://pause_layer.gd" id="3_v3j3v"]
+[ext_resource type="Script" path="res://pause_input.gd" id="4_5kpwf"]
+[ext_resource type="Script" path="res://scene_router.gd" id="5_85fga"]
+[ext_resource type="PackedScene" path="res://AudioManager.tscn" id="6_s1nqw"]
+[ext_resource type="PackedScene" path="res://HUD.tscn" id="7_fkvcv"]
 
 [node name="GameWorld" type="Node2D"]
+script = ExtResource("1_d0y4c")
 
 [node name="PauseInput" type="Node" parent="."]
 process_mode = 3
-script = ExtResource("3_pause_input")
-
-[node name="WorldLabel" type="Label" parent="."]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 400.0
-offset_bottom = 48.0
-text = "Press ESC to pause (Settings from pause menu)."
+script = ExtResource("4_5kpwf")
 
 [node name="PauseLayer" type="CanvasLayer" parent="."]
 process_mode = 3
 layer = 100
-script = ExtResource("2_pause_layer")
+script = ExtResource("3_v3j3v")
 
 [node name="Dim" type="ColorRect" parent="PauseLayer"]
 anchors_preset = 15
@@ -66,7 +64,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SettingsMenu" parent="PauseLayer/SettingsHost" instance=ExtResource("1_settings_menu")]
+[node name="SettingsMenu" parent="PauseLayer/SettingsHost" instance=ExtResource("2_yvblp")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -81,6 +79,18 @@ offset_top = 16.0
 offset_right = 120.0
 offset_bottom = 48.0
 text = "Back"
+
+[node name="WorldRoot" type="Node2D" parent="."]
+
+[node name="SceneRouter" type="Node" parent="."]
+script = ExtResource("5_85fga")
+world_root_path = NodePath("../WorldRoot")
+
+[node name="AudioController" parent="." instance=ExtResource("6_s1nqw")]
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="HUDLayer" instance=ExtResource("7_fkvcv")]
 
 [connection signal="pressed" from="PauseLayer/PausePanel/VBox/ResumeButton" to="PauseLayer" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseLayer/PausePanel/VBox/SettingsButton" to="PauseLayer" method="_on_settings_pressed"]
