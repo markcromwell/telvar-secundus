@@ -39,12 +39,22 @@ jobs:
             ~/.local/share/godot/export_templates/4.3.stable
 
       - name: Export Web release
+        # 2026-06-08: Godot 4.3 (and 4.4.1, 4.6.3) headless export reliably
+        # crashes with SIGSEGV during XR-interface shutdown AFTER savepack
+        # has finished and EditorSettings have saved. The crash is
+        # "Index p_index = 1 is out of bounds" at cowdata.h:205 inside the
+        # XR cleanup teardown. The actual export files (index.html, .wasm,
+        # .pck) DO get written before the crash. Ignore godot's exit code
+        # and verify the file as the success signal.
         shell: sh
         run: |
           set -eu
           mkdir -p export
-          godot --headless --verbose --export-release "Web" ./export/index.html
+          godot --headless --verbose --export-release "Web" ./export/index.html || true
+          ls -la ./export/
           test -f ./export/index.html
+          test -f ./export/index.wasm
+          test -f ./export/index.pck
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
