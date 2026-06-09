@@ -1,7 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://mainmenu2751"]
+[gd_scene load_steps=3 format=3 uid="uid://mainmenu2751"]
 
 [ext_resource type="Script" path="res://MainMenu.gd" id="1_mainmenu"]
 [ext_resource type="Texture2D" path="res://assets/splash_secundus.jpg" id="3_splash"]
+[ext_resource type="AudioStream" path="res://audio/music/music_loop_maldita.ogg" id="4_menumusic"]
 
 [ext_resource type="Script" path="res://main_menu_version.gd" id="2_versionlabel"]
 
@@ -16,6 +17,10 @@ grow_vertical = 2
 script = ExtResource("1_mainmenu")
 
 
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_menumusic")
+autoplay = true
+bus = "Music"
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
