@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.3", "Mobile")
 
 Menu="*res://autoload/Menu.gd"
 Settings="*res://scripts/settings_manager.gd"
+BuildVersion="*res://autoload/version_loader.gd"
 
 [display]
 

@@ -1,6 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://mainmenu2751"]
 
 [ext_resource type="Script" path="res://MainMenu.gd" id="1_mainmenu"]
+[ext_resource type="Script" path="res://main_menu_version.gd" id="2_versionlabel"]
+
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -101,6 +103,26 @@ offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Credits"
+
+
+[node name="BuildVersionLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -28.0
+offset_right = -10.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "v dev"
+horizontal_alignment = 2
+modulate = Color(1, 1, 1, 0.6)
+theme_override_font_sizes/font_size = 12
+script = ExtResource("2_versionlabel")
 
 [connection signal="pressed" from="NewGameButton" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="LoadButton" to="." method="_on_load_pressed"]
