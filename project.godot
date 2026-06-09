@@ -17,6 +17,10 @@ config/features=PackedStringArray("4.3", "Mobile")
 [autoload]
 
 Menu="*res://autoload/Menu.gd"
+SaveSystem="*res://save_system.gd"
+AudioManager="*res://autoload/AudioManager.tscn"
+CombatManager="*res://autoload/CombatManager.tscn"
+SFXManager="*res://SFXManager.tscn"
 Settings="*res://scripts/settings_manager.gd"
 BuildVersion="*res://autoload/version_loader.gd"
 
