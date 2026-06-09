@@ -2,11 +2,20 @@ extends Node
 ## Autoload: ambient ↔ combat music and victory sting (phase 2741).
 ## Combat enter: 0.5s ambient fade-out, then battle theme. Victory: sting (~2s), then ambient fade-in.
 
+signal ambient_started(location: String)
+
 const FADE_OUT_AMBIENT_SEC := 0.5
 const FADE_IN_AMBIENT_SEC := 0.5
 const COMBAT_DUCK_SEC := 0.2
 const VICTORY_STING_SEC := 2.0
 const SILENT_DB := -80.0
+
+const AMBIENT_STREAMS := {
+	"apprentice_room": "res://assets/audio/ambient_merchant_medieval.wav",
+	"merchant_district": "res://assets/audio/ambient_merchant_medieval.wav",
+	"veneficturis": "res://assets/audio/ambient_veneficturis_dark.wav",
+	"rookery": "res://assets/audio/ambient_rookery_tension.wav",
+}
 
 @onready var ambient_player: AudioStreamPlayer = $AmbientPlayer
 @onready var combat_player: AudioStreamPlayer = $CombatPlayer
@@ -42,6 +51,23 @@ func play_ambient(stream: AudioStream, from_silent: bool = false) -> void:
 	else:
 		ambient_player.volume_db = 0.0
 		ambient_player.play()
+
+
+func start_ambient(location: String) -> void:
+	var key := location.strip_edges().to_lower()
+	var path: String = AMBIENT_STREAMS.get(key, "")
+	if path.is_empty():
+		push_warning("AudioManager: unknown ambient location: %s" % location)
+		return
+	if not ResourceLoader.exists(path):
+		push_warning("AudioManager: missing ambient stream for %s: %s" % [key, path])
+		return
+	var loaded := load(path)
+	if not (loaded is AudioStream):
+		push_warning("AudioManager: not an AudioStream for %s: %s" % [key, path])
+		return
+	play_ambient(loaded as AudioStream)
+	ambient_started.emit(key)
 
 
 func enter_combat(battle_stream: AudioStream) -> void:
