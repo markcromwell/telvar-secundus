@@ -226,7 +226,7 @@ static func is_update_notification_enabled() -> bool:
 static func set_update_notification(enable :bool) -> void:
 	ProjectSettings.set_setting(UPDATE_NOTIFICATION_ENABLED, enable)
 	@warning_ignore("return_value_discarded")
-	ProjectSettings.save_settings()
+	ProjectSettings.save()
 
 
 static func get_log_path() -> String:
@@ -237,7 +237,7 @@ static func set_log_path(path :String) -> void:
 	ProjectSettings.set_setting(STDOUT_ENABLE_TO_FILE, true)
 	ProjectSettings.set_setting(STDOUT_WITE_TO_FILE, path)
 	@warning_ignore("return_value_discarded")
-	ProjectSettings.save_settings()
+	ProjectSettings.save()
 
 
 static func get_session_hooks() -> Dictionary[String, bool]:
@@ -429,7 +429,7 @@ static func save_property(name :String, value :Variant) -> void:
 
 
 static func _save_settings() -> void:
-	var err := ProjectSettings.save_settings()
+	var err := ProjectSettings.save()
 	if err != OK:
 		push_error("Save GdUnit4 settings failed : %s" % error_string(err))
 		return
