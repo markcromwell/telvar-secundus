@@ -1,17 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2vj3xpqr7m4k"]
+[gd_scene load_steps=4 format=3 uid="uid://c2vj3xpqr7m4k"]
 
+[ext_resource type="Script" path="res://MainScene.gd" id="0_scene"]
 [ext_resource type="Script" path="res://Player.gd" id="1_player"]
+[ext_resource type="TileSet" path="res://assets/tilesets/lpc_dark_stone_tileset.tres" id="2_tileset"]
 
 [node name="MainScene" type="Node2D"]
+script = ExtResource("0_scene")
 
 [node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_tileset")
 format = 2
-tile_set = null
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(640, 360)
+position = Vector2(160, 120)
 script = ExtResource("1_player")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
+zoom = Vector2(2, 2)
