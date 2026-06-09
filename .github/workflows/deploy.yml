@@ -28,8 +28,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Ensure web templates are installed
+        # sh in the barichello image rejects 'pipefail' so use plain `-eu`.
+        shell: sh
         run: |
-          set -euo pipefail
+          set -eu
           mkdir -p ~/.local/share/godot/export_templates
           # Templates are at /root/.local/share/godot/export_templates in the
           # image; symlink to runner home for the export tool to find them.
@@ -37,8 +39,9 @@ jobs:
             ~/.local/share/godot/export_templates/4.3.stable
 
       - name: Export Web release
+        shell: sh
         run: |
-          set -euo pipefail
+          set -eu
           mkdir -p export
           godot --headless --verbose --export-release "Web" ./export/index.html
           test -f ./export/index.html
