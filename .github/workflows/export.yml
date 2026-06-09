@@ -2,9 +2,13 @@
 # Phase 3250: Add itch.io packaging.
 name: Export, Package and Deploy
 
+# 2026-06-09: removed push branches: [main, master] — this workflow has been
+# duplicating deploy.yml (which uses the proven barichello/godot-ci image +
+# the Godot 4.3 XR-shutdown SIGSEGV workaround). Every push to master fired
+# both workflows; this one always crashed at savepack end. Kept tag + manual
+# triggers so the itch.io release packaging path stays available when needed.
 on:
   push:
-    branches: [main, master]
     tags:
       - 'v*.*.*'
   workflow_dispatch:
