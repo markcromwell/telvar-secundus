@@ -38,6 +38,7 @@ jobs:
           ln -sf /root/.local/share/godot/export_templates/4.3.stable \
             ~/.local/share/godot/export_templates/4.3.stable
 
+- name: Stamp build version        shell: sh        run: |          set -eu          SHORT_SHA=${GITHUB_SHA:0:8}          STAMP="${SHORT_SHA} $(date -u +%Y-%m-%dT%H:%MZ)"          echo "${STAMP}" > build_version.txt          cat build_version.txt
       - name: Export Web release
         # 2026-06-08: Godot 4.3 (and 4.4.1, 4.6.3) headless export reliably
         # crashes with SIGSEGV during XR-interface shutdown AFTER savepack
