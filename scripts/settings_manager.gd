@@ -23,7 +23,7 @@ var last_error: String = ""
 
 
 func _ready() -> void:
-	load_settings()
+	load()
 
 
 ## Canonical defaults. Nested as {section: {key: value}} to mirror ConfigFile.
