@@ -173,7 +173,7 @@ func enable_gdUnit() -> void:
 	if not enabled_plugins.has("res://addons/gdUnit4/plugin.cfg"):
 		enabled_plugins.append("res://addons/gdUnit4/plugin.cfg")
 	ProjectSettings.set_setting("editor_plugins/enabled", enabled_plugins)
-	ProjectSettings.save()
+	ProjectSettings.save_settings()
 
 
 func disable_gdUnit() -> void:

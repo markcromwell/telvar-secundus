@@ -82,7 +82,7 @@ func _apply_settings(which):
 		return
 
 	WarningsManager.apply_warnings_dictionary(new_settings)
-	ProjectSettings.save()
+	ProjectSettings.save_settings()
 	print("-- Project Warning Settings have been updated --")
 	print(_diff_changes_text(pre_settings))
 
@@ -169,7 +169,7 @@ func _set_settings(nvps):
 				s_value = s_value.to_lower() == 'true'
 
 			WarningsManager.set_project_setting_warning(s_name, s_value)
-			ProjectSettings.save()
+			ProjectSettings.save_settings()
 	print(_diff_changes_text(pre_settings))
 
 

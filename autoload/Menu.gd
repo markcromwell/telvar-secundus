@@ -1,18 +1,14 @@
 # autoload/Menu.gd
-# 2026-06-08 LIVE-FIX: previous version emitted *_requested signals but
-# nothing in the codebase listened for them, so every MainMenu button
-# click was silently a no-op. The MVP-7 polish phase (#1540) wired the
-# button signals -> request_* functions but the decomposer never gave
-# any phase responsibility for actually handling those requests.
-# This file now performs the scene transitions itself so the menu is
-# usable end-to-end. Signals are still emitted in case other systems
-# want to react.
+# 2026-06-08 LIVE-FIX v2: previous version referenced SceneManager which
+# is NOT a registered autoload (only Menu, Settings, BuildVersion are).
+# The parse error broke the WHOLE autoload, taking MainMenu.gd down with
+# it. Replaced the SceneManager.has_method() call with a dynamic
+# get_node_or_null() so the symbol is never resolved at parse time.
 extends Node
 
-const GAME_WORLD_SCENE := "res://game_world.tscn"
-const SETTINGS_SCENE   := "res://settings_menu.tscn"
-const CREDITS_SCENE    := "res://Credits.tscn"
-const LOAD_DIALOG_SCENE := "res://ui/save_dialog.tscn"
+const GAME_WORLD_SCENE   := "res://game_world.tscn"
+const SETTINGS_SCENE     := "res://settings_menu.tscn"
+const CREDITS_SCENE      := "res://Credits.tscn"
 
 signal new_game_requested()
 signal load_game_requested()
@@ -34,12 +30,15 @@ func request_new_game() -> void:
 
 func request_load_game() -> void:
 	emit_signal("load_game_requested")
-	# Defer to scene_manager's existing save/load dialog (F5 also opens it).
-	# If save_dialog supports a "load" mode it will branch on its own.
-	if has_node("/root/SceneManager") and SceneManager.has_method("open_save_dialog"):
-		SceneManager.open_save_dialog()
+	# scene_manager.gd is in autoload/ but NOT registered as an autoload
+	# (see project.godot [autoload] section). Fall back to the credits-
+	# style hard transition into a load-screen scene if it ever exists,
+	# else just route to the game and let in-game save UI handle it.
+	var sm = get_node_or_null("/root/SceneManager")
+	if sm != null and sm.has_method("open_save_dialog"):
+		sm.call("open_save_dialog")
 	else:
-		_change_scene_safe(LOAD_DIALOG_SCENE)
+		_change_scene_safe(GAME_WORLD_SCENE)
 
 
 func request_settings() -> void:
